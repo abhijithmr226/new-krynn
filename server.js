@@ -836,58 +836,6 @@ app.get('/api/viewer-count', (req, res) => {
 });
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ─── Unlock Gate: IP-based persistent tracking ────────────────────────────────
-const UNLOCKED_IPS_PATH = path.join(CONFIG_DIR, 'unlocked_ips.json');
-
-// Load or init the unlocked IPs set
-let unlockedIPs = new Set();
-(function loadUnlockedIPs() {
-  try {
-    if (fs.existsSync(UNLOCKED_IPS_PATH)) {
-      const data = JSON.parse(fs.readFileSync(UNLOCKED_IPS_PATH, 'utf8'));
-      if (Array.isArray(data)) unlockedIPs = new Set(data);
-    }
-  } catch (e) {
-    console.warn('[Unlock] Could not load unlocked_ips.json:', e.message);
-  }
-})();
-
-function saveUnlockedIPs() {
-  try {
-    fs.writeFileSync(UNLOCKED_IPS_PATH, JSON.stringify([...unlockedIPs], null, 2));
-  } catch (e) {
-    console.warn('[Unlock] Could not save unlocked_ips.json:', e.message);
-  }
-}
-
-function getClientIP(req) {
-  // Support proxies (Cloudflare, nginx, etc.)
-  const forwarded = req.headers['x-forwarded-for'];
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return req.socket.remoteAddress || '0.0.0.0';
-}
-
-// GET /api/unlock-check — returns { unlocked: true/false }
-app.get('/api/unlock-check', (req, res) => {
-  const ip = getClientIP(req);
-  // Also check cookie header
-  const cookieHeader = req.headers.cookie || '';
-  const hasCookie = cookieHeader.includes('krynn_unlocked=1');
-  const isUnlocked = unlockedIPs.has(ip) || hasCookie;
-  res.json({ unlocked: isUnlocked, ip });
-});
-
-// POST /api/unlock-confirm — marks IP as permanently unlocked
-app.post('/api/unlock-confirm', (req, res) => {
-  const ip = getClientIP(req);
-  unlockedIPs.add(ip);
-  saveUnlockedIPs();
-  console.log(`[Unlock] IP unlocked: ${ip} (total: ${unlockedIPs.size})`);
-  // Set a 1-year cookie via response header as extra layer
-  res.setHeader('Set-Cookie', 'krynn_unlocked=1; Path=/; Max-Age=31536000; SameSite=Lax');
-  res.json({ success: true, message: 'Stream unlocked permanently.' });
-});
-// ─────────────────────────────────────────────────────────────────────────────
 
 // Fallback to serve index.html for UI SPA routes
 app.get('*', (req, res) => {

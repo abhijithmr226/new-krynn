@@ -1689,5 +1689,138 @@ body {
   box-shadow: 0 2px 5px rgba(255, 106, 0, 0.3);
 }
 
+/* ── Instagram Follow Banner ──────────────────────────────────────── */
+.ig-follow-banner {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(131,58,180,0.18) 0%, rgba(253,29,29,0.12) 50%, rgba(252,176,69,0.12) 100%);
+  border-top: 1px solid rgba(131,58,180,0.25);
+  border-bottom: 1px solid rgba(131,58,180,0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 14px 24px;
+  animation: ig-slide-in 0.5s ease;
+}
 
+@keyframes ig-slide-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ig-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ig-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.ig-icon {
+  font-size: 28px;
+  background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  flex-shrink: 0;
+}
+
+.ig-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ig-banner-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #f8f9fa;
+}
+
+.ig-banner-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.ig-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(131, 58, 180, 0.35);
+}
+
+.ig-follow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(131, 58, 180, 0.5);
+  filter: brightness(1.1);
+}
+
+.ig-banner-close {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #94a3b8;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.ig-banner-close:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* ── Footer Social ──────────────────────────────────────────────── */
+.footer-social {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.footer-social a {
+  color: #c084fc;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+
+.footer-social a:hover {
+  color: #fd1d1d;
+}
+
+@media (max-width: 600px) {
+  .ig-follow-banner { padding: 12px 16px; }
+  .ig-banner-inner { gap: 10px; }
+  .ig-banner-sub { display: none; }
+  .ig-follow-btn { padding: 8px 14px; font-size: 12px; }
+}
 

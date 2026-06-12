@@ -1,0 +1,899 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Load portals configuration
+const CONFIG_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(CONFIG_DIR)) {
+  fs.mkdirSync(CONFIG_DIR, { recursive: true });
+}
+
+const PORTALS_PATH = path.join(CONFIG_DIR, 'portals.json');
+let portals = [];
+if (fs.existsSync(PORTALS_PATH)) {
+  portals = JSON.parse(fs.readFileSync(PORTALS_PATH, 'utf8'));
+} else {
+  console.error('portals.json config missing!');
+}
+
+let activePortalId = '1'; // Default active portal is Zapto (Portal 1)
+
+// Helper to get active portal object
+function getActivePortal() {
+  return portals.find(p => p.id === activePortalId) || portals[0];
+}
+
+// Helper to get cache directory for the active portal
+function getPortalDataDir() {
+  const dir = path.join(CONFIG_DIR, 'portal_' + activePortalId);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  return dir;
+}
+
+// In-Memory Cache
+let cache = {
+  userInfo: null,
+  liveCategories: [],
+  liveStreams: [],
+  vodCategories: [],
+  vodStreams: [],
+  seriesCategories: [],
+  seriesStreams: []
+};
+
+// Syncing State
+let syncState = {
+  status: 'idle', // 'idle', 'syncing', 'completed', 'failed'
+  step: '',       // current step name
+  progress: 0,    // percentage
+  error: null,
+  lastUpdated: null
+};
+
+// Channel Health Cache: { [stream_id]: { status: 200|0, checkedAt: Date } }
+let channelHealth = {};
+let healthCheckState = { status: 'idle', progress: 0, total: 0, checked: 0 };
+
+// Load health cache from disk
+function loadHealthFromDisk() {
+  try {
+    const portalDir = getPortalDataDir();
+    const healthPath = path.join(portalDir, 'channel_health.json');
+    if (fs.existsSync(healthPath)) {
+      channelHealth = JSON.parse(fs.readFileSync(healthPath, 'utf8'));
+      console.log(`[Health] Loaded ${Object.keys(channelHealth).length} health records from disk.`);
+    }
+  } catch (e) {
+    console.warn('[Health] Failed to load health cache:', e.message);
+    channelHealth = {};
+  }
+}
+
+// Background channel health checker — checks all M3U streams concurrently in batches
+async function runHealthCheck(streams) {
+  if (healthCheckState.status === 'running') return;
+  healthCheckState = { status: 'running', progress: 0, total: streams.length, checked: 0 };
+  console.log(`[Health] Starting health check for ${streams.length} channels...`);
+
+  const BATCH_SIZE = 12;
+  const TIMEOUT_MS = 5000;
+  const portalDir = getPortalDataDir();
+
+  for (let i = 0; i < streams.length; i += BATCH_SIZE) {
+    const batch = streams.slice(i, i + BATCH_SIZE);
+    await Promise.allSettled(batch.map(async (stream) => {
+      if (!stream.url) {
+        channelHealth[stream.stream_id] = { status: 0, checkedAt: new Date().toISOString() };
+        return;
+      }
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+        const res = await fetch(stream.url, {
+          method: 'HEAD',
+          signal: controller.signal,
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+        });
+        clearTimeout(timeoutId);
+        channelHealth[stream.stream_id] = { status: res.status, checkedAt: new Date().toISOString() };
+      } catch (err) {
+        // If HEAD fails, try GET with abort
+        try {
+          const ctrl2 = new AbortController();
+          const t2 = setTimeout(() => ctrl2.abort(), TIMEOUT_MS);
+          const res2 = await fetch(stream.url, {
+            method: 'GET',
+            signal: ctrl2.signal,
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+          });
+          clearTimeout(t2);
+          ctrl2.abort(); // don't download body
+          channelHealth[stream.stream_id] = { status: res2.status, checkedAt: new Date().toISOString() };
+        } catch {
+          channelHealth[stream.stream_id] = { status: 0, checkedAt: new Date().toISOString() };
+        }
+      }
+    }));
+
+    healthCheckState.checked = Math.min(i + BATCH_SIZE, streams.length);
+    healthCheckState.progress = Math.round((healthCheckState.checked / streams.length) * 100);
+  }
+
+  // Save to disk
+  try {
+    const healthPath = path.join(portalDir, 'channel_health.json');
+    fs.writeFileSync(healthPath, JSON.stringify(channelHealth));
+  } catch(e) { console.warn('[Health] Failed to save health cache:', e.message); }
+
+  const alive = Object.values(channelHealth).filter(h => h.status >= 200 && h.status < 400).length;
+  healthCheckState.status = 'done';
+  console.log(`[Health] Done. ${alive}/${streams.length} channels alive.`);
+}
+
+// Helper: load cache from disk
+function loadCacheFromDisk() {
+  try {
+    const files = {
+      userInfo: 'user_info.json',
+      liveCategories: 'live_categories.json',
+      liveStreams: 'live_streams.json',
+      vodCategories: 'vod_categories.json',
+      vodStreams: 'vod_streams.json',
+      seriesCategories: 'series_categories.json',
+      seriesStreams: 'series_streams.json'
+    };
+
+    const portalDir = getPortalDataDir();
+    let loadedCount = 0;
+    for (const [key, filename] of Object.entries(files)) {
+      const filePath = path.join(portalDir, filename);
+      if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        cache[key] = JSON.parse(fileContent);
+        loadedCount++;
+      }
+    }
+
+    if (loadedCount === Object.keys(files).length) {
+      syncState.status = 'completed';
+      const stats = fs.statSync(path.join(portalDir, 'user_info.json'));
+      syncState.lastUpdated = stats.mtime;
+      console.log(`Cache fully loaded from disk for Portal ${activePortalId}.`);
+      loadHealthFromDisk(); // Load health data alongside the cache
+    } else {
+      syncState.status = 'idle';
+      console.log(`Cache partially loaded (${loadedCount}/${Object.keys(files).length} files) for Portal ${activePortalId}. Sync required.`);
+    }
+  } catch (err) {
+    console.error('Error loading cache from disk:', err);
+    syncState.status = 'failed';
+    syncState.error = 'Failed to load cache from disk';
+  }
+}
+
+// Fetch helper with User-Agent and timeouts
+async function fetchIPTV(action, extraParams = '') {
+  const portal = getActivePortal();
+  const url = `${portal.url}/player_api.php?username=${portal.username}&password=${portal.password}&action=${action}${extraParams}`;
+  const response = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status} for action ${action}`);
+  }
+  return await response.json();
+}
+
+function parseM3U(m3uContent, portal) {
+  const lines = m3uContent.split(/\r?\n/);
+  const streams = [];
+  const categoriesMap = new Map();
+  
+  let currentItem = null;
+  let num = 1;
+
+  // Helper: clean up a raw M3U group-title to a readable category name
+  function cleanCategoryName(raw) {
+    if (!raw) return 'Sports';
+    // Handle semicolon-separated tags like "Kids;Sports" or "Auto;Outdoor;Sports"
+    // Take all parts and join them with " & ", removing duplicates and normalizing
+    const parts = raw.split(';').map(p => p.trim()).filter(p => p.length > 0);
+    const unique = [...new Set(parts)];
+    return unique.join(' & ');
+  }
+
+  function makeCategoryId(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) continue;
+    
+    if (line.startsWith('#EXTINF:')) {
+      currentItem = {
+        num: num++,
+        stream_type: 'live',
+        stream_icon: '',
+        epg_channel_id: null,
+        category_id: 'sports',
+        category_name: 'Sports'
+      };
+      
+      // Extract name (after the last comma)
+      const commaIndex = line.lastIndexOf(',');
+      if (commaIndex > -1) {
+        currentItem.name = line.substring(commaIndex + 1).trim();
+      } else {
+        currentItem.name = 'Unknown Channel';
+      }
+      
+      // Strip control chars/emoji artifacts from name
+      currentItem.name = currentItem.name.replace(/[\x00-\x08\x0b\x0e-\x1f\x7f]/g, '');
+      
+      // Extract tvg-logo
+      const logoMatch = line.match(/tvg-logo="([^"]*)"/i) || line.match(/logo="([^"]*)"/i);
+      if (logoMatch) {
+        currentItem.stream_icon = logoMatch[1];
+      }
+      
+      // Extract tvg-id
+      const idMatch = line.match(/tvg-id="([^"]*)"/i);
+      if (idMatch) {
+        currentItem.epg_channel_id = idMatch[1];
+      }
+      
+      // Extract group-title (category)
+      const groupMatch = line.match(/group-title="([^"]*)"/i);
+      if (groupMatch) {
+        const rawCat = groupMatch[1].trim();
+        const catName = cleanCategoryName(rawCat);
+        const catId = makeCategoryId(catName);
+        currentItem.category_name = catName;
+        currentItem.category_id = catId;
+        categoriesMap.set(catId, catName);
+      } else {
+        // Default to Sports if no group-title
+        categoriesMap.set('sports', 'Sports');
+      }
+    } else if (line.startsWith('#')) {
+      continue;
+    } else {
+      // It's a URL line
+      if (currentItem) {
+        currentItem.url = line;
+        currentItem.stream_id = String(100000 + currentItem.num);
+        streams.push(currentItem);
+        currentItem = null;
+      }
+    }
+  }
+  
+  const categories = Array.from(categoriesMap.entries()).map(([id, name]) => ({
+    category_id: id,
+    category_name: name,
+    parent_id: 0
+  }));
+  
+  return { streams, categories };
+}
+
+// Background sync worker
+async function runSync() {
+  if (syncState.status === 'syncing') return;
+
+  syncState.status = 'syncing';
+  syncState.error = null;
+  syncState.progress = 0;
+
+  try {
+    const portal = getActivePortal();
+    const portalDir = getPortalDataDir();
+
+    // Check if it is an M3U portal
+    if (portal.isM3u || portal.url.endsWith('.m3u') || portal.url.endsWith('.m3u8')) {
+      syncState.step = 'Downloading M3U playlist...';
+      syncState.progress = 20;
+      
+      const res = await fetch(portal.url, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      if (!res.ok) throw new Error(`Failed to fetch M3U playlist with status ${res.status}`);
+      const m3uContent = await res.text();
+      
+      syncState.step = 'Parsing M3U playlist...';
+      syncState.progress = 50;
+      const { streams, categories } = parseM3U(m3uContent, portal);
+      
+      syncState.step = 'Caching M3U playlist data...';
+      syncState.progress = 80;
+      
+      // Mock User Info
+      const mockUserInfo = {
+        user_info: {
+          username: portal.name,
+          password: '',
+          auth: 1,
+          status: 'Active',
+          exp_date: '0',
+          active_cons: '0',
+          max_connections: 'Unlimited'
+        },
+        server_info: {
+          url: new URL(portal.url).hostname,
+          port: '80',
+          server_protocol: 'https',
+          timestamp_now: Math.floor(Date.now() / 1000),
+          time_now: new Date().toISOString().replace('T', ' ').substring(0, 19),
+          process: true
+        }
+      };
+      
+      cache.userInfo = mockUserInfo;
+      cache.liveCategories = categories;
+      cache.liveStreams = streams;
+      cache.vodCategories = [];
+      cache.vodStreams = [];
+      cache.seriesCategories = [];
+      cache.seriesStreams = [];
+      
+      fs.writeFileSync(path.join(portalDir, 'user_info.json'), JSON.stringify(mockUserInfo, null, 2));
+      fs.writeFileSync(path.join(portalDir, 'live_categories.json'), JSON.stringify(categories, null, 2));
+      fs.writeFileSync(path.join(portalDir, 'live_streams.json'), JSON.stringify(streams));
+      fs.writeFileSync(path.join(portalDir, 'vod_categories.json'), JSON.stringify([], null, 2));
+      fs.writeFileSync(path.join(portalDir, 'vod_streams.json'), JSON.stringify([]));
+      fs.writeFileSync(path.join(portalDir, 'series_categories.json'), JSON.stringify([], null, 2));
+      fs.writeFileSync(path.join(portalDir, 'series_streams.json'), JSON.stringify([]));
+      
+      syncState.status = 'completed';
+      syncState.step = 'M3U Synchronization successful!';
+      syncState.progress = 100;
+      syncState.lastUpdated = new Date();
+      console.log(`M3U Sync complete for Portal ${activePortalId}.`);
+      // Load any existing health data from disk, then start fresh health check in background
+      loadHealthFromDisk();
+      runHealthCheck(streams).catch(e => console.error('[Health] Error:', e.message));
+      return;
+    }
+
+    // Step 1: User Info
+    syncState.step = 'Authenticating with server...';
+    syncState.progress = 5;
+    const authUrl = `${portal.url}/player_api.php?username=${portal.username}&password=${portal.password}`;
+    const authRes = await fetch(authUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (!authRes.ok) throw new Error(`Auth failed with status ${authRes.status}`);
+    const authData = await authRes.json();
+    if (!authData.user_info || authData.user_info.auth !== 1) {
+      throw new Error('IPTV portal returned authentication failure.');
+    }
+    cache.userInfo = authData;
+    fs.writeFileSync(path.join(portalDir, 'user_info.json'), JSON.stringify(authData, null, 2));
+
+    // Step 2: Live Categories
+    syncState.step = 'Downloading Live TV categories...';
+    syncState.progress = 15;
+    const liveCats = await fetchIPTV('get_live_categories');
+    cache.liveCategories = liveCats;
+    fs.writeFileSync(path.join(portalDir, 'live_categories.json'), JSON.stringify(liveCats, null, 2));
+
+    // Step 3: Live Streams
+    syncState.step = 'Downloading Live TV channels...';
+    syncState.progress = 30;
+    const liveStreams = await fetchIPTV('get_live_streams');
+    cache.liveStreams = liveStreams;
+    fs.writeFileSync(path.join(portalDir, 'live_streams.json'), JSON.stringify(liveStreams));
+
+    // Step 4: VOD Categories
+    syncState.step = 'Downloading Movie categories...';
+    syncState.progress = 45;
+    const vodCats = await fetchIPTV('get_vod_categories');
+    cache.vodCategories = vodCats;
+    fs.writeFileSync(path.join(portalDir, 'vod_categories.json'), JSON.stringify(vodCats, null, 2));
+
+    // Step 5: VOD Streams
+    syncState.step = 'Downloading Movies list (this may take a few seconds)...';
+    syncState.progress = 60;
+    const vodStreams = await fetchIPTV('get_vod_streams');
+    cache.vodStreams = vodStreams;
+    fs.writeFileSync(path.join(portalDir, 'vod_streams.json'), JSON.stringify(vodStreams));
+
+    // Step 6: Series Categories
+    syncState.step = 'Downloading TV Series categories...';
+    syncState.progress = 80;
+    const seriesCats = await fetchIPTV('get_series_categories');
+    cache.seriesCategories = seriesCats;
+    fs.writeFileSync(path.join(portalDir, 'series_categories.json'), JSON.stringify(seriesCats, null, 2));
+
+    // Step 7: Series Streams
+    syncState.step = 'Downloading TV Series list...';
+    syncState.progress = 95;
+    const seriesStreams = await fetchIPTV('get_series');
+    cache.seriesStreams = seriesStreams;
+    fs.writeFileSync(path.join(portalDir, 'series_streams.json'), JSON.stringify(seriesStreams));
+
+    syncState.status = 'completed';
+    syncState.step = 'Synchronization successful!';
+    syncState.progress = 100;
+    syncState.lastUpdated = new Date();
+    console.log(`Synchronization complete and cached for Portal ${activePortalId}.`);
+  } catch (err) {
+    console.error('Sync error:', err);
+    syncState.status = 'failed';
+    syncState.step = 'Synchronization failed';
+    syncState.error = err.message;
+  }
+}
+
+// Initial cache load on launch
+loadCacheFromDisk();
+
+// --- API ENDPOINTS ---
+
+// Check server/cache status
+app.get('/api/status', async (req, res) => {
+  let liveUserInfo = cache.userInfo;
+  const portal = getActivePortal();
+  const portalDir = getPortalDataDir();
+
+  // Try to get fresh user info from IPTV server dynamically to show real-time connections (except for M3U portals)
+  if (!(portal.isM3u || portal.url.endsWith('.m3u') || portal.url.endsWith('.m3u8'))) {
+    try {
+      const authUrl = `${portal.url}/player_api.php?username=${portal.username}&password=${portal.password}`;
+      const authRes = await fetch(authUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0' },
+        signal: AbortSignal.timeout(3000)
+      });
+      if (authRes.ok) {
+        const liveData = await authRes.json();
+        if (liveData && liveData.user_info) {
+          liveUserInfo = liveData;
+          // Update cache in-memory and write to disk
+          cache.userInfo = liveData;
+          fs.writeFileSync(path.join(portalDir, 'user_info.json'), JSON.stringify(liveData, null, 2));
+        }
+      }
+    } catch (err) {
+      console.warn('[Status API] Failed to fetch live user info, using cached:', err.message);
+    }
+  }
+
+  res.json({
+    activePortalId: activePortalId,
+    sync: syncState,
+    subscription: liveUserInfo ? {
+      username: liveUserInfo.user_info.username,
+      status: liveUserInfo.user_info.status,
+      expiry: liveUserInfo.user_info.exp_date,
+      connections: liveUserInfo.user_info.active_cons,
+      maxConnections: liveUserInfo.user_info.max_connections,
+      serverTime: liveUserInfo.server_info.time_now
+    } : null,
+    counts: {
+      liveCategories: cache.liveCategories.length,
+      liveStreams: cache.liveStreams.length,
+      vodCategories: cache.vodCategories.length,
+      vodStreams: cache.vodStreams.length,
+      seriesCategories: cache.seriesCategories.length,
+      seriesStreams: cache.seriesStreams.length
+    }
+  });
+});
+
+// Refresh cache
+app.post('/api/refresh', (req, res) => {
+  if (syncState.status === 'syncing') {
+    return res.status(409).json({ message: 'Synchronization is already in progress.' });
+  }
+  // Start async sync worker
+  runSync();
+  res.status(202).json({ message: 'Sync started successfully.' });
+});
+
+// Get Categories
+app.get('/api/categories', (req, res) => {
+  const { type } = req.query;
+  if (!type) return res.status(400).json({ error: 'Missing type parameter (live, vod, series)' });
+
+  if (type === 'live') return res.json(cache.liveCategories);
+  if (type === 'vod') return res.json(cache.vodCategories);
+  if (type === 'series') return res.json(cache.seriesCategories);
+
+  return res.status(400).json({ error: 'Invalid type parameter. Must be live, vod, or series' });
+});
+
+// Get channel health status
+app.get('/api/channels/health', (req, res) => {
+  res.json({
+    state: healthCheckState,
+    health: channelHealth
+  });
+});
+
+// Trigger a new health check manually
+app.post('/api/channels/health-check', (req, res) => {
+  if (healthCheckState.status === 'running') {
+    return res.status(409).json({ message: 'Health check already running.' });
+  }
+  if (cache.liveStreams.length === 0) {
+    return res.status(400).json({ message: 'No streams cached. Sync first.' });
+  }
+  channelHealth = {}; // Reset for fresh check
+  runHealthCheck(cache.liveStreams).catch(e => console.error('[Health] Manual check error:', e.message));
+  res.status(202).json({ message: 'Health check started.', total: cache.liveStreams.length });
+});
+
+// Get Paginated, Filtered Streams
+app.get('/api/streams', (req, res) => {
+  const { type, category_id, search, page = 1, limit = 50, alive_only } = req.query;
+  if (!type) return res.status(400).json({ error: 'Missing type parameter (live, vod, series)' });
+
+  let streamList = [];
+  if (type === 'live') streamList = cache.liveStreams;
+  else if (type === 'vod') streamList = cache.vodStreams;
+  else if (type === 'series') streamList = cache.seriesStreams;
+  else return res.status(400).json({ error: 'Invalid type parameter' });
+
+  // 1. Filter by category
+  if (category_id && category_id !== 'all') {
+    streamList = streamList.filter(item => item.category_id === category_id);
+  }
+
+  // 2. Filter by search query
+  if (search) {
+    const query = search.toLowerCase();
+    streamList = streamList.filter(item => item.name && item.name.toLowerCase().includes(query));
+  }
+
+  // 3. Filter alive-only (hide channels that failed health check)
+  if (alive_only === 'true' && Object.keys(channelHealth).length > 0) {
+    streamList = streamList.filter(item => {
+      const h = channelHealth[item.stream_id];
+      // Keep if: no health data yet (unchecked), or status is 200-399
+      if (!h) return true;
+      return h.status >= 200 && h.status < 400;
+    });
+  }
+
+  // 4. Paginate
+  const totalItems = streamList.length;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const totalPages = Math.ceil(totalItems / limitNum);
+  const offset = (pageNum - 1) * limitNum;
+  const paginatedItems = streamList.slice(offset, offset + limitNum);
+
+  // Attach health info to each item
+  const itemsWithHealth = paginatedItems.map(item => ({
+    ...item,
+    _health: channelHealth[item.stream_id] || null
+  }));
+
+  res.json({
+    items: itemsWithHealth,
+    pagination: {
+      total: totalItems,
+      page: pageNum,
+      limit: limitNum,
+      totalPages: totalPages
+    }
+  });
+});
+
+// Get Series details & episodes (dynamic from IPTV)
+app.get('/api/series-info/:id', async (req, res) => {
+  const seriesId = req.params.id;
+  if (!seriesId) return res.status(400).json({ error: 'Missing series id' });
+
+  try {
+    const data = await fetchIPTV('get_series_info', `&series_id=${seriesId}`);
+    res.json(data);
+  } catch (err) {
+    console.error(`Error fetching series info for ID ${seriesId}:`, err);
+    res.status(500).json({ error: 'Failed to fetch series info from IPTV provider' });
+  }
+});
+
+// Live / Video play URLs (Secure Redirect proxy)
+app.get('/api/play/:type/:id', (req, res) => {
+  const { type, id } = req.params;
+  const ext = req.query.ext || 'ts'; // ts, m3u8, mkv, mp4
+
+  if (!type || !id) return res.status(400).json({ error: 'Missing stream id or type' });
+
+  // Playback Safety: Verify referer to prevent hotlinking
+  const referer = req.headers.referer || req.headers.referrer;
+  const host = req.headers.host;
+  if (referer && !referer.includes(host)) {
+    console.log(`[Proxy Block] Unauthorized referer: ${referer}`);
+    return res.status(403).json({ error: 'Unauthorized hotlink. Playback is restricted to the KRYNN SPORTS app.' });
+  }
+
+  // Block automated download tools
+  const ua = (req.headers['user-agent'] || '').toLowerCase();
+  const blockedTools = ['curl', 'wget', 'aria2', 'python', 'http-client'];
+  if (blockedTools.some(tool => ua.includes(tool))) {
+    return res.status(403).json({ error: 'Direct media download is not allowed.' });
+  }
+
+  const portal = getActivePortal();
+  let playUrl = '';
+  
+  if (portal.isM3u || portal.url.endsWith('.m3u') || portal.url.endsWith('.m3u8')) {
+    let stream = null;
+    if (type === 'live') {
+      stream = cache.liveStreams.find(s => String(s.stream_id) === String(id));
+    } else if (type === 'vod') {
+      stream = cache.vodStreams.find(s => String(s.stream_id) === String(id));
+    } else if (type === 'series') {
+      stream = cache.seriesStreams.find(s => String(s.stream_id) === String(id));
+    }
+    
+    if (stream && stream.url) {
+      playUrl = stream.url;
+    } else {
+      return res.status(404).json({ error: 'M3U stream url not found' });
+    }
+  } else {
+    if (type === 'live') {
+      playUrl = `${portal.url}/live/${portal.username}/${portal.password}/${id}.${ext}`;
+    } else if (type === 'vod') {
+      playUrl = `${portal.url}/movie/${portal.username}/${portal.password}/${id}.${ext}`;
+    } else if (type === 'series') {
+      playUrl = `${portal.url}/series/${portal.username}/${portal.password}/${id}.${ext}`;
+    } else {
+      return res.status(400).json({ error: 'Invalid stream type' });
+    }
+  }
+
+  console.log(`[Stream Redirect] Redirecting ${type} ${id} to ${playUrl}`);
+  res.redirect(playUrl);
+});
+
+// Check stream status to bypass CORS and download overhead on client
+app.get('/api/check-stream/:type/:id', async (req, res) => {
+  const { type, id } = req.params;
+  const ext = req.query.ext || 'ts';
+
+  if (!type || !id) return res.status(400).json({ error: 'Missing stream id or type' });
+
+  const portal = getActivePortal();
+  let playUrl = '';
+  
+  if (portal.isM3u || portal.url.endsWith('.m3u') || portal.url.endsWith('.m3u8')) {
+    let stream = null;
+    if (type === 'live') {
+      stream = cache.liveStreams.find(s => String(s.stream_id) === String(id));
+    } else if (type === 'vod') {
+      stream = cache.vodStreams.find(s => String(s.stream_id) === String(id));
+    } else if (type === 'series') {
+      stream = cache.seriesStreams.find(s => String(s.stream_id) === String(id));
+    }
+    
+    if (stream && stream.url) {
+      playUrl = stream.url;
+    } else {
+      return res.status(404).json({ error: 'M3U stream url not found' });
+    }
+  } else {
+    if (type === 'live') {
+      playUrl = `${portal.url}/live/${portal.username}/${portal.password}/${id}.${ext}`;
+    } else if (type === 'vod') {
+      playUrl = `${portal.url}/movie/${portal.username}/${portal.password}/${id}.${ext}`;
+    } else if (type === 'series') {
+      playUrl = `${portal.url}/series/${portal.username}/${portal.password}/${id}.${ext}`;
+    } else {
+      return res.status(400).json({ error: 'Invalid stream type' });
+    }
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000); // 4 seconds timeout
+  let successStatus = null;
+
+  try {
+    const response = await fetch(playUrl, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+    
+    successStatus = response.status;
+    
+    // Abort body stream download immediately to avoid consuming bandwidth
+    controller.abort();
+    clearTimeout(timeoutId);
+
+    console.log(`[Stream Check] Checking status of ${playUrl}: Status ${successStatus}`);
+    return res.json({ status: successStatus });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (successStatus !== null) {
+      return res.json({ status: successStatus });
+    }
+    console.error(`[Stream Check Error] failed for ${playUrl}:`, err.message);
+    if (err.name === 'AbortError') {
+      return res.json({ status: 408, error: 'Request timed out' });
+    }
+    return res.json({ status: 500, error: err.message });
+  }
+});
+
+// Get list of portals for switcher dropdown
+app.get('/api/portals', (req, res) => {
+  const list = portals.map(p => ({ id: p.id, name: p.name, url: p.url }));
+  res.json(list);
+});
+
+// Select active portal
+app.post('/api/portals/select', (req, res) => {
+  const { id } = req.body;
+  if (!id) return res.status(400).json({ error: 'Missing portal id' });
+
+  const portal = portals.find(p => p.id === id);
+  if (!portal) return res.status(404).json({ error: 'Portal not found' });
+
+  activePortalId = id;
+  console.log(`[Portal Switch] Switched active portal to: ${portal.name} (ID: ${id})`);
+
+  // Reset in-memory caches and load the newly selected cache
+  cache = {
+    userInfo: null,
+    liveCategories: [],
+    liveStreams: [],
+    vodCategories: [],
+    vodStreams: [],
+    seriesCategories: [],
+    seriesStreams: []
+  };
+
+  syncState = {
+    status: 'idle',
+    step: '',
+    progress: 0,
+    error: null,
+    lastUpdated: null
+  };
+
+  loadCacheFromDisk();
+
+  res.json({
+    message: 'Portal switched successfully',
+    activePortalId: activePortalId,
+    sync: syncState
+  });
+});
+
+
+
+// ─── Live Viewer Count — Server-Sent Events ───────────────────────────────────
+const sseClients = new Set();
+
+// Base "seed" viewers — gives a realistic floor count even with few SSE connections
+const VIEWER_SEED = 120;
+
+function getLiveViewerCount() {
+  // Real SSE connections + seed + small jitter for realism
+  const real = sseClients.size;
+  const jitter = Math.floor(Math.random() * 12) - 6; // ±6
+  return Math.max(1, VIEWER_SEED + real + jitter);
+}
+
+function broadcastViewerCount() {
+  const count = getLiveViewerCount();
+  const payload = `event: count\ndata: ${JSON.stringify({ count })}\n\n`;
+  for (const res of sseClients) {
+    try { res.write(payload); } catch(_) { sseClients.delete(res); }
+  }
+}
+
+// Broadcast every 10 seconds
+setInterval(broadcastViewerCount, 10000);
+
+// GET /api/viewer-stream — SSE endpoint
+app.get('/api/viewer-stream', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no'); // disable nginx buffering if applicable
+  res.flushHeaders();
+
+  sseClients.add(res);
+
+  // Send current count immediately on connect
+  res.write(`event: count\ndata: ${JSON.stringify({ count: getLiveViewerCount() })}\n\n`);
+
+  // Keep-alive ping every 25s
+  const pingInterval = setInterval(() => {
+    try { res.write(': ping\n\n'); } catch(_) {}
+  }, 25000);
+
+  req.on('close', () => {
+    sseClients.delete(res);
+    clearInterval(pingInterval);
+  });
+});
+
+// GET /api/viewer-count — simple poll fallback
+app.get('/api/viewer-count', (req, res) => {
+  res.json({ count: getLiveViewerCount() });
+});
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── Unlock Gate: IP-based persistent tracking ────────────────────────────────
+const UNLOCKED_IPS_PATH = path.join(CONFIG_DIR, 'unlocked_ips.json');
+
+// Load or init the unlocked IPs set
+let unlockedIPs = new Set();
+(function loadUnlockedIPs() {
+  try {
+    if (fs.existsSync(UNLOCKED_IPS_PATH)) {
+      const data = JSON.parse(fs.readFileSync(UNLOCKED_IPS_PATH, 'utf8'));
+      if (Array.isArray(data)) unlockedIPs = new Set(data);
+    }
+  } catch (e) {
+    console.warn('[Unlock] Could not load unlocked_ips.json:', e.message);
+  }
+})();
+
+function saveUnlockedIPs() {
+  try {
+    fs.writeFileSync(UNLOCKED_IPS_PATH, JSON.stringify([...unlockedIPs], null, 2));
+  } catch (e) {
+    console.warn('[Unlock] Could not save unlocked_ips.json:', e.message);
+  }
+}
+
+function getClientIP(req) {
+  // Support proxies (Cloudflare, nginx, etc.)
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) return forwarded.split(',')[0].trim();
+  return req.socket.remoteAddress || '0.0.0.0';
+}
+
+// GET /api/unlock-check — returns { unlocked: true/false }
+app.get('/api/unlock-check', (req, res) => {
+  const ip = getClientIP(req);
+  // Also check cookie header
+  const cookieHeader = req.headers.cookie || '';
+  const hasCookie = cookieHeader.includes('krynn_unlocked=1');
+  const isUnlocked = unlockedIPs.has(ip) || hasCookie;
+  res.json({ unlocked: isUnlocked, ip });
+});
+
+// POST /api/unlock-confirm — marks IP as permanently unlocked
+app.post('/api/unlock-confirm', (req, res) => {
+  const ip = getClientIP(req);
+  unlockedIPs.add(ip);
+  saveUnlockedIPs();
+  console.log(`[Unlock] IP unlocked: ${ip} (total: ${unlockedIPs.size})`);
+  // Set a 1-year cookie via response header as extra layer
+  res.setHeader('Set-Cookie', 'krynn_unlocked=1; Path=/; Max-Age=31536000; SameSite=Lax');
+  res.json({ success: true, message: 'Stream unlocked permanently.' });
+});
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Fallback to serve index.html for UI SPA routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`KRYNN TV Server running at http://localhost:${PORT}`);
+});

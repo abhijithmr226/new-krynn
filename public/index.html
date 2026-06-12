@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KRYNN SPORTS — Live World Cup Streaming</title>
+  <meta name="description" content="Watch premium live football and World Cup streams. Dynamic Shaka Player, real-time live fixtures, scores and standings.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- Material Design Icons for Shaka Player UI Controls -->
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+  
+  <!-- Shaka Player CDN (using jsdelivr to ensure CSS stylesheet doesn't 404) -->
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.3.5/dist/shaka-player.ui.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.3.5/dist/controls.css">
+  
+  <!-- PWA Manifest & Icons -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#060609">
+  <link rel="apple-touch-icon" href="krynn_logo.png">
+  
+  <style>
+    :root {
+      --bg: #060609;
+      --bg-darker: #020204;
+      --card-bg: #101014;
+      --card-border: #1c1c24;
+      --orange: #ff6a00;
+      --orange-hover: #ff8533;
+      --orange-glow: rgba(255, 106, 0, 0.25);
+      --text: #ffffff;
+      --muted: #71717a;
+      --red: #ff3b30;
+      --green: #34c759;
+      --gold: #d4af37;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #15100c, var(--bg-darker));
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Header styling */
+    header {
+      background: rgba(6, 6, 9, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(20px);
+    }
+    
+    .logo-container {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo-img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+    }
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-title span {
+      color: var(--orange);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .wc-logo-img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(255, 106, 0, 0.15));
+    }
+    .live-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255, 106, 0, 0.1); border: 1px solid rgba(255, 106, 0, 0.3);
+      color: var(--orange); font-family: 'Outfit', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      padding: 6px 14px; border-radius: 20px;
+    }
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--red); box-shadow: 0 0 8px var(--red);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    /* Main Container */
+    .main {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Hero Banner Section */
+    .hero-banner {
+      position: relative;
+      height: 320px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: url('worldcup_banner.png') center/cover no-repeat;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to right, rgba(6, 6, 9, 0.95) 30%, rgba(6, 6, 9, 0.6) 60%, rgba(6, 6, 9, 0.1) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 106, 0, 0.15);
+      border: 1px solid rgba(255, 106, 0, 0.4);
+      color: var(--orange);
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      width: fit-content;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .hero-desc {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .hero-btn {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.2);
+    }
+    .hero-btn:hover {
+      background: var(--orange-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 106, 0, 0.4);
+    }
+
+    /* Collapsible Chat & Player Media Layout */
+    .media-container {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      align-items: stretch;
+      transition: all 0.3s ease;
+    }
+    
+    .player-wrapper {
+      flex: 1;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      border: 1px solid var(--card-border);
+      transition: all 0.3s ease;
+    }
+
+    .chat-wrapper {
+      width: 320px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      transition: all 0.3s ease;
+    }
+    .media-container.chat-closed .chat-wrapper {
+      display: none;
+    }
+
+    .chat-header {
+      background: #0f0f13;
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .chat-header span {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .chat-header span i {
+      color: var(--orange);
+    }
+    .chat-close-btn {
+      background: transparent; border: none; color: var(--muted);
+      cursor: pointer; font-size: 16px; transition: color 0.2s;
+    }
+    .chat-close-btn:hover { color: var(--orange); }
+    
+    .chat-widget-container {
+      flex: 1;
+      background: #060609;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 300px;
+    }
+
+    .player-header {
+      background: #0f0f13;
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .player-match-info {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .live-pill {
+      background: var(--red); color: #fff;
+      font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 800;
+      padding: 3px 8px; border-radius: 4px; letter-spacing: 1px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .match-teams {
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+      color: #fff;
+    }
+    .ctrl-btn {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 12px; padding: 8px 16px; border-radius: 6px;
+      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+    }
+    .ctrl-btn:hover, .ctrl-btn.active { background: var(--orange); border-color: var(--orange); }
+
+    .player-frame {
+      width: 100%; height: 0; padding-bottom: 56.25%; position: relative; background: #000;
+    }
+    
+    /* Broadcast Watermark overlay */
+    .krynn-watermark {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(6,6,9,0.82) 0%, rgba(20,10,0,0.78) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 7px 14px 7px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 106, 0, 0.25);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+      pointer-events: none;
+      opacity: 0.82;
+      transition: opacity 0.35s ease;
+    }
+    /* When the page is in fullscreen, fix the watermark to the viewport */
+    .krynn-watermark.fullscreen-pinned {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 2147483647;
+      opacity: 0.9;
+    }
+    .player-wrapper:hover .krynn-watermark {
+      opacity: 1;
+    }
+    :fullscreen .krynn-watermark,
+    :-webkit-full-screen .krynn-watermark,
+    :-moz-full-screen .krynn-watermark,
+    :-ms-fullscreen .krynn-watermark {
+      position: fixed !important;
+      top: 18px !important;
+      right: 22px !important;
+      z-index: 2147483647 !important;
+      opacity: 0.9 !important;
+    }
+    .watermark-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--red); box-shadow: 0 0 6px var(--red);
+      animation: blink 1.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .watermark-logo {
+      height: 22px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 3px rgba(255,106,0,0.3));
+    }
+    .watermark-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      color: #ffffff;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .watermark-text span {
+      color: var(--orange);
+    }
+    .watermark-divider {
+      width: 1px; height: 16px;
+      background: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+    }
+
+    /* Horizontal channel list styling */
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title i { color: var(--orange); }
+
+    .channels-carousel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .channels-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 4px 4px 12px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* Hide scrollbar by default, custom style it */
+    .channels-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .channels-scroll::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.02);
+      border-radius: 4px;
+    }
+    .channels-scroll::-webkit-scrollbar-thumb {
+      background: var(--card-border);
+      border-radius: 4px;
+    }
+    .channels-scroll::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    .channel-select-card {
+      flex: 0 0 160px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+    .channel-select-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+    .channel-select-card.active {
+      border-color: var(--orange);
+      background: rgba(255, 106, 0, 0.1);
+      box-shadow: 0 0 15px rgba(255, 106, 0, 0.2);
+    }
+    .channel-select-card .card-logo-container {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #060609;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.2s;
+    }
+    .channel-select-card:hover .card-logo-container {
+      transform: scale(1.05);
+      border-color: var(--orange);
+    }
+    .channel-select-card .card-logo {
+      width: 100%; height: 100%; object-fit: contain; padding: 8px;
+    }
+    .channel-select-card .card-info {
+      display: flex; flex-direction: column; gap: 4px; width: 100%;
+    }
+    .channel-select-card .card-name {
+      font-size: 13px; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .channel-select-card .card-meta {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .channel-select-card .card-type {
+      font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase;
+    }
+    .channel-select-card .card-status {
+      display: flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; color: var(--green);
+    }
+    .channel-select-card .card-status-dot {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+    }
+
+    /* Scoreboard styles */
+    .scoreboard-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .matches-grid {
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); 
+      gap: 20px;
+    }
+    .match-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 20px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .match-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    .match-card.live-now {
+      border-color: var(--orange);
+      background: linear-gradient(180deg, var(--card-bg) 0%, rgba(255, 106, 0, 0.03) 100%);
+    }
+
+    .match-meta {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+    }
+    .match-group { 
+      font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; 
+      letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 160px;
+    }
+    .match-status-badge {
+      font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .match-status-badge.live { background: rgba(255,59,48,0.15); color: var(--red); border: 1px solid rgba(255,59,48,0.3); }
+    .match-status-badge.upcoming { background: rgba(255, 106, 0, 0.15); color: var(--orange); border: 1px solid rgba(255, 106, 0, 0.3); }
+    .match-status-badge.finished { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
+
+    .match-teams-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .match-team { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+    .team-flag { width: 36px; height: 36px; object-fit: contain; }
+    .team-name { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; text-align: center; color: #fff; }
+
+    .match-score {
+      display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;
+    }
+    .score-display {
+      font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 900;
+      color: #fff; letter-spacing: 1px;
+    }
+    .score-sep { width: 40px; height: 1px; background: var(--card-border); }
+
+    .match-info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 14px; border-top: 1px solid var(--card-border);
+      font-size: 12px; color: var(--muted);
+    }
+    .match-info-row i { margin-right: 4px; }
+
+    .watch-btn {
+      background: var(--orange);
+      border: none; color: #fff;
+      font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+      padding: 6px 16px; border-radius: 20px; cursor: pointer;
+      transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .watch-btn:hover { background: var(--orange-hover); transform: scale(1.03); }
+    .watch-btn.upcoming-btn {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);
+      color: var(--muted); cursor: default;
+    }
+    .watch-btn.upcoming-btn:hover { transform: none; }
+
+    /* Instagram Unlock Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(4, 4, 8, 0.92);
+      backdrop-filter: blur(24px) saturate(1.4);
+      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.5s ease;
+    }
+    .modal-backdrop.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .modal-card {
+      background: linear-gradient(160deg, #13121a 0%, #0d0c12 100%);
+      border: 1px solid rgba(255, 106, 0, 0.35);
+      border-radius: 20px;
+      padding: 36px 28px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 20px 60px rgba(0,0,0,0.7),
+        0 0 80px rgba(255, 106, 0, 0.06);
+      animation: modalSlideIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle top glow line */
+    .modal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,106,0,0.6), transparent);
+    }
+    @keyframes modalSlideIn {
+      from { transform: translateY(40px) scale(0.96); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    /* Insta gradient icon ring */
+    .modal-icon-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      margin-bottom: 20px;
+      box-shadow: 0 8px 30px rgba(220, 39, 67, 0.35);
+    }
+    .modal-icon-wrap i {
+      font-size: 34px;
+      color: #fff;
+    }
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .modal-desc {
+      font-size: 13.5px;
+      color: #8a8a9a;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .modal-desc strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    /* The main follow button */
+    .modal-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 30%, #dc2743 60%, #bc1888 100%);
+      color: #fff;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 24px rgba(220, 39, 67, 0.35);
+      letter-spacing: 0.3px;
+    }
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(220, 39, 67, 0.5);
+      filter: brightness(1.08);
+    }
+    .modal-btn:active { transform: scale(0.98); }
+    /* Countdown ring stage */
+    .modal-countdown-stage {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .modal-countdown-stage.active { display: flex; }
+    .countdown-ring-wrap {
+      position: relative;
+      width: 90px; height: 90px;
+    }
+    .countdown-ring-wrap svg {
+      transform: rotate(-90deg);
+    }
+    .countdown-ring-track {
+      fill: none;
+      stroke: rgba(255,255,255,0.06);
+      stroke-width: 5;
+    }
+    .countdown-ring-fill {
+      fill: none;
+      stroke: url(#instaGrad);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-dasharray: 251.2;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+    }
+    .countdown-number {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+    .countdown-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #8a8a9a;
+      letter-spacing: 0.3px;
+    }
+    /* Success state */
+    .modal-success-stage {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-success-stage.active { display: flex; }
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .success-circle {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(52, 199, 89, 0.12);
+      border: 2px solid rgba(52, 199, 89, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; color: var(--green);
+    }
+    .success-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .success-sub {
+      font-size: 12px;
+      color: #8a8a9a;
+    }
+
+    /* PWA-like Bottom Navigation for Mobile Devices */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(10, 10, 14, 0.95);
+      border-top: 1px solid var(--card-border);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 100;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    }
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.2s;
+      flex: 1;
+      height: 100%;
+      text-decoration: none;
+    }
+    .nav-tab i {
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+    .nav-tab:hover i {
+      transform: translateY(-2px);
+    }
+    .nav-tab.active {
+      color: var(--orange);
+    }
+
+    /* ── Viewer Count Badge ── */
+    .viewer-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .viewer-badge i { color: var(--orange); font-size: 10px; }
+    .viewer-badge #viewer-count { color: var(--orange); }
+
+    /* ── Share Button ── */
+    .share-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 12px; padding: 8px 16px; border-radius: 6px;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Outfit', sans-serif; font-weight: 600;
+    }
+    .share-btn:hover { background: rgba(255,106,0,0.15); border-color: var(--orange); color: var(--orange); }
+    .share-toast {
+      position: fixed;
+      bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: rgba(20,20,28,0.95);
+      border: 1px solid rgba(255,106,0,0.3);
+      color: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+      padding: 10px 20px; border-radius: 8px;
+      opacity: 0; pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .share-toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── DevTools Warning Overlay ── */
+    #devtools-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(4,4,8,0.97);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      padding: 32px;
+    }
+    #devtools-overlay i { font-size: 48px; color: var(--orange); }
+    #devtools-overlay h2 {
+      font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800;
+      color: #fff; letter-spacing: -0.5px;
+    }
+    #devtools-overlay p { font-size: 13px; color: var(--muted); max-width: 380px; line-height: 1.6; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 30px; text-align: center; font-size: 12px; color: var(--muted);
+      margin-top: 16px;
+    }
+    footer span { color: var(--orange); }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body { padding-bottom: 74px; } /* Space for bottom navigation tab bar */
+      header { padding: 0 16px; height: 64px; }
+      .brand-title { font-size: 17px; }
+      .logo-img { height: 34px; }
+      .wc-logo-img { height: 38px; }
+      .live-badge { display: none; }
+      .main { padding: 16px 12px 24px; gap: 24px; }
+      .hero-banner { height: 210px; }
+      .hero-overlay { padding: 20px; }
+      .hero-title { font-size: 22px; }
+      .hero-desc { font-size: 12px; max-width: 320px; margin-bottom: 12px; }
+      .hero-tag { font-size: 8px; margin-bottom: 6px; }
+      .player-header { padding: 12px 16px; }
+      .match-teams { font-size: 14px; }
+      .ctrl-btn { padding: 6px 12px; font-size: 11px; }
+      .krynn-watermark { font-size: 11px; padding: 4px 8px; right: 12px; top: 12px; }
+      .watermark-logo { height: 16px; }
+      .channels-scroll { gap: 12px; }
+      .channel-select-card { flex: 0 0 130px; padding: 12px 8px; }
+      .channel-select-card .card-logo-container { width: 50px; height: 50px; }
+      .channel-select-card .card-name { font-size: 11px; }
+      .matches-grid { grid-template-columns: 1fr; gap: 12px; }
+      .bottom-nav { display: flex; }
+      
+      /* Mobile chat adjustments */
+      .media-container {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .chat-wrapper {
+        width: 100%;
+        height: 380px;
+      }
+      /* Hide viewer badge on very small screens */
+      .viewer-badge { display: none; }
+    }
+
+    /* ── iOS Pseudo-Fullscreen (CSS landscape rotation trick) ────────────── */
+    /* When active, the player-frame rotates to fill the entire viewport */
+    .ios-fullscreen {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 100vh !important;
+      height: 100vw !important;
+      transform: translate(-50%, -50%) rotate(90deg) !important;
+      transform-origin: center center !important;
+      z-index: 100000 !important;
+      border-radius: 0 !important;
+      padding-bottom: 0 !important;
+      background: #000 !important;
+    }
+    /* Freeze body scroll during iOS fullscreen */
+    body.ios-fs-active {
+      overflow: hidden;
+    }
+    /* Hide the bottom nav and header during iOS fullscreen */
+    body.ios-fs-active .bottom-nav,
+    body.ios-fs-active header {
+      display: none !important;
+    }
+
+    /* ── Landscape orientation media query optimizations ─────────────────── */
+    @media (orientation: landscape) and (max-height: 500px) {
+      /* Hide hero banner and scoreboard in mobile landscape to maximize player */
+      .hero-banner { display: none; }
+      .channels-carousel-container { display: none; }
+      .scoreboard-container { display: none; }
+      .main { padding: 8px; gap: 12px; }
+      header { height: 52px; }
+      body { padding-bottom: 0; }
+      .bottom-nav { display: none; } /* Hidden in landscape — more screen for video */
+      .chat-wrapper { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Instagram Unlock Gateway Modal -->
+  <div id="unlock-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <!-- SVG gradient definition for ring -->
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <linearGradient id="instaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f09433"/>
+            <stop offset="50%" stop-color="#dc2743"/>
+            <stop offset="100%" stop-color="#bc1888"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- Step 1: Default CTA -->
+      <div id="modal-step-cta">
+        <div class="modal-icon-wrap"><i class="fa-brands fa-instagram"></i></div>
+        <div class="modal-title">Unlock Premium Live Feeds</div>
+        <div class="modal-desc">
+          To access our decrypted premium streams, please follow our official Instagram page <strong>@krynnlabs</strong>.
+        </div>
+        <a href="https://www.instagram.com/krynnlabs" target="_blank" class="modal-btn" id="instagram-follow-btn" onclick="startUnlockTimer()">
+          <i class="fa-brands fa-instagram"></i>&nbsp; Follow @krynnlabs
+        </a>
+      </div>
+
+      <!-- Step 2: Countdown ring -->
+      <div class="modal-countdown-stage" id="modal-step-countdown">
+        <div class="countdown-ring-wrap">
+          <svg width="90" height="90" viewBox="0 0 90 90">
+            <circle class="countdown-ring-track" cx="45" cy="45" r="40"/>
+            <circle class="countdown-ring-fill" id="countdown-ring" cx="45" cy="45" r="40"/>
+          </svg>
+          <div class="countdown-number" id="countdown-sec">5</div>
+        </div>
+        <div class="countdown-label">Verifying your follow &amp; unlocking stream...</div>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div class="modal-success-stage" id="modal-step-success">
+        <div class="success-circle"><i class="fa-solid fa-check"></i></div>
+        <div class="success-text">Stream Unlocked!</div>
+        <div class="success-sub">Welcome to KRYNN SPORTS. Enjoy the live feeds.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-container">
+      <img class="logo-img" src="krynn_logo.png" alt="Krynn Logo">
+      <div class="brand-title">KRYNN <span>SPORTS</span></div>
+    </div>
+    <div class="header-right">
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        WORLD CUP LIVE
+      </div>
+      <img class="wc-logo-img" src="worldcup_logo.png" alt="World Cup Logo">
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero Banner (custom World Cup graphics) -->
+    <div class="hero-banner" id="hero-section">
+      <div class="hero-overlay">
+        <div class="hero-tag"><i class="fa-solid fa-trophy"></i> FIFA World Cup 2026</div>
+        <div class="hero-title">Exclusive Broadcaster</div>
+        <div class="hero-desc">Watch all matches live, check real-time standings, scoreboards, and toggle multi-audio feeds. High definition decrypted premium streams.</div>
+        <button class="hero-btn" onclick="scrollToSection('video-section')"><i class="fa-solid fa-play"></i> Watch Now</button>
+      </div>
+    </div>
+
+    <!-- Centered Video Player Console & Chat Layout -->
+    <div class="media-container" id="video-section">
+      <div class="player-wrapper">
+        <div class="player-header">
+          <div class="player-match-info">
+            <span class="live-pill">● LIVE</span>
+            <span class="match-teams" id="now-playing-title">Loading Stream...</span>
+          </div>
+          <div class="player-controls-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <!-- Viewer Count Badge -->
+            <div class="viewer-badge" id="viewer-badge" title="Live viewers">
+              <i class="fa-solid fa-eye"></i>
+              <span id="viewer-count">—</span> watching
+            </div>
+            <button class="share-btn" onclick="shareStream()" title="Share this stream">
+              <i class="fa-solid fa-share-nodes"></i> Share
+            </button>
+            <button class="ctrl-btn" id="chat-toggle-btn" onclick="toggleChat()"><i class="fa-solid fa-comments"></i> Chat</button>
+            <button class="ctrl-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i> Fullscreen</button>
+          </div>
+        </div>
+        <div class="player-frame" id="player-frame">
+          <!-- Krynn Watermark overlay - stays here always, CSS handles fullscreen pinning -->
+          <div class="krynn-watermark" id="krynn-watermark">
+            <div class="watermark-dot"></div>
+            <img src="krynn_logo.png" alt="K" class="watermark-logo">
+            <div class="watermark-divider"></div>
+            <span class="watermark-text">KRYNN <span>SPORTS</span></span>
+          </div>
+
+          <!-- Shaka Player Container -->
+          <div data-shaka-player-container id="shaka-container" style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:1;">
+            <video data-shaka-player id="video" autoplay style="width:100%; height:100%; background:#000;"></video>
+          </div>
+
+          <!-- Iframe Player Container for fallback web players -->
+          <div id="iframe-container" style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:1; display:none; background:#000;">
+            <iframe id="player-iframe" style="width:100%; height:100%; border:none;" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible Chat Sidebar -->
+      <div class="chat-wrapper" id="chat-section">
+        <div class="chat-header">
+          <span><i class="fa-solid fa-comments"></i> Live Fan Chat</span>
+          <button class="chat-close-btn" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="chat-widget-container" style="flex: 1; background: #060609; min-height: 300px; display: flex; flex-direction: column;">
+          <script src="https://www.shoutbox.com/chat/17511"></script>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Channel Feeds Slider -->
+    <div class="channels-carousel-container" id="channels-section">
+      <div class="section-title">
+        <i class="fa-solid fa-tv"></i> Live Broadcast Feeds
+      </div>
+      <div class="channels-scroll" id="channel-list-scroll">
+        <!-- Dynamically populated stream cards -->
+      </div>
+    </div>
+
+    <!-- Live Football Scoreboard -->
+    <div class="scoreboard-container" id="scoreboard-section">
+      <div class="section-title">
+        <i class="fa-solid fa-trophy"></i> World Cup Scoreboards
+      </div>
+      <div class="matches-grid" id="matches-grid">
+        <!-- Live football matches fetched from SportScore -->
+      </div>
+    </div>
+  </main>
+
+  <!-- DevTools Warning Overlay -->
+  <div id="devtools-overlay">
+    <i class="fa-solid fa-shield-halved"></i>
+    <h2>Content Protection Active</h2>
+    <p>Developer tools are not permitted while streaming. Please close DevTools to continue watching.</p>
+  </div>
+
+  <!-- Share Link Toast -->
+  <div class="share-toast" id="share-toast"><i class="fa-solid fa-check"></i> Link copied to clipboard!</div>
+
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-tab active" id="tab-home" onclick="mobileNavTo('hero-section', 0)">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-tab" id="tab-watch" onclick="mobileNavTo('video-section', 1)">
+      <i class="fa-solid fa-circle-play"></i>
+      <span>Watch</span>
+    </button>
+    <button class="nav-tab" id="tab-scores" onclick="mobileNavTo('scoreboard-section', 2)">
+      <i class="fa-solid fa-square-poll-vertical"></i>
+      <span>Scores</span>
+    </button>
+    <button class="nav-tab" id="tab-chat" onclick="mobileOpenChat()">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat</span>
+    </button>
+  </nav>
+
+  <footer>
+    <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds &nbsp;|&nbsp; Matches data fetched from SportScore</p>
+  </footer>
+
+  <script>
+    (async function() {
+        // Feed configurations including DRM clearKeys
+        const channelsData = [
+          {
+            "name": "Cignal Tv",
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/4/41/Cignal.svg",
+            "streamUrl": "https://qp-pldt-live-bpk-ucd-prod.akamaized.net/bpk-tv/ch299/default/index.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "549ab7cd35a64bb6bb479ecead04d69d": "829799ed534d11fcadeb4b192467e050"
+              }
+            }
+          },
+          {
+            "name": "Zee",
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/ZEE5_2025.svg/1280px-ZEE5_2025.svg.png",
+            "streamUrl": "https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Zeecinema/default/manifest.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "43513b13f4b542e39c9265921dfc1726": "b0b2678bcd274c37b888a6c987d502ed"
+              }
+            }
+          },
+          {
+            "name": "Himalaya Sports",
+            "logo": "https://i.ytimg.com/vi/ATPh25ZXlmw/maxresdefault.jpg",
+            "streamUrl": "https://ottlive.dishhome.com.np/protected/GgTOzZkB0RDJ74Ryniuo/dash/manifest.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "220d8978f3fd45b696137c5b94f7a264": "7bfe13500edee4f837ec03a907896306"
+              }
+            }
+          },
+          {
+            "name": "TSN-4",
+            "logo": "https://r2.thesportsdb.com/images/media/channel/logo/yrrvpq1433380019.png",
+            "streamUrl": "https://otte.cache.aiv-cdn.net/syd-nitro/live/dash/enc/h9urpo3cwb/out/v1/fde190f369484bc6b6117cc16cd82a9f/cenc.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "c4088f5f265f9de50cffd80bf89308b7": "2c4d2239d96d532b4ec2050653611003"
+              }
+            }
+          },
+          {
+            "name": "IOS + (Web Player)",
+            "logo": "krynn_logo.png",
+            "streamUrl": "https://bokul-cdn.primesports.top/sp/play.php?url=https%3A%2F%2Fww2.sporttsonline.click%2Fchannels%2Fhd%2Fhd3.php",
+            "type": "iframe"
+          },
+          {
+            "name": "Arabic IOS",
+            "logo": "worldcup_logo.png",
+            "streamUrl": "https://cdn.yallashooot.pp.ua/hls/ch1.m3u8",
+            "type": "hls"
+          },
+          {
+            "name": "Caze Tv",
+            "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/64/Caz%C3%A9TV_logo.svg/1280px-Caz%C3%A9TV_logo.svg.png",
+            "streamUrl": "https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/iayg0kyrof/out/v1/91dc04907f56415b897faccfa9d252da/cenc.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "1223d5105392cabf1bb9c2c1fdf6539a": "340b409f4b8f78a343e0363a7938df38"
+              }
+            }
+          },
+          {
+            "name": "D Sports",
+            "logo": "https://mir-s3-cdn-cf.behance.net/projects/404/3049c9206241453.Y3JvcCwxMDgwLDg0NCwwLDEwNA.jpg",
+            "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/ubehitlwzo/out/v1/8e09c381a51f4366a19e979418112e8f/cenc.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "a7d11d37a1f7611ee88d4db880171f32": "68f96d618b0b956b008c445896a25a79"
+              }
+            }
+          },
+          {
+            "name": "Kvea (Telemundo)",
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Telemundo_52_%282018%29.svg",
+            "streamUrl": "https://live-oneapp-prd-news.akamaized.net/Content/CMAF_OL2-CTR-4s-v2/Live/channel(kvea)/master.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "ce7ab3022e753307997f58afe001bac4": "72d631a66e635c60829a0fe7705516c1"
+              }
+            }
+          },
+          {
+            "name": "Unify's Tv",
+            "logo": "worldcup_logo.png",
+            "streamUrl": "https://ngtv-live-cbj.gcdn.co/Content/DASH/Live/channel(fifa1)/master.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "10e2114398744f3880cc96653568da55": "d6d40441f9fbebea03ec64c4aea7211f"
+              }
+            }
+          },
+          {
+            "name": "Sport V",
+            "logo": "https://play-lh.googleusercontent.com/8suHCRolKN9pJR6j0rI63vQ5ShpZ5mD3G3-j9wWwjRraxfsXUnaLn_EW7qqIFxC3h9Nk=w120",
+            "streamUrl": "https://a151aivottlinear-a.akamaihd.net/OTTB/sin-nitro/live/dash/enc/m7duvnk2bu/out/v1/d1ad69118b5647309b1eb7213affdb3d/cenc.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "4bbcff3289d457b4dd5dbdd21221de9a": "c4906b9a9f8dda3c0725bddb8c497733"
+              }
+            }
+          },
+          {
+            "name": "Fox Sports",
+            "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT9dm4fKhUJScpNW_G3BwcRnqU5t2rPjGIzw&s",
+            "streamUrl": "https://a204aivottepl-a.akamaihd.net/sin-nitro/live/clients/dash/enc/tmpzbbdj9y/out/v1/962736723a534ba294e7592fef49827b/cenc.mpd",
+            "type": "dash",
+            "drm": {
+              "clearKeys": {
+                "5466ebd70704bdeb657f0abf3c5ca4ef": "bdd79b72d8e48ed483aa623cc38a8a16"
+              }
+            }
+          },
+          {
+            "name": "IOS (TyC Sports)",
+            "logo": "krynn_logo.png",
+            "streamUrl": "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8",
+            "type": "hls"
+          }
+        ];
+
+        let shakaPlayerInstance = null;
+        let activeChannelIndex = 0;
+
+        // --- Shaka Player Implementation ---------------------------------------
+
+        async function initShaka() {
+            const video = document.getElementById('video');
+            if (!video || !video['ui']) {
+                console.warn('Shaka UI controls not fully loaded yet.');
+                return;
+            }
+            
+            // Get player and controls instances
+            const controls = video['ui'].getControls();
+            const player = controls.getPlayer();
+            shakaPlayerInstance = player;
+
+            // Configure seekBarColors to match the orange brand theme
+            video['ui'].configure({
+                seekBarColors: {
+                    base: 'rgba(255,255,255,.2)',
+                    buffered: 'rgba(255,255,255,.4)',
+                    played: 'rgb(255, 106, 0)', // Brand orange indicator
+                }
+            });
+
+            // Initialize rendering
+            renderChannelList();
+
+            // Load default channel (index 0)
+            selectChannel(0);
+
+            // Shaka overflow menu updates
+            document.querySelectorAll('.shaka-overflow-menu-button').forEach(button => {
+                button.textContent = 'settings';
+            });
+            document.querySelectorAll('.shaka-back-to-overflow-button .material-icons, .shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+                icon.textContent = 'arrow_back_ios_new';
+            });
+        }
+
+        window.selectChannel = async function(index) {
+            activeChannelIndex = index;
+            const channel = channelsData[index];
+            if (!channel) return;
+
+            // Update active state in list selectors
+            document.querySelectorAll('.channel-select-card').forEach((card, idx) => {
+                if (idx === index) card.classList.add('active');
+                else card.classList.remove('active');
+            });
+
+            // Update now playing header text
+            document.getElementById('now-playing-title').textContent = `${channel.name} — Live Broadcast Feed`;
+
+            const video = document.getElementById('video');
+            const shakaContainer = document.getElementById('shaka-container');
+            const iframeContainer = document.getElementById('iframe-container');
+            const playerIframe = document.getElementById('player-iframe');
+            
+            if (channel.type === 'iframe') {
+                if (video) video.pause();
+                
+                if (shakaContainer) shakaContainer.style.display = 'none';
+                if (iframeContainer) iframeContainer.style.display = 'block';
+                if (playerIframe) playerIframe.src = channel.streamUrl;
+            } else {
+                if (playerIframe) playerIframe.src = 'about:blank';
+                if (iframeContainer) iframeContainer.style.display = 'none';
+                if (shakaContainer) shakaContainer.style.display = 'block';
+
+                if (!shakaPlayerInstance) {
+                    console.warn('Player instance not ready yet.');
+                    return;
+                }
+
+                try {
+                    // Reset existing DRM config
+                    shakaPlayerInstance.configure({
+                        drm: {
+                            clearKeys: {}
+                        }
+                    });
+
+                    // Load specific clearKeys DRM profile if needed
+                    if (channel.drm && channel.drm.clearKeys) {
+                        shakaPlayerInstance.configure({
+                            drm: {
+                                clearKeys: channel.drm.clearKeys
+                            }
+                        });
+                        console.log(`Dynamic ClearKeys configured for: ${channel.name}`);
+                    }
+
+                    await shakaPlayerInstance.load(channel.streamUrl);
+                    video.muted = false;
+                    
+                    // Only autoplay if followed gateway is unlocked
+                    const isUnlocked = localStorage.getItem('krynn_stream_unlocked') === 'true';
+                    if (isUnlocked) {
+                        await video.play().catch(e => console.log('Autoplay deferred:', e));
+                    } else {
+                        console.log('Stream loaded but paused. Complete follow gateway to start playback.');
+                    }
+                } catch (error) {
+                    console.error('Shaka dynamic stream load error:', error);
+                }
+            }
+        };
+
+        function renderChannelList() {
+            const listScroll = document.getElementById('channel-list-scroll');
+            if (!listScroll) return;
+            listScroll.innerHTML = '';
+
+            channelsData.forEach((channel, index) => {
+                const card = document.createElement('div');
+                card.className = 'channel-select-card';
+                if (index === activeChannelIndex) card.classList.add('active');
+
+                // Clean logo fallback
+                let logoUrl = channel.logo;
+
+                card.innerHTML = `
+                    <div class="card-logo-container">
+                        <img class="card-logo" src="${logoUrl}" onerror="this.src='krynn_logo.png'">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-name">${channel.name}</div>
+                        <div class="card-meta">
+                            <span class="card-type">${channel.type}</span>
+                            <span class="card-status">
+                                <span class="card-status-dot"></span> LIVE
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    selectChannel(index);
+                    scrollToSection('video-section');
+                });
+
+                listScroll.appendChild(card);
+            });
+        }
+
+        // Register Shaka loader event
+        document.addEventListener('shaka-ui-loaded', initShaka);
+        
+        // Wait safety if event fired before load
+        if (window.shaka && window.shaka.Player) {
+            setTimeout(() => {
+                if (!shakaPlayerInstance) {
+                    initShaka();
+                }
+            }, 500);
+        }
+
+        // --- SportScore API Fixtures (Strict World Cup Only) ----------------------
+
+        window.fetchSportScoreMatches = async function() {
+            const grid = document.getElementById('matches-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; color: var(--orange); margin-bottom: 12px;"></i>
+                    <p>Fetching live World Cup scores...</p>
+                </div>
+            `;
+
+            try {
+                // Fetch live football matches
+                const res = await fetch(`https://sportscore.com/api/widget/matches/?sport=football&limit=12`);
+                const data = await res.json();
+                
+                if (!data.matches || data.matches.length === 0) {
+                    showEmptyScoreboard();
+                    return;
+                }
+
+                // Strictly filter matches belonging to World Cup or FIFA
+                const worldCupMatches = data.matches.filter(m => {
+                    const comp = (m.competition || '').toLowerCase();
+                    return comp.includes('world cup') || comp.includes('fifa') || comp.includes('wc ');
+                });
+
+                if (worldCupMatches.length === 0) {
+                    showEmptyScoreboard();
+                    return;
+                }
+
+                grid.innerHTML = worldCupMatches.map(m => {
+                    const isLive = m.status === 'live';
+                    const matchDate = new Date(m.time);
+                    const formattedTime = matchDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const formattedDate = matchDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                    
+                    return `
+                        <div class="match-card ${isLive ? 'live-now' : ''}">
+                            <div class="match-meta">
+                                <span class="match-group" title="${m.competition}">${m.competition}</span>
+                                <span class="match-status-badge ${m.status}">${
+                                    isLive ? '● LIVE' :
+                                    m.status === 'upcoming' ? '⏰ UPCOMING' : '✓ FINISHED'
+                                }</span>
+                            </div>
+                            <div class="match-teams-row">
+                                <div class="match-team">
+                                    <img class="team-flag" src="${m.home_logo || ''}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;">
+                                    <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.home}</div>
+                                </div>
+                                <div class="match-score">
+                                    <div class="score-display">${m.home_score !== null ? m.home_score : '-'} : ${m.away_score !== null ? m.away_score : '-'}</div>
+                                    <div class="score-sep" style="font-size: 10px; color: var(--muted); margin-top: 2px;">${m.status_text || ''}</div>
+                                </div>
+                                <div class="match-team">
+                                    <img class="team-flag" src="${m.away_logo || ''}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;">
+                                    <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.away}</div>
+                                </div>
+                            </div>
+                            <div class="match-info-row">
+                                <span><i class="fa-regular fa-clock"></i> ${formattedDate} ${formattedTime}</span>
+                                ${isLive 
+                                    ? `<button class="watch-btn" onclick="scrollToSection('video-section')"><i class="fa-solid fa-play"></i> WATCH</button>`
+                                    : `<button class="watch-btn upcoming-btn" style="opacity: 0.5; cursor: default;"><i class="fa-solid fa-bell"></i> INFO</button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error("SportScore fetch error:", err);
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--red); border: 1px dashed rgba(255, 106, 0, 0.2); border-radius: 12px; background: rgba(255,255,255,0.01);">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 32px; margin-bottom: 12px;"></i>
+                        <p>Scoreboard server currently offline. Retrying connection...</p>
+                    </div>
+                `;
+            }
+        };
+
+        function showEmptyScoreboard() {
+            const grid = document.getElementById('matches-grid');
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted); border: 1px dashed var(--card-border); border-radius: 12px; background: rgba(255,255,255,0.01);">
+                    <i class="fa-solid fa-trophy" style="font-size: 32px; color: var(--orange); margin-bottom: 12px; opacity: 0.8;"></i>
+                    <p style="font-weight: 600; color: #fff; margin-bottom: 4px;">No Live World Cup Matches Currently</p>
+                    <p style="font-size: 12px;">Check back later during match hours. All upcoming and live World Cup fixtures will display here in real-time.</p>
+                </div>
+            `;
+        }
+
+        window.scrollToSection = function(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                let offset = 80;
+                if (id === 'hero-section') offset = 100;
+                
+                const elementPosition = el.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + (window.scrollY || window.pageYOffset) - offset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Highlight active mobile bottom navigation tab
+            const btnMap = {
+                'hero-section': 0,
+                'video-section': 1,
+                'scoreboard-section': 2
+            };
+            const idx = btnMap[id];
+            if (idx !== undefined) {
+                document.querySelectorAll('.bottom-nav .nav-tab').forEach((tab, i) => {
+                    if (i === idx) tab.classList.add('active');
+                    else tab.classList.remove('active');
+                });
+            }
+        };
+
+        // Scroll spy listener to update bottom navigation active tabs as the user scrolls
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY || window.pageYOffset;
+            const sections = ['hero-section', 'video-section', 'scoreboard-section'];
+            let currentSection = 'hero-section';
+            
+            for (const sectionId of sections) {
+                const el = document.getElementById(sectionId);
+                if (el) {
+                    const top = el.offsetTop - 120; // offset buffer
+                    if (scrollPos >= top) {
+                        currentSection = sectionId;
+                    }
+                }
+            }
+            
+            const btnMap = {
+                'hero-section': 0,
+                'video-section': 1,
+                'scoreboard-section': 2
+            };
+            const idx = btnMap[currentSection];
+            if (idx !== undefined) {
+                document.querySelectorAll('.bottom-nav .nav-tab').forEach((tab, i) => {
+                    if (i === idx) tab.classList.add('active');
+                    else tab.classList.remove('active');
+                });
+            }
+        });
+
+        // --- Live Chat Toggle Logic ---------------------------------------------
+        window.toggleChat = function() {
+            const container = document.querySelector('.media-container');
+            const chatBtn = document.getElementById('chat-toggle-btn');
+            if (!container) return;
+            if (container.classList.contains('chat-closed')) {
+                container.classList.remove('chat-closed');
+                if (chatBtn) chatBtn.classList.add('active');
+                localStorage.setItem('krynn_chat_open', 'true');
+            } else {
+                container.classList.add('chat-closed');
+                if (chatBtn) chatBtn.classList.remove('active');
+                localStorage.setItem('krynn_chat_open', 'false');
+            }
+        };
+
+        // --- Instagram Follow Gateway Timer (3-Stage Modal) --------------------
+        window.startUnlockTimer = function() {
+            // Prevent double-trigger if already counting down
+            if (window._unlockTimerRunning) return;
+            window._unlockTimerRunning = true;
+
+            // Circumference for r=40 circle: 2 * π * 40 ≈ 251.2
+            const CIRCUMFERENCE = 251.2;
+            const TOTAL_SECONDS = 5;
+
+            // --- Step 1 → Step 2: Show countdown ring ---
+            const stepCTA      = document.getElementById('modal-step-cta');
+            const stepCountdown = document.getElementById('modal-step-countdown');
+            const stepSuccess  = document.getElementById('modal-step-success');
+            const countdownNum = document.getElementById('countdown-sec');
+            const ringFill     = document.getElementById('countdown-ring');
+
+            if (stepCTA) stepCTA.style.display = 'none';
+            if (stepCountdown) stepCountdown.classList.add('active');
+
+            // Init ring to full
+            if (ringFill) {
+                ringFill.style.strokeDashoffset = '0';
+            }
+
+            let secondsLeft = TOTAL_SECONDS;
+            if (countdownNum) countdownNum.textContent = secondsLeft;
+
+            // Use requestAnimationFrame for smooth ring drain
+            let startTime = null;
+
+            function animateRing(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = (timestamp - startTime) / 1000; // seconds elapsed
+                const fraction = Math.min(elapsed / TOTAL_SECONDS, 1);
+
+                // Drain the ring: offset goes from 0 → CIRCUMFERENCE
+                if (ringFill) {
+                    ringFill.style.strokeDashoffset = (CIRCUMFERENCE * fraction).toFixed(2);
+                }
+
+                // Update number every full second
+                const newSeconds = Math.max(0, TOTAL_SECONDS - Math.floor(elapsed));
+                if (countdownNum && parseInt(countdownNum.textContent) !== newSeconds) {
+                    countdownNum.textContent = newSeconds;
+                }
+
+                if (fraction < 1) {
+                    requestAnimationFrame(animateRing);
+                } else {
+                    // --- Step 2 → Step 3: Show success ---
+                    if (stepCountdown) stepCountdown.classList.remove('active');
+                    if (stepSuccess) stepSuccess.classList.add('active');
+
+                    // Save unlock state — all persistence layers simultaneously
+                    localStorage.setItem('krynn_stream_unlocked', 'true');
+
+                    // Notify server to permanently register this IP (fire-and-forget)
+                    fetch('/api/unlock-confirm', { method: 'POST' })
+                        .then(r => r.json())
+                        .then(d => console.log('[Unlock] Server confirmed:', d.message))
+                        .catch(e => console.warn('[Unlock] Server confirm failed:', e.message));
+
+                    // After brief success flash, dismiss modal and start playback
+                    setTimeout(() => {
+                        const modal = document.getElementById('unlock-modal');
+                        if (modal) {
+                            modal.style.opacity = '0';
+                            modal.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => {
+                                modal.classList.add('hidden');
+                                window._unlockTimerRunning = false;
+                                // Trigger stream playback
+                                const video = document.getElementById('video');
+                                if (video) {
+                                    video.play().catch(e => console.log('Unlock play trigger:', e));
+                                }
+                            }, 500);
+                        }
+                    }, 1200); // Show success for 1.2s
+                }
+            }
+
+            requestAnimationFrame(animateRing);
+        };
+
+        // --- Page Init & Service Worker -----------------------------------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSportScoreMatches();
+            // Refresh scores every 45 seconds
+            setInterval(fetchSportScoreMatches, 45000);
+
+            // Register PWA Service Worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(reg => console.log('Service Worker Registered!', reg.scope))
+                        .catch(err => console.warn('Service Worker registration failed:', err));
+                });
+            }
+
+            // ── Multi-layer unlock check: localStorage + server IP + cookie ──
+            async function checkUnlockStatus() {
+                const modal = document.getElementById('unlock-modal');
+                if (!modal) return;
+
+                // Layer 1: localStorage (instant, same browser)
+                if (localStorage.getItem('krynn_stream_unlocked') === 'true') {
+                    modal.classList.add('hidden');
+                    return;
+                }
+
+                // Layer 2: Server-side IP + cookie check (covers incognito, other browsers, same IP)
+                try {
+                    const res = await fetch('/api/unlock-check');
+                    const data = await res.json();
+                    if (data.unlocked) {
+                        // Sync back to localStorage so future checks are instant
+                        localStorage.setItem('krynn_stream_unlocked', 'true');
+                        modal.classList.add('hidden');
+                        return;
+                    }
+                } catch (e) {
+                    // Server unreachable — fall through, show modal
+                    console.warn('[Unlock] Could not reach server for unlock check:', e.message);
+                }
+
+                // Not unlocked — show the modal
+                modal.classList.remove('hidden');
+            }
+
+            checkUnlockStatus();
+
+            // Initialize chat toggle state based on preference and viewport
+            const chatPref = localStorage.getItem('krynn_chat_open');
+            const container = document.querySelector('.media-container');
+            const chatBtn = document.getElementById('chat-toggle-btn');
+            const isMobile = window.innerWidth <= 768;
+
+            if (container) {
+                if (isMobile || chatPref === 'false') {
+                    container.classList.add('chat-closed');
+                    if (chatBtn) chatBtn.classList.remove('active');
+                } else {
+                    container.classList.remove('chat-closed');
+                    if (chatBtn) chatBtn.classList.add('active');
+                }
+            }
+        });
+    })();
+
+    // ── Fullscreen + Mobile Landscape Rotation ──────────────────────────────
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    // iOS pseudo-fullscreen state
+    let iosFSActive = false;
+
+    async function toggleFullscreen() {
+        const frame = document.getElementById('player-frame');
+        if (!frame) return;
+
+        // ── iOS: No native fullscreen API — use CSS transform trick ──
+        if (isIOS) {
+            if (!iosFSActive) {
+                enterIOSFullscreen(frame);
+            } else {
+                exitIOSFullscreen(frame);
+            }
+            return;
+        }
+
+        // ── Android / Desktop: Use standard Fullscreen API ──
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            try {
+                if (frame.requestFullscreen) {
+                    await frame.requestFullscreen();
+                } else if (frame.webkitRequestFullscreen) {
+                    await frame.webkitRequestFullscreen();
+                }
+            } catch(err) {
+                console.warn('Fullscreen error:', err);
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+    }
+
+    // ── iOS Pseudo-Fullscreen (CSS-based landscape rotation) ──────────────
+    function enterIOSFullscreen(frame) {
+        iosFSActive = true;
+        frame.classList.add('ios-fullscreen');
+        document.body.classList.add('ios-fs-active');
+        // Try to lock orientation (works on some newer iOS versions with PWA)
+        tryLockLandscape();
+        // Move watermark into frame
+        const wm = document.getElementById('krynn-watermark');
+        if (wm) { wm.classList.add('fullscreen-pinned'); }
+        // Update fullscreen button icon
+        const fsBtn = document.querySelector('.ctrl-btn[onclick="toggleFullscreen()"]');
+        if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit';
+    }
+
+    function exitIOSFullscreen(frame) {
+        iosFSActive = false;
+        frame.classList.remove('ios-fullscreen');
+        document.body.classList.remove('ios-fs-active');
+        tryUnlockOrientation();
+        const wm = document.getElementById('krynn-watermark');
+        if (wm) { wm.classList.remove('fullscreen-pinned'); }
+        const fsBtn = document.querySelector('.ctrl-btn[onclick="toggleFullscreen()"]');
+        if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
+    }
+
+    // ── Orientation Lock Helpers ─────────────────────────────────────────
+    function tryLockLandscape() {
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {});
+        } else if (window.screen && window.screen.lockOrientation) {
+            window.screen.lockOrientation('landscape');
+        } else if (window.screen && window.screen.mozLockOrientation) {
+            window.screen.mozLockOrientation('landscape');
+        } else if (window.screen && window.screen.msLockOrientation) {
+            window.screen.msLockOrientation('landscape');
+        }
+    }
+
+    function tryUnlockOrientation() {
+        if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+        } else if (window.screen && window.screen.unlockOrientation) {
+            window.screen.unlockOrientation();
+        } else if (window.screen && window.screen.mozUnlockOrientation) {
+            window.screen.mozUnlockOrientation();
+        } else if (window.screen && window.screen.msUnlockOrientation) {
+            window.screen.msUnlockOrientation();
+        }
+    }
+
+    // ── Standard Fullscreen Change Handler (Android/Desktop) ────────────
+    function handleFullscreenChange() {
+        const watermark  = document.getElementById('krynn-watermark');
+        const playerFrame = document.getElementById('player-frame');
+        const fsBtn = document.querySelector('.ctrl-btn[onclick="toggleFullscreen()"]');
+        if (!watermark) return;
+
+        const isFullscreen = !!(
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement
+        );
+
+        if (isFullscreen) {
+            const fsEl = document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement;
+            if (fsEl && watermark.parentNode !== fsEl) fsEl.appendChild(watermark);
+            watermark.classList.add('fullscreen-pinned');
+
+            // Lock to landscape on mobile
+            if (isMobileDevice) tryLockLandscape();
+
+            if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit';
+        } else {
+            if (playerFrame && watermark.parentNode !== playerFrame) {
+                playerFrame.appendChild(watermark);
+            }
+            watermark.classList.remove('fullscreen-pinned');
+
+            // Unlock orientation when exiting
+            if (isMobileDevice) tryUnlockOrientation();
+
+            if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
+        }
+    }
+
+    document.addEventListener('fullscreenchange',       handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange',    handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange',     handleFullscreenChange);
+
+    // Exit iOS pseudo-fullscreen if user rotates back to portrait physically
+    if (window.screen && window.screen.orientation) {
+        screen.orientation.addEventListener('change', () => {
+            if (iosFSActive && screen.orientation.type.includes('portrait')) {
+                const frame = document.getElementById('player-frame');
+                if (frame) exitIOSFullscreen(frame);
+            }
+        });
+    }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Feature Scripts: Viewer Count · DevTools Guard · Share · Chat Nav
+  ═══════════════════════════════════════════════════════════════════ -->
+  <script>
+
+    // ──────────────────────────────────────────────────────────────
+    // 1. REAL VIEWER COUNT — Server-Sent Events
+    // ──────────────────────────────────────────────────────────────
+    (function initViewerCount() {
+      const countEl = document.getElementById('viewer-count');
+      if (!countEl) return;
+
+      function animateCount(newVal) {
+        const badge = document.getElementById('viewer-badge');
+        if (badge) {
+          badge.style.transform = 'scale(1.12)';
+          badge.style.borderColor = 'rgba(255,106,0,0.5)';
+          setTimeout(() => {
+            badge.style.transform = '';
+            badge.style.borderColor = '';
+          }, 300);
+        }
+        countEl.textContent = newVal >= 1000
+          ? (newVal / 1000).toFixed(1) + 'K'
+          : newVal;
+      }
+
+      // Try SSE for real-time count
+      if (typeof EventSource !== 'undefined') {
+        const sse = new EventSource('/api/viewer-stream');
+        sse.addEventListener('count', e => {
+          try { animateCount(parseInt(JSON.parse(e.data).count)); } catch(_) {}
+        });
+        sse.onerror = () => {
+          // Fall back to polling if SSE fails
+          sse.close();
+          pollViewerCount();
+        };
+      } else {
+        pollViewerCount();
+      }
+
+      function pollViewerCount() {
+        async function tick() {
+          try {
+            const r = await fetch('/api/viewer-count');
+            const d = await r.json();
+            if (d.count !== undefined) animateCount(d.count);
+          } catch(_) {}
+        }
+        tick();
+        setInterval(tick, 15000);
+      }
+    })();
+
+
+    // ──────────────────────────────────────────────────────────────
+    // 2. RIGHT-CLICK & DEVTOOLS PROTECTION
+    // ──────────────────────────────────────────────────────────────
+    (function initCopyProtection() {
+      // Disable right-click context menu
+      document.addEventListener('contextmenu', e => e.preventDefault());
+
+      // Disable common keyboard shortcuts for DevTools / view-source
+      document.addEventListener('keydown', e => {
+        const blockedKeys = [
+          { key: 'F12' },
+          { ctrl: true, shift: true, key: 'I' },  // Inspect
+          { ctrl: true, shift: true, key: 'J' },  // Console
+          { ctrl: true, shift: true, key: 'C' },  // Elements
+          { ctrl: true, key: 'U' },                // View Source
+          { ctrl: true, key: 'S' },                // Save Page
+          { ctrl: true, key: 'P' },                // Print
+        ];
+
+        for (const combo of blockedKeys) {
+          const ctrl = combo.ctrl ? (e.ctrlKey || e.metaKey) : true;
+          const shift = combo.shift ? e.shiftKey : true;
+          const keyMatch = combo.key
+            ? e.key === combo.key || e.code === combo.key
+            : true;
+
+          // Only block if ALL parts match
+          const ctrlOk  = combo.ctrl  ? (e.ctrlKey || e.metaKey) : !e.ctrlKey && !e.metaKey;
+          const shiftOk = combo.shift ? e.shiftKey : (combo.ctrl ? true : !e.shiftKey);
+
+          if (combo.key === 'F12' && e.key === 'F12') {
+            e.preventDefault(); e.stopPropagation(); return false;
+          }
+          if (combo.ctrl && combo.shift && ctrlOk && e.shiftKey && e.key.toUpperCase() === combo.key) {
+            e.preventDefault(); e.stopPropagation(); return false;
+          }
+          if (combo.ctrl && !combo.shift && ctrlOk && !e.shiftKey && e.key.toUpperCase() === combo.key) {
+            e.preventDefault(); e.stopPropagation(); return false;
+          }
+        }
+      });
+
+      // DevTools size detection — triggers if window is significantly smaller than screen
+      const overlay = document.getElementById('devtools-overlay');
+      let devtoolsOpen = false;
+
+      function checkDevtools() {
+        const threshold = 160;
+        const widthDiff  = window.outerWidth  - window.innerWidth;
+        const heightDiff = window.outerHeight - window.innerHeight;
+        const isOpen = widthDiff > threshold || heightDiff > threshold;
+
+        if (isOpen !== devtoolsOpen) {
+          devtoolsOpen = isOpen;
+          if (overlay) {
+            overlay.style.display = isOpen ? 'flex' : 'none';
+            // Pause video when devtools opened
+            const vid = document.getElementById('video');
+            if (vid) {
+              isOpen ? vid.pause() : vid.play().catch(() => {});
+            }
+          }
+        }
+      }
+
+      setInterval(checkDevtools, 800);
+      window.addEventListener('resize', checkDevtools);
+    })();
+
+
+    // ──────────────────────────────────────────────────────────────
+    // 3. SHARE BUTTON — Web Share API + clipboard fallback
+    // ──────────────────────────────────────────────────────────────
+    window.shareStream = async function() {
+      const title = document.getElementById('now-playing-title')?.textContent || 'KRYNN SPORTS';
+      const shareData = {
+        title: 'Watch Live on KRYNN SPORTS 🏆',
+        text: `${title} — Watch World Cup live streams for free!`,
+        url: window.location.origin
+      };
+
+      try {
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+          await navigator.share(shareData);
+        } else {
+          // Clipboard fallback
+          await navigator.clipboard.writeText(window.location.origin);
+          showShareToast('✅ Link copied to clipboard!');
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          try {
+            await navigator.clipboard.writeText(window.location.origin);
+            showShareToast('✅ Link copied to clipboard!');
+          } catch (_) {
+            showShareToast('📋 Share: ' + window.location.origin);
+          }
+        }
+      }
+    };
+
+    function showShareToast(msg) {
+      const toast = document.getElementById('share-toast');
+      if (!toast) return;
+      toast.innerHTML = '<i class="fa-solid fa-check"></i> ' + msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+
+    // ──────────────────────────────────────────────────────────────
+    // 4. MOBILE BOTTOM NAV — Chat tab + updated scroll spy
+    // ──────────────────────────────────────────────────────────────
+    const NAV_TABS = ['tab-home', 'tab-watch', 'tab-scores', 'tab-chat'];
+
+    function setActiveNavTab(index) {
+      NAV_TABS.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', i === index);
+      });
+    }
+
+    // Navigate + highlight for section tabs
+    window.mobileNavTo = function(sectionId, tabIndex) {
+      scrollToSection(sectionId);
+      setActiveNavTab(tabIndex);
+    };
+
+    // Chat tab — open chat panel and scroll to it
+    window.mobileOpenChat = function() {
+      const container = document.querySelector('.media-container');
+      const chatBtn   = document.getElementById('chat-toggle-btn');
+      // Force chat open
+      if (container && container.classList.contains('chat-closed')) {
+        container.classList.remove('chat-closed');
+        if (chatBtn) chatBtn.classList.add('active');
+        localStorage.setItem('krynn_chat_open', 'true');
+      }
+      // Scroll to the chat area (video section)
+      scrollToSection('video-section');
+      setActiveNavTab(3);
+
+      // On mobile the chat is below the player, scroll a bit extra
+      setTimeout(() => {
+        const chatEl = document.getElementById('chat-section');
+        if (chatEl) {
+          chatEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 350);
+    };
+
+    // Upgrade scroll spy to handle 4-tab nav
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY || window.pageYOffset;
+      const sections  = ['hero-section', 'video-section', 'scoreboard-section'];
+      const tabMap    = { 'hero-section': 0, 'video-section': 1, 'scoreboard-section': 2 };
+      let current = 'hero-section';
+
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el && scrollPos >= el.offsetTop - 140) current = id;
+      }
+
+      // Don't override Chat tab if it was manually selected
+      const chatTabActive = document.getElementById('tab-chat')?.classList.contains('active');
+      if (!chatTabActive) setActiveNavTab(tabMap[current] ?? 0);
+    }, { passive: true });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+[
+  {
+    "category_id": "1051",
+    "category_name": "Movies: Nordic 4K",
+    "parent_id": 0
+  },
+  {
+    "category_id": "981",
+    "category_name": "Movies: Nordic [Multi-Sub]",
+    "parent_id": 0
+  },
+  {
+    "category_id": "982",
+    "category_name": "Movies: Nordic Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "33",
+    "category_name": "Movies: Action",
+    "parent_id": 0
+  },
+  {
+    "category_id": "35",
+    "category_name": "Movies: Adventure",
+    "parent_id": 0
+  },
+  {
+    "category_id": "178",
+    "category_name": "Movies: Bollywood",
+    "parent_id": 0
+  },
+  {
+    "category_id": "36",
+    "category_name": "Movies: Comedy",
+    "parent_id": 0
+  },
+  {
+    "category_id": "49",
+    "category_name": "Movies: Crime",
+    "parent_id": 0
+  },
+  {
+    "category_id": "37",
+    "category_name": "Movies: Drama",
+    "parent_id": 0
+  },
+  {
+    "category_id": "40",
+    "category_name": "Movies: Documentary",
+    "parent_id": 0
+  },
+  {
+    "category_id": "38",
+    "category_name": "Movies: Family",
+    "parent_id": 0
+  },
+  {
+    "category_id": "39",
+    "category_name": "Movies: Fantasy",
+    "parent_id": 0
+  },
+  {
+    "category_id": "34",
+    "category_name": "Movies: Horror",
+    "parent_id": 0
+  },
+  {
+    "category_id": "524",
+    "category_name": "Movies: Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "315",
+    "category_name": "Movies: Marvel and DC",
+    "parent_id": 0
+  },
+  {
+    "category_id": "97",
+    "category_name": "Movies: Music",
+    "parent_id": 0
+  },
+  {
+    "category_id": "44",
+    "category_name": "Movies: Science-Fiction",
+    "parent_id": 0
+  },
+  {
+    "category_id": "45",
+    "category_name": "Movies: Thriller",
+    "parent_id": 0
+  },
+  {
+    "category_id": "48",
+    "category_name": "Movies: War",
+    "parent_id": 0
+  },
+  {
+    "category_id": "138",
+    "category_name": "Movies: Western",
+    "parent_id": 0
+  },
+  {
+    "category_id": "577",
+    "category_name": "Movies: Arabic",
+    "parent_id": 0
+  },
+  {
+    "category_id": "561",
+    "category_name": "Movies: Danish",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1021",
+    "category_name": "Movies: Finland",
+    "parent_id": 0
+  },
+  {
+    "category_id": "531",
+    "category_name": "Movies: Ex-Yu",
+    "parent_id": 0
+  },
+  {
+    "category_id": "149",
+    "category_name": "Movies: Français",
+    "parent_id": 0
+  },
+  {
+    "category_id": "140",
+    "category_name": "Movies: German",
+    "parent_id": 0
+  },
+  {
+    "category_id": "578",
+    "category_name": "Movies: German Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "58",
+    "category_name": "Movies: NL - Films",
+    "parent_id": 0
+  },
+  {
+    "category_id": "260",
+    "category_name": "Movies: NL - Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "515",
+    "category_name": "Movies: NL - Cabaret",
+    "parent_id": 0
+  },
+  {
+    "category_id": "523",
+    "category_name": "Movies: NL - Docu",
+    "parent_id": 0
+  },
+  {
+    "category_id": "218",
+    "category_name": "Movies: NL - Gemist 2017",
+    "parent_id": 0
+  },
+  {
+    "category_id": "265",
+    "category_name": "Movies: NL - Gemist 2018",
+    "parent_id": 0
+  },
+  {
+    "category_id": "513",
+    "category_name": "Movies: NL - Gemist 2019",
+    "parent_id": 0
+  },
+  {
+    "category_id": "164",
+    "category_name": "Movies: NL - Goede Tijden",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1014",
+    "category_name": "Movies: Norwegian",
+    "parent_id": 0
+  },
+  {
+    "category_id": "150",
+    "category_name": "Movies: Polskie",
+    "parent_id": 0
+  },
+  {
+    "category_id": "552",
+    "category_name": "Movies: Portugal",
+    "parent_id": 0
+  },
+  {
+    "category_id": "521",
+    "category_name": "Movies: Spanish",
+    "parent_id": 0
+  },
+  {
+    "category_id": "525",
+    "category_name": "Movies: Swedish",
+    "parent_id": 0
+  },
+  {
+    "category_id": "528",
+    "category_name": "Movies: Swedish Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "137",
+    "category_name": "Movies: Turkish",
+    "parent_id": 0
+  },
+  {
+    "category_id": "506",
+    "category_name": "Movies: TR - Dizi",
+    "parent_id": 0
+  },
+  {
+    "category_id": "508",
+    "category_name": "Movies: TR - Netflix",
+    "parent_id": 0
+  },
+  {
+    "category_id": "95",
+    "category_name": "UFC - WWE - Boxing",
+    "parent_id": 0
+  }
+]

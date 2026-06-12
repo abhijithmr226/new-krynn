@@ -1,0 +1,15 @@
+{
+  "name": "krynn-tv-player",
+  "version": "1.0.0",
+  "description": "KRYNN TV IPTV Player with backend caching and premium glassmorphic client interface",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5"
+  }
+}

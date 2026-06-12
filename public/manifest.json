@@ -1,0 +1,30 @@
+{
+  "name": "KRYNN SPORTS",
+  "short_name": "Krynn Sports",
+  "description": "Watch premium live World Cup & football streams with real-time scoreboard.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060609",
+  "theme_color": "#060609",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "krynn_logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "krynn_logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "krynn_logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

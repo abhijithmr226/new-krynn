@@ -1,0 +1,29 @@
+{
+  "user_info": {
+    "username": "a2HbYeBm5E3a",
+    "password": "D86xHY1hP6Ze",
+    "message": "",
+    "auth": 1,
+    "status": "Active",
+    "exp_date": "1802959570",
+    "is_trial": "0",
+    "active_cons": "0",
+    "created_at": "1675135941",
+    "max_connections": "1",
+    "allowed_output_formats": [
+      "m3u8",
+      "ts"
+    ]
+  },
+  "server_info": {
+    "url": "clientportal-worldiptv.club",
+    "port": "8080",
+    "https_port": "443",
+    "server_protocol": "http",
+    "rtmp_port": "8002",
+    "timezone": "Europe/Ljubljana",
+    "timestamp_now": 1781266260,
+    "time_now": "2026-06-12 14:11:00",
+    "process": true
+  }
+}

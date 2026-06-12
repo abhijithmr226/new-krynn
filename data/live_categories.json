@@ -1,0 +1,2592 @@
+[
+  {
+    "category_id": "1109",
+    "category_name": "FIFA Club World Cup 2026",
+    "parent_id": 0
+  },
+  {
+    "category_id": "3",
+    "category_name": "Netherland - Algemeen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "612",
+    "category_name": "Netherland - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "867",
+    "category_name": "Netherland - Films en Series",
+    "parent_id": 0
+  },
+  {
+    "category_id": "871",
+    "category_name": "Netherland - Documentaires en Lifestyle",
+    "parent_id": 0
+  },
+  {
+    "category_id": "868",
+    "category_name": "Netherland - Kinderen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "870",
+    "category_name": "Netherland - Muziek",
+    "parent_id": 0
+  },
+  {
+    "category_id": "872",
+    "category_name": "Netherland - Regionaal",
+    "parent_id": 0
+  },
+  {
+    "category_id": "869",
+    "category_name": "Netherland - Buitenland",
+    "parent_id": 0
+  },
+  {
+    "category_id": "677",
+    "category_name": "Netherland - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "811",
+    "category_name": "Netherland - Viaplay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1012",
+    "category_name": "Netherland - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "921",
+    "category_name": "Netherland - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "679",
+    "category_name": "Netherland - ESPN Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "678",
+    "category_name": "Netherland - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1088",
+    "category_name": "Netherland - ClipMyHorse",
+    "parent_id": 0
+  },
+  {
+    "category_id": "110",
+    "category_name": "Sweden - Nationella",
+    "parent_id": 0
+  },
+  {
+    "category_id": "597",
+    "category_name": "Sweden - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "827",
+    "category_name": "Sweden - Filmer & Serier",
+    "parent_id": 0
+  },
+  {
+    "category_id": "826",
+    "category_name": "Sweden - Barn",
+    "parent_id": 0
+  },
+  {
+    "category_id": "829",
+    "category_name": "Sweden - Dokumentärer & Livsstil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "825",
+    "category_name": "Sweden - Underhållning",
+    "parent_id": 0
+  },
+  {
+    "category_id": "831",
+    "category_name": "Sweden - Nyheter",
+    "parent_id": 0
+  },
+  {
+    "category_id": "830",
+    "category_name": "Sweden - Musik",
+    "parent_id": 0
+  },
+  {
+    "category_id": "656",
+    "category_name": "Sweden - Regionala",
+    "parent_id": 0
+  },
+  {
+    "category_id": "657",
+    "category_name": "Sweden - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "724",
+    "category_name": "Sweden - Pluto TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "641",
+    "category_name": "Sweden - Telia Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "810",
+    "category_name": "Sweden - Viaplay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "639",
+    "category_name": "Sweden - TV4 Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "642",
+    "category_name": "Sweden - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "645",
+    "category_name": "Sweden - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "655",
+    "category_name": "Sweden - Disney+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "646",
+    "category_name": "Sweden - Ettan Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "652",
+    "category_name": "Sweden - Handbollsligan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "647",
+    "category_name": "Sweden - Sport Expressen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "648",
+    "category_name": "Sweden - Aftonbladet Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "649",
+    "category_name": "Sweden - Hockeyettan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "651",
+    "category_name": "Sweden - Svensk Hockey.tv",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1102",
+    "category_name": "Sweden - Padel-TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "650",
+    "category_name": "Sweden - InneBandy",
+    "parent_id": 0
+  },
+  {
+    "category_id": "917",
+    "category_name": "Sweden - Svensk Bilsport.tv",
+    "parent_id": 0
+  },
+  {
+    "category_id": "916",
+    "category_name": "Sweden - ESS Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "653",
+    "category_name": "Sweden - Fanseat",
+    "parent_id": 0
+  },
+  {
+    "category_id": "654",
+    "category_name": "Sweden - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "644",
+    "category_name": "Sweden - Eurosport Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1019",
+    "category_name": "Sweden - SBL Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "113",
+    "category_name": "Norway - Nasjonale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "606",
+    "category_name": "Norway - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "841",
+    "category_name": "Norway - Filmer & Serier",
+    "parent_id": 0
+  },
+  {
+    "category_id": "842",
+    "category_name": "Norway - Barn",
+    "parent_id": 0
+  },
+  {
+    "category_id": "843",
+    "category_name": "Norway - Dokumentarer & Livsstil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "840",
+    "category_name": "Norway - Underholdning",
+    "parent_id": 0
+  },
+  {
+    "category_id": "844",
+    "category_name": "Norway - Nyheter",
+    "parent_id": 0
+  },
+  {
+    "category_id": "845",
+    "category_name": "Norway - Musikk",
+    "parent_id": 0
+  },
+  {
+    "category_id": "726",
+    "category_name": "Norway - LokalKanalen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "667",
+    "category_name": "Norway - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "723",
+    "category_name": "Norway - Pluto TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "658",
+    "category_name": "Norway - TV2 Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "660",
+    "category_name": "Norway - Viaplay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "661",
+    "category_name": "Norway - Direktesport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "659",
+    "category_name": "Norway - VG+ Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1086",
+    "category_name": "Norway - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "111",
+    "category_name": "Denmark - Nationale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "610",
+    "category_name": "Denmark - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "847",
+    "category_name": "Denmark - Film & Serier",
+    "parent_id": 0
+  },
+  {
+    "category_id": "848",
+    "category_name": "Denmark - Børn",
+    "parent_id": 0
+  },
+  {
+    "category_id": "849",
+    "category_name": "Denmark - Dokumentar & Livsstil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "846",
+    "category_name": "Denmark - Underholdning",
+    "parent_id": 0
+  },
+  {
+    "category_id": "851",
+    "category_name": "Denmark - Nyheder",
+    "parent_id": 0
+  },
+  {
+    "category_id": "850",
+    "category_name": "Denmark - Musik",
+    "parent_id": 0
+  },
+  {
+    "category_id": "725",
+    "category_name": "Denmark - LokalKanalen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "665",
+    "category_name": "Denmark - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "663",
+    "category_name": "Denmark - TV2 Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "662",
+    "category_name": "Denmark - Viaplay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "664",
+    "category_name": "Denmark - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1017",
+    "category_name": "Denmark - Direktesport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1016",
+    "category_name": "Denmark - Disney+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1101",
+    "category_name": "Denmark - Padel-TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "926",
+    "category_name": "Denmark - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "666",
+    "category_name": "Denmark - Metalligaen.tv",
+    "parent_id": 0
+  },
+  {
+    "category_id": "112",
+    "category_name": "Finland - Kansalliset",
+    "parent_id": 0
+  },
+  {
+    "category_id": "609",
+    "category_name": "Finland - Urheilu",
+    "parent_id": 0
+  },
+  {
+    "category_id": "853",
+    "category_name": "Finland - Elokuvat ja Sarjat",
+    "parent_id": 0
+  },
+  {
+    "category_id": "857",
+    "category_name": "Finland - Dokumentit & Elämäntapa",
+    "parent_id": 0
+  },
+  {
+    "category_id": "852",
+    "category_name": "Finland - Viihde",
+    "parent_id": 0
+  },
+  {
+    "category_id": "854",
+    "category_name": "Finland - Lapset",
+    "parent_id": 0
+  },
+  {
+    "category_id": "855",
+    "category_name": "Finland - Uutiset",
+    "parent_id": 0
+  },
+  {
+    "category_id": "856",
+    "category_name": "Finland - Musiikki",
+    "parent_id": 0
+  },
+  {
+    "category_id": "673",
+    "category_name": "Finland - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "672",
+    "category_name": "Finland - MTV Liiga",
+    "parent_id": 0
+  },
+  {
+    "category_id": "670",
+    "category_name": "Finland - Ruutu+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "669",
+    "category_name": "Finland - Viaplay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "671",
+    "category_name": "Finland - MTV Urheilu+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "668",
+    "category_name": "Finland - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1087",
+    "category_name": "Finland - LeijonatTV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "980",
+    "category_name": "Finland - VeikkausTV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "536",
+    "category_name": "Iceland",
+    "parent_id": 0
+  },
+  {
+    "category_id": "858",
+    "category_name": "Iceland - Íþróttir",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1092",
+    "category_name": "Iceland - KKÍ TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "674",
+    "category_name": "Iceland - Viaplay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "675",
+    "category_name": "Iceland - Livey",
+    "parent_id": 0
+  },
+  {
+    "category_id": "676",
+    "category_name": "Iceland - Síminn Pass",
+    "parent_id": 0
+  },
+  {
+    "category_id": "696",
+    "category_name": "Arabic - OSN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1093",
+    "category_name": "Arabic - Orbit Now",
+    "parent_id": 0
+  },
+  {
+    "category_id": "697",
+    "category_name": "Arabic - MBC Group",
+    "parent_id": 0
+  },
+  {
+    "category_id": "698",
+    "category_name": "Arabic - ART Online & Pehla",
+    "parent_id": 0
+  },
+  {
+    "category_id": "699",
+    "category_name": "Arabic - STC & Jawwy",
+    "parent_id": 0
+  },
+  {
+    "category_id": "700",
+    "category_name": "Arabic - Shahid",
+    "parent_id": 0
+  },
+  {
+    "category_id": "519",
+    "category_name": "Arabic - Al Majd Media",
+    "parent_id": 0
+  },
+  {
+    "category_id": "121",
+    "category_name": "Arabic - Bein Media",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1108",
+    "category_name": "Arabic - Bein Sports Max",
+    "parent_id": 0
+  },
+  {
+    "category_id": "695",
+    "category_name": "Arabic - Bein Sports",
+    "parent_id": 0
+  },
+  {
+    "category_id": "802",
+    "category_name": "Arabic - TOD",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1076",
+    "category_name": "Arabic - TOD Sports",
+    "parent_id": 0
+  },
+  {
+    "category_id": "701",
+    "category_name": "Arabic - Thmanyah",
+    "parent_id": 0
+  },
+  {
+    "category_id": "589",
+    "category_name": "Arabic - Starz Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1013",
+    "category_name": "Arabic - Shahid Sports",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1020",
+    "category_name": "Arabic - Shasha Sports",
+    "parent_id": 0
+  },
+  {
+    "category_id": "728",
+    "category_name": "Arabic - DAZN MENA",
+    "parent_id": 0
+  },
+  {
+    "category_id": "923",
+    "category_name": "Arabic - ALWAN & Al Rabiaa",
+    "parent_id": 0
+  },
+  {
+    "category_id": "120",
+    "category_name": "Arabic - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "9",
+    "category_name": "Arabic - FTA",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1055",
+    "category_name": "Arabic - News",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1056",
+    "category_name": "Arabic - Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1057",
+    "category_name": "Arabic - Islamic",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1058",
+    "category_name": "Arabic - Christian",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1025",
+    "category_name": "Arabic - Morocco",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1026",
+    "category_name": "Arabic - Algeria",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1027",
+    "category_name": "Arabic - Tunisia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1029",
+    "category_name": "Arabic - Libya",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1028",
+    "category_name": "Arabic - Egypt",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1031",
+    "category_name": "Arabic - Lebanon",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1033",
+    "category_name": "Arabic - Jordan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1030",
+    "category_name": "Arabic - Syria",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1034",
+    "category_name": "Arabic - Palestine",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1032",
+    "category_name": "Arabic - Iraq",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1040",
+    "category_name": "Arabic - UAE",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1036",
+    "category_name": "Arabic - Saudi Arabia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1039",
+    "category_name": "Arabic - Qatar",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1041",
+    "category_name": "Arabic - Kuwait",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1037",
+    "category_name": "Arabic - Bahrain",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1038",
+    "category_name": "Arabic - Oman",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1042",
+    "category_name": "Arabic - Yemen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1035",
+    "category_name": "Arabic - Sudan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "6",
+    "category_name": "Hebrew",
+    "parent_id": 0
+  },
+  {
+    "category_id": "784",
+    "category_name": "Hebrew - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "785",
+    "category_name": "Hebrew - YES TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "786",
+    "category_name": "Hebrew - HOT",
+    "parent_id": 0
+  },
+  {
+    "category_id": "787",
+    "category_name": "Hebrew - FreeTV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "914",
+    "category_name": "Hebrew - Cellcom TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "915",
+    "category_name": "Hebrew - Partner TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "4",
+    "category_name": "United Kingdom",
+    "parent_id": 0
+  },
+  {
+    "category_id": "611",
+    "category_name": "United Kingdom - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "907",
+    "category_name": "United Kingdom - Movies & Series",
+    "parent_id": 0
+  },
+  {
+    "category_id": "711",
+    "category_name": "United Kingdom - Sky Store Movies",
+    "parent_id": 0
+  },
+  {
+    "category_id": "905",
+    "category_name": "United Kingdom - Entertainment",
+    "parent_id": 0
+  },
+  {
+    "category_id": "906",
+    "category_name": "United Kingdom - Kids",
+    "parent_id": 0
+  },
+  {
+    "category_id": "908",
+    "category_name": "United Kingdom - Documentaries",
+    "parent_id": 0
+  },
+  {
+    "category_id": "909",
+    "category_name": "United Kingdom - News",
+    "parent_id": 0
+  },
+  {
+    "category_id": "910",
+    "category_name": "United Kingdom - Music",
+    "parent_id": 0
+  },
+  {
+    "category_id": "911",
+    "category_name": "United Kingdom - International",
+    "parent_id": 0
+  },
+  {
+    "category_id": "912",
+    "category_name": "United Kingdom - Religions",
+    "parent_id": 0
+  },
+  {
+    "category_id": "805",
+    "category_name": "United Kingdom - ITVX",
+    "parent_id": 0
+  },
+  {
+    "category_id": "705",
+    "category_name": "United Kingdom - Championship",
+    "parent_id": 0
+  },
+  {
+    "category_id": "706",
+    "category_name": "United Kingdom - League One & Two",
+    "parent_id": 0
+  },
+  {
+    "category_id": "703",
+    "category_name": "United Kingdom - Sky Sports +",
+    "parent_id": 0
+  },
+  {
+    "category_id": "708",
+    "category_name": "United Kingdom - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "731",
+    "category_name": "United Kingdom - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "707",
+    "category_name": "United Kingdom - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1072",
+    "category_name": "United Kingdom - EuroLeague.tv Pass",
+    "parent_id": 0
+  },
+  {
+    "category_id": "704",
+    "category_name": "United Kingdom - SPFL",
+    "parent_id": 0
+  },
+  {
+    "category_id": "702",
+    "category_name": "United Kingdom - BBC Red Button",
+    "parent_id": 0
+  },
+  {
+    "category_id": "880",
+    "category_name": "United Kingdom - National League",
+    "parent_id": 0
+  },
+  {
+    "category_id": "883",
+    "category_name": "United Kingdom - Matchroom",
+    "parent_id": 0
+  },
+  {
+    "category_id": "884",
+    "category_name": "United Kingdom - GAAGO",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1046",
+    "category_name": "United Kingdom - ECB",
+    "parent_id": 0
+  },
+  {
+    "category_id": "918",
+    "category_name": "United Kingdom - PDC Board",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1047",
+    "category_name": "United Kingdom - RUGBY PPV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "709",
+    "category_name": "Ireland",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1049",
+    "category_name": "Ireland - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "710",
+    "category_name": "Ireland - LOITV.ie",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1048",
+    "category_name": "Ireland - NIFL",
+    "parent_id": 0
+  },
+  {
+    "category_id": "885",
+    "category_name": "Ireland - Clubber TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "956",
+    "category_name": "Ireland - Armagh TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "12",
+    "category_name": "France - Nationale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "901",
+    "category_name": "France - Régionale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "637",
+    "category_name": "France - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "897",
+    "category_name": "France - Films & Séries",
+    "parent_id": 0
+  },
+  {
+    "category_id": "900",
+    "category_name": "France - Enfants",
+    "parent_id": 0
+  },
+  {
+    "category_id": "896",
+    "category_name": "France - Divertissement",
+    "parent_id": 0
+  },
+  {
+    "category_id": "899",
+    "category_name": "France - Infos",
+    "parent_id": 0
+  },
+  {
+    "category_id": "898",
+    "category_name": "France - Documentaires",
+    "parent_id": 0
+  },
+  {
+    "category_id": "717",
+    "category_name": "France - Molotov",
+    "parent_id": 0
+  },
+  {
+    "category_id": "718",
+    "category_name": "France - Canal Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1011",
+    "category_name": "France - Luxe Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1106",
+    "category_name": "France - Roland Garros",
+    "parent_id": 0
+  },
+  {
+    "category_id": "995",
+    "category_name": "France - Ligue 1+ Pass",
+    "parent_id": 0
+  },
+  {
+    "category_id": "714",
+    "category_name": "France - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "713",
+    "category_name": "France - Canal+ Live",
+    "parent_id": 0
+  },
+  {
+    "category_id": "994",
+    "category_name": "France - Equidia PRO",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1103",
+    "category_name": "France - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "722",
+    "category_name": "France - L'equipe",
+    "parent_id": 0
+  },
+  {
+    "category_id": "719",
+    "category_name": "France - SKWEEK",
+    "parent_id": 0
+  },
+  {
+    "category_id": "715",
+    "category_name": "France - FFF TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "720",
+    "category_name": "France - Fanseat",
+    "parent_id": 0
+  },
+  {
+    "category_id": "721",
+    "category_name": "France - Eurosport Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "902",
+    "category_name": "France - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "17",
+    "category_name": "Spain - Generalistas",
+    "parent_id": 0
+  },
+  {
+    "category_id": "837",
+    "category_name": "Spain - LALIGA TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "838",
+    "category_name": "Spain - Liga De Campeones",
+    "parent_id": 0
+  },
+  {
+    "category_id": "608",
+    "category_name": "Spain - Deportes",
+    "parent_id": 0
+  },
+  {
+    "category_id": "832",
+    "category_name": "Spain - Cine y Series",
+    "parent_id": 0
+  },
+  {
+    "category_id": "834",
+    "category_name": "Spain - Documentales",
+    "parent_id": 0
+  },
+  {
+    "category_id": "833",
+    "category_name": "Spain - Entretenimiento",
+    "parent_id": 0
+  },
+  {
+    "category_id": "835",
+    "category_name": "Spain - Infantil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "836",
+    "category_name": "Spain - Música",
+    "parent_id": 0
+  },
+  {
+    "category_id": "839",
+    "category_name": "Spain - Noticias e Internacional",
+    "parent_id": 0
+  },
+  {
+    "category_id": "771",
+    "category_name": "Spain - Alquiler",
+    "parent_id": 0
+  },
+  {
+    "category_id": "682",
+    "category_name": "Spain - Primera Federacion",
+    "parent_id": 0
+  },
+  {
+    "category_id": "683",
+    "category_name": "Spain - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1044",
+    "category_name": "Spain - DAZN ACB",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1081",
+    "category_name": "Spain - LALIGA+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "684",
+    "category_name": "Spain - HBO Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1104",
+    "category_name": "Spain - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1090",
+    "category_name": "Spain - FC Play TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "887",
+    "category_name": "Spain - LaLiga Sports TV+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "888",
+    "category_name": "Spain - TDP+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "685",
+    "category_name": "Spain - Otros",
+    "parent_id": 0
+  },
+  {
+    "category_id": "686",
+    "category_name": "Spain - Autonómicos Locales y Nacionales",
+    "parent_id": 0
+  },
+  {
+    "category_id": "13",
+    "category_name": "Portugal - Nacionais",
+    "parent_id": 0
+  },
+  {
+    "category_id": "633",
+    "category_name": "Portugal - Desporto",
+    "parent_id": 0
+  },
+  {
+    "category_id": "763",
+    "category_name": "Portugal - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "862",
+    "category_name": "Portugal - Filmes e Séries",
+    "parent_id": 0
+  },
+  {
+    "category_id": "866",
+    "category_name": "Portugal - Documentários e Estilo de Vida",
+    "parent_id": 0
+  },
+  {
+    "category_id": "861",
+    "category_name": "Portugal - Entretenimento",
+    "parent_id": 0
+  },
+  {
+    "category_id": "865",
+    "category_name": "Portugal - Música",
+    "parent_id": 0
+  },
+  {
+    "category_id": "863",
+    "category_name": "Portugal - Infantil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "864",
+    "category_name": "Portugal - Notícias",
+    "parent_id": 0
+  },
+  {
+    "category_id": "807",
+    "category_name": "Portugal - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "5",
+    "category_name": "Germany - Öffentlich",
+    "parent_id": 0
+  },
+  {
+    "category_id": "613",
+    "category_name": "Germany - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "690",
+    "category_name": "Germany - Sky Bundesliga",
+    "parent_id": 0
+  },
+  {
+    "category_id": "929",
+    "category_name": "Germany - Filme & Serien",
+    "parent_id": 0
+  },
+  {
+    "category_id": "931",
+    "category_name": "Germany - Dokumentationen & Lifestyle",
+    "parent_id": 0
+  },
+  {
+    "category_id": "930",
+    "category_name": "Germany - Kinder",
+    "parent_id": 0
+  },
+  {
+    "category_id": "928",
+    "category_name": "Germany - Unterhaltung",
+    "parent_id": 0
+  },
+  {
+    "category_id": "932",
+    "category_name": "Germany - Musik",
+    "parent_id": 0
+  },
+  {
+    "category_id": "935",
+    "category_name": "Germany - Nachrichten",
+    "parent_id": 0
+  },
+  {
+    "category_id": "934",
+    "category_name": "Germany - Regionale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "694",
+    "category_name": "Germany - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "791",
+    "category_name": "Germany - Pluto TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "689",
+    "category_name": "Germany - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "688",
+    "category_name": "Germany - Magenta Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "687",
+    "category_name": "Germany - DYN Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1050",
+    "category_name": "Germany - DEL.2",
+    "parent_id": 0
+  },
+  {
+    "category_id": "691",
+    "category_name": "Germany - RTL+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1006",
+    "category_name": "Germany - Eurosport 360",
+    "parent_id": 0
+  },
+  {
+    "category_id": "692",
+    "category_name": "Germany - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "693",
+    "category_name": "Germany - Sport Europe PPV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "593",
+    "category_name": "Austria",
+    "parent_id": 0
+  },
+  {
+    "category_id": "824",
+    "category_name": "Austria - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "732",
+    "category_name": "Austria - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "20",
+    "category_name": "Türkiye",
+    "parent_id": 0
+  },
+  {
+    "category_id": "792",
+    "category_name": "Türkiye - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "940",
+    "category_name": "Türkiye - Sinema",
+    "parent_id": 0
+  },
+  {
+    "category_id": "938",
+    "category_name": "Türkiye - Haber",
+    "parent_id": 0
+  },
+  {
+    "category_id": "937",
+    "category_name": "Türkiye - Belgesel",
+    "parent_id": 0
+  },
+  {
+    "category_id": "936",
+    "category_name": "Türkiye - Çocuk",
+    "parent_id": 0
+  },
+  {
+    "category_id": "942",
+    "category_name": "Türkiye - Diyanet",
+    "parent_id": 0
+  },
+  {
+    "category_id": "939",
+    "category_name": "Türkiye - Müzik",
+    "parent_id": 0
+  },
+  {
+    "category_id": "941",
+    "category_name": "Türkiye - Bölgesel",
+    "parent_id": 0
+  },
+  {
+    "category_id": "793",
+    "category_name": "Türkiye - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "943",
+    "category_name": "Türkiye - BLUTV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "944",
+    "category_name": "Türkiye - DIZI",
+    "parent_id": 0
+  },
+  {
+    "category_id": "945",
+    "category_name": "Türkiye - Special Box",
+    "parent_id": 0
+  },
+  {
+    "category_id": "947",
+    "category_name": "Türkiye - Netflix TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "946",
+    "category_name": "Türkiye - Diamond TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "15",
+    "category_name": "Belgium - Vlaanderen",
+    "parent_id": 0
+  },
+  {
+    "category_id": "817",
+    "category_name": "Belgium - Wallonie",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1095",
+    "category_name": "Belgium - Play TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "632",
+    "category_name": "Belgium - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "765",
+    "category_name": "Belgium - DAZN NL",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1008",
+    "category_name": "Belgium - DAZN FR",
+    "parent_id": 0
+  },
+  {
+    "category_id": "25",
+    "category_name": "Poland - Publiczne",
+    "parent_id": 0
+  },
+  {
+    "category_id": "733",
+    "category_name": "Poland - Sportowe",
+    "parent_id": 0
+  },
+  {
+    "category_id": "877",
+    "category_name": "Poland - Filmy i Seriale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "876",
+    "category_name": "Poland - Dokumentalne i Styl Życia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "878",
+    "category_name": "Poland - Rozrywka",
+    "parent_id": 0
+  },
+  {
+    "category_id": "873",
+    "category_name": "Poland - Dzieci",
+    "parent_id": 0
+  },
+  {
+    "category_id": "874",
+    "category_name": "Poland - Muzyka",
+    "parent_id": 0
+  },
+  {
+    "category_id": "875",
+    "category_name": "Poland - Informacyjne",
+    "parent_id": 0
+  },
+  {
+    "category_id": "740",
+    "category_name": "Poland - LocalKanaŁy",
+    "parent_id": 0
+  },
+  {
+    "category_id": "736",
+    "category_name": "Poland - TVN Player",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1010",
+    "category_name": "Poland - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "922",
+    "category_name": "Poland - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "812",
+    "category_name": "Poland - Eleven Online",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1105",
+    "category_name": "Poland - TVP Sport.pl",
+    "parent_id": 0
+  },
+  {
+    "category_id": "879",
+    "category_name": "Poland - Walki PPV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "735",
+    "category_name": "Poland - Eurosport Play & Max Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "8",
+    "category_name": "Greece",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1083",
+    "category_name": "Greece - ANT+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "803",
+    "category_name": "Greece - NOVA",
+    "parent_id": 0
+  },
+  {
+    "category_id": "804",
+    "category_name": "Greece - Cosmote",
+    "parent_id": 0
+  },
+  {
+    "category_id": "924",
+    "category_name": "Greece - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "621",
+    "category_name": "Cyprus",
+    "parent_id": 0
+  },
+  {
+    "category_id": "31",
+    "category_name": "Switzerland",
+    "parent_id": 0
+  },
+  {
+    "category_id": "619",
+    "category_name": "Switzerland - Canal+ Suisse",
+    "parent_id": 0
+  },
+  {
+    "category_id": "860",
+    "category_name": "Switzerland - Sky",
+    "parent_id": 0
+  },
+  {
+    "category_id": "634",
+    "category_name": "Switzerland - Blue",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1045",
+    "category_name": "Switzerland - SFL PPV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "859",
+    "category_name": "Switzerland - MySport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "737",
+    "category_name": "Switzerland - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "16",
+    "category_name": "Italy",
+    "parent_id": 0
+  },
+  {
+    "category_id": "738",
+    "category_name": "Italy - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "948",
+    "category_name": "Italy - Film & Serie",
+    "parent_id": 0
+  },
+  {
+    "category_id": "950",
+    "category_name": "Italy - Cultura & Documentari",
+    "parent_id": 0
+  },
+  {
+    "category_id": "949",
+    "category_name": "Italy - Bambini",
+    "parent_id": 0
+  },
+  {
+    "category_id": "951",
+    "category_name": "Italy - Notizie & Musica",
+    "parent_id": 0
+  },
+  {
+    "category_id": "823",
+    "category_name": "Italy - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "821",
+    "category_name": "Italy - Regionali",
+    "parent_id": 0
+  },
+  {
+    "category_id": "615",
+    "category_name": "Italy - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "820",
+    "category_name": "Italy - LNP Pass",
+    "parent_id": 0
+  },
+  {
+    "category_id": "819",
+    "category_name": "Italy - Eurosport Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "581",
+    "category_name": "Malta",
+    "parent_id": 0
+  },
+  {
+    "category_id": "22",
+    "category_name": "USA",
+    "parent_id": 0
+  },
+  {
+    "category_id": "816",
+    "category_name": "USA - AFN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "614",
+    "category_name": "USA - ABC Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "741",
+    "category_name": "USA - CBS Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "743",
+    "category_name": "USA - FOX Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "742",
+    "category_name": "USA - NBC Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "813",
+    "category_name": "USA - PBS Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "814",
+    "category_name": "USA - CW Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "760",
+    "category_name": "USA - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "749",
+    "category_name": "USA - PPV Events",
+    "parent_id": 0
+  },
+  {
+    "category_id": "748",
+    "category_name": "USA - MLS",
+    "parent_id": 0
+  },
+  {
+    "category_id": "747",
+    "category_name": "USA - MLB",
+    "parent_id": 0
+  },
+  {
+    "category_id": "960",
+    "category_name": "USA - MILB",
+    "parent_id": 0
+  },
+  {
+    "category_id": "746",
+    "category_name": "USA - NBA",
+    "parent_id": 0
+  },
+  {
+    "category_id": "958",
+    "category_name": "USA - WNBA",
+    "parent_id": 0
+  },
+  {
+    "category_id": "745",
+    "category_name": "USA - NFL",
+    "parent_id": 0
+  },
+  {
+    "category_id": "744",
+    "category_name": "USA - NHL",
+    "parent_id": 0
+  },
+  {
+    "category_id": "959",
+    "category_name": "USA - NCAAF",
+    "parent_id": 0
+  },
+  {
+    "category_id": "755",
+    "category_name": "USA - Formula 1",
+    "parent_id": 0
+  },
+  {
+    "category_id": "886",
+    "category_name": "USA - MotoGP",
+    "parent_id": 0
+  },
+  {
+    "category_id": "758",
+    "category_name": "USA - Peacock",
+    "parent_id": 0
+  },
+  {
+    "category_id": "750",
+    "category_name": "USA - ESPN+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "751",
+    "category_name": "USA - Paramount+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "788",
+    "category_name": "USA - Flo Sports",
+    "parent_id": 0
+  },
+  {
+    "category_id": "953",
+    "category_name": "USA - Flo Racing",
+    "parent_id": 0
+  },
+  {
+    "category_id": "954",
+    "category_name": "USA - Flo College",
+    "parent_id": 0
+  },
+  {
+    "category_id": "955",
+    "category_name": "USA - Flo Rugby",
+    "parent_id": 0
+  },
+  {
+    "category_id": "789",
+    "category_name": "USA - B1G+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "756",
+    "category_name": "USA - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "790",
+    "category_name": "USA - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "754",
+    "category_name": "USA - Triller TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1075",
+    "category_name": "USA - FIFA +",
+    "parent_id": 0
+  },
+  {
+    "category_id": "881",
+    "category_name": "USA - Netflix PPV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "752",
+    "category_name": "USA - Tennis Plus",
+    "parent_id": 0
+  },
+  {
+    "category_id": "882",
+    "category_name": "USA - Bleachers",
+    "parent_id": 0
+  },
+  {
+    "category_id": "753",
+    "category_name": "USA - Fite TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "757",
+    "category_name": "USA - Dirtivision",
+    "parent_id": 0
+  },
+  {
+    "category_id": "759",
+    "category_name": "USA - UFC",
+    "parent_id": 0
+  },
+  {
+    "category_id": "607",
+    "category_name": "USA - Other Sports",
+    "parent_id": 0
+  },
+  {
+    "category_id": "895",
+    "category_name": "USA - AMC+ Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1018",
+    "category_name": "USA - Disney+ Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "894",
+    "category_name": "USA - HBO Max Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "890",
+    "category_name": "USA - Hulu Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "889",
+    "category_name": "USA - NatGeo+ Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "891",
+    "category_name": "USA - Paramount+ Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "892",
+    "category_name": "USA - Peacock Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "893",
+    "category_name": "USA - Starz Network",
+    "parent_id": 0
+  },
+  {
+    "category_id": "257",
+    "category_name": "Canada",
+    "parent_id": 0
+  },
+  {
+    "category_id": "794",
+    "category_name": "Canada - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "797",
+    "category_name": "Canada - Fubo",
+    "parent_id": 0
+  },
+  {
+    "category_id": "795",
+    "category_name": "Canada - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "796",
+    "category_name": "Canada - SuperSport PPV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "815",
+    "category_name": "Canada - Sportsnet+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "903",
+    "category_name": "Canada - TSN+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "904",
+    "category_name": "Canada - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1077",
+    "category_name": "Canada - Victory+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1000",
+    "category_name": "Canada - AHL TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "957",
+    "category_name": "Canada - QMJHL TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "961",
+    "category_name": "Canada - OHL TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "962",
+    "category_name": "Canada - WHL TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "11",
+    "category_name": "Latino",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1110",
+    "category_name": "Latino - Mundial",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1107",
+    "category_name": "Latino - Gran Hermano",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1080",
+    "category_name": "Latino - FOX One",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1091",
+    "category_name": "Latino - Fanatiz",
+    "parent_id": 0
+  },
+  {
+    "category_id": "772",
+    "category_name": "Latino - Sport Events",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1005",
+    "category_name": "Latino - HBO MAX",
+    "parent_id": 0
+  },
+  {
+    "category_id": "990",
+    "category_name": "Latino - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "773",
+    "category_name": "Latino - Argentina",
+    "parent_id": 0
+  },
+  {
+    "category_id": "774",
+    "category_name": "Latino - Bolivia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "775",
+    "category_name": "Latino - Colombia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "776",
+    "category_name": "Latino - Chile",
+    "parent_id": 0
+  },
+  {
+    "category_id": "777",
+    "category_name": "Latino - Ecuador",
+    "parent_id": 0
+  },
+  {
+    "category_id": "778",
+    "category_name": "Latino - Mexico",
+    "parent_id": 0
+  },
+  {
+    "category_id": "779",
+    "category_name": "Latino - Paraguay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "780",
+    "category_name": "Latino - Peru",
+    "parent_id": 0
+  },
+  {
+    "category_id": "781",
+    "category_name": "Latino - Uruguay",
+    "parent_id": 0
+  },
+  {
+    "category_id": "782",
+    "category_name": "Latino - Venzuela",
+    "parent_id": 0
+  },
+  {
+    "category_id": "117",
+    "category_name": "Brazil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1073",
+    "category_name": "Brazil - Play+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1004",
+    "category_name": "Brazil - Globo TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "730",
+    "category_name": "Brazil - Prime Video",
+    "parent_id": 0
+  },
+  {
+    "category_id": "996",
+    "category_name": "Brazil - Paramount+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "997",
+    "category_name": "Brazil - HBO Max",
+    "parent_id": 0
+  },
+  {
+    "category_id": "622",
+    "category_name": "Brazil - Star+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "729",
+    "category_name": "Brazil - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "998",
+    "category_name": "Brazil - UFC Pass",
+    "parent_id": 0
+  },
+  {
+    "category_id": "999",
+    "category_name": "Brazil - NBA Pass",
+    "parent_id": 0
+  },
+  {
+    "category_id": "809",
+    "category_name": "Suriname",
+    "parent_id": 0
+  },
+  {
+    "category_id": "250",
+    "category_name": "Caribbean",
+    "parent_id": 0
+  },
+  {
+    "category_id": "636",
+    "category_name": "Caribbean - FLOW TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "628",
+    "category_name": "Caribbean - Amplia TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "620",
+    "category_name": "Caribbean - Canal+ Caraibes",
+    "parent_id": 0
+  },
+  {
+    "category_id": "167",
+    "category_name": "Australia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1003",
+    "category_name": "Australia - Foxtel",
+    "parent_id": 0
+  },
+  {
+    "category_id": "761",
+    "category_name": "Australia - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1002",
+    "category_name": "Australia - Stan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1074",
+    "category_name": "Australia - 9Now",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1053",
+    "category_name": "Australia - Bein Connect",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1054",
+    "category_name": "Australia - Paramount+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "601",
+    "category_name": "New Zealand",
+    "parent_id": 0
+  },
+  {
+    "category_id": "762",
+    "category_name": "New Zealand - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "19",
+    "category_name": "Russia & Belarus",
+    "parent_id": 0
+  },
+  {
+    "category_id": "992",
+    "category_name": "Ukraine",
+    "parent_id": 0
+  },
+  {
+    "category_id": "114",
+    "category_name": "Bulgaria",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1084",
+    "category_name": "Bulgaria - VOYO",
+    "parent_id": 0
+  },
+  {
+    "category_id": "116",
+    "category_name": "Romania",
+    "parent_id": 0
+  },
+  {
+    "category_id": "963",
+    "category_name": "Romania - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1001",
+    "category_name": "Romania - VOYO",
+    "parent_id": 0
+  },
+  {
+    "category_id": "970",
+    "category_name": "Romania - Filme & Seriale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "965",
+    "category_name": "Romania - Copii",
+    "parent_id": 0
+  },
+  {
+    "category_id": "966",
+    "category_name": "Romania - Documentare & Cultură",
+    "parent_id": 0
+  },
+  {
+    "category_id": "964",
+    "category_name": "Romania - Divertisment",
+    "parent_id": 0
+  },
+  {
+    "category_id": "967",
+    "category_name": "Romania - Muzică",
+    "parent_id": 0
+  },
+  {
+    "category_id": "969",
+    "category_name": "Romania - Știri",
+    "parent_id": 0
+  },
+  {
+    "category_id": "968",
+    "category_name": "Romania - Regionale",
+    "parent_id": 0
+  },
+  {
+    "category_id": "808",
+    "category_name": "Romania - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "971",
+    "category_name": "Moldova",
+    "parent_id": 0
+  },
+  {
+    "category_id": "124",
+    "category_name": "Czech",
+    "parent_id": 0
+  },
+  {
+    "category_id": "766",
+    "category_name": "Czech - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "629",
+    "category_name": "Slovakia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "972",
+    "category_name": "Baltic - Estonia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "973",
+    "category_name": "Baltic - Latvia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "974",
+    "category_name": "Baltic - Lithuania",
+    "parent_id": 0
+  },
+  {
+    "category_id": "126",
+    "category_name": "Baltic - General",
+    "parent_id": 0
+  },
+  {
+    "category_id": "630",
+    "category_name": "Baltic - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "800",
+    "category_name": "Baltic - GO3 Extra",
+    "parent_id": 0
+  },
+  {
+    "category_id": "801",
+    "category_name": "Baltic - Setanta",
+    "parent_id": 0
+  },
+  {
+    "category_id": "128",
+    "category_name": "Albania",
+    "parent_id": 0
+  },
+  {
+    "category_id": "769",
+    "category_name": "Albania - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "768",
+    "category_name": "Albania - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "127",
+    "category_name": "Hungary",
+    "parent_id": 0
+  },
+  {
+    "category_id": "993",
+    "category_name": "Hungary - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1009",
+    "category_name": "Hungary - RTL+",
+    "parent_id": 0
+  },
+  {
+    "category_id": "129",
+    "category_name": "Srbija",
+    "parent_id": 0
+  },
+  {
+    "category_id": "770",
+    "category_name": "Srbija - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "920",
+    "category_name": "Crna Gora",
+    "parent_id": 0
+  },
+  {
+    "category_id": "594",
+    "category_name": "Hrvatska",
+    "parent_id": 0
+  },
+  {
+    "category_id": "767",
+    "category_name": "Hrvatska - Sport",
+    "parent_id": 0
+  },
+  {
+    "category_id": "595",
+    "category_name": "Bosna i Hercegovina",
+    "parent_id": 0
+  },
+  {
+    "category_id": "130",
+    "category_name": "Macedonia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "125",
+    "category_name": "Slovenia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1007",
+    "category_name": "EX-YU - Movies Club",
+    "parent_id": 0
+  },
+  {
+    "category_id": "913",
+    "category_name": "Africa - New World TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "599",
+    "category_name": "Africa - DSTV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "598",
+    "category_name": "Africa - Canal+ Afrique",
+    "parent_id": 0
+  },
+  {
+    "category_id": "600",
+    "category_name": "Africa - Canal+ Reunion",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1078",
+    "category_name": "Africa - Canal+ Maurice",
+    "parent_id": 0
+  },
+  {
+    "category_id": "602",
+    "category_name": "Africa - AZAM TV",
+    "parent_id": 0
+  },
+  {
+    "category_id": "23",
+    "category_name": "Africa",
+    "parent_id": 0
+  },
+  {
+    "category_id": "983",
+    "category_name": "Azerbaijan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "984",
+    "category_name": "Georgia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "988",
+    "category_name": "Armenia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "987",
+    "category_name": "Uzbekistan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "985",
+    "category_name": "Kazakhstan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "989",
+    "category_name": "Tajikistan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "986",
+    "category_name": "Turkmenistan & Kyrgyzstan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "133",
+    "category_name": "Iran",
+    "parent_id": 0
+  },
+  {
+    "category_id": "132",
+    "category_name": "Afghanistan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "118",
+    "category_name": "Kurdistan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "21",
+    "category_name": "India",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1061",
+    "category_name": "India - Assam",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1068",
+    "category_name": "India - Bhojpuri",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1062",
+    "category_name": "India - Gujarati",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1063",
+    "category_name": "India - Kannada",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1060",
+    "category_name": "India - Malayalam",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1066",
+    "category_name": "India - Marathi",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1067",
+    "category_name": "India - Odisha",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1064",
+    "category_name": "India - Punjabi",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1059",
+    "category_name": "India - Tamil",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1065",
+    "category_name": "India - Telegu",
+    "parent_id": 0
+  },
+  {
+    "category_id": "131",
+    "category_name": "Pakistan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "547",
+    "category_name": "Bangladesh",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1069",
+    "category_name": "Nepal",
+    "parent_id": 0
+  },
+  {
+    "category_id": "624",
+    "category_name": "Sri Lanka",
+    "parent_id": 0
+  },
+  {
+    "category_id": "119",
+    "category_name": "Malaysia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "134",
+    "category_name": "Indonesia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "604",
+    "category_name": "Singapore",
+    "parent_id": 0
+  },
+  {
+    "category_id": "7",
+    "category_name": "Thailand & Cambodia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1070",
+    "category_name": "Thailand - Ais Play",
+    "parent_id": 0
+  },
+  {
+    "category_id": "1071",
+    "category_name": "Thailand - Mono TPL",
+    "parent_id": 0
+  },
+  {
+    "category_id": "542",
+    "category_name": "Myanmar",
+    "parent_id": 0
+  },
+  {
+    "category_id": "115",
+    "category_name": "Vietnam",
+    "parent_id": 0
+  },
+  {
+    "category_id": "122",
+    "category_name": "Filipino",
+    "parent_id": 0
+  },
+  {
+    "category_id": "617",
+    "category_name": "Hong Kong",
+    "parent_id": 0
+  },
+  {
+    "category_id": "623",
+    "category_name": "Taiwan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "136",
+    "category_name": "China - Mongolia",
+    "parent_id": 0
+  },
+  {
+    "category_id": "135",
+    "category_name": "Korea",
+    "parent_id": 0
+  },
+  {
+    "category_id": "798",
+    "category_name": "Japan",
+    "parent_id": 0
+  },
+  {
+    "category_id": "799",
+    "category_name": "Japan - DAZN",
+    "parent_id": 0
+  },
+  {
+    "category_id": "270",
+    "category_name": "24-7 Channels",
+    "parent_id": 0
+  },
+  {
+    "category_id": "535",
+    "category_name": "Music",
+    "parent_id": 0
+  },
+  {
+    "category_id": "26",
+    "category_name": "Radio",
+    "parent_id": 0
+  }
+]

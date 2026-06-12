@@ -617,14 +617,7 @@ function initEventListeners() {
     }
   });
 
-  // Security Copy Protection - Disable right clicks on video player and cards
-  document.addEventListener('contextmenu', (e) => {
-    const isPlayer = e.target.tagName === 'VIDEO' || e.target.closest('.video-container');
-    const isContent = e.target.closest('.streams-grid') || e.target.closest('.sidebar') || e.target.closest('.modal-wrapper');
-    if (isPlayer || isContent) {
-      e.preventDefault();
-    }
-  });
+
 }
 
 // Load Content for active Tab

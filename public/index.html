@@ -545,189 +545,7 @@
     }
     .watch-btn.upcoming-btn:hover { transform: none; }
 
-    /* Instagram Unlock Modal Styles */
-    .modal-backdrop {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(4, 4, 8, 0.92);
-      backdrop-filter: blur(24px) saturate(1.4);
-      -webkit-backdrop-filter: blur(24px) saturate(1.4);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      transition: opacity 0.5s ease;
-    }
-    .modal-backdrop.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .modal-card {
-      background: linear-gradient(160deg, #13121a 0%, #0d0c12 100%);
-      border: 1px solid rgba(255, 106, 0, 0.35);
-      border-radius: 20px;
-      padding: 36px 28px 32px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 20px 60px rgba(0,0,0,0.7),
-        0 0 80px rgba(255, 106, 0, 0.06);
-      animation: modalSlideIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    /* Subtle top glow line */
-    .modal-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 20%; right: 20%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,106,0,0.6), transparent);
-    }
-    @keyframes modalSlideIn {
-      from { transform: translateY(40px) scale(0.96); opacity: 0; }
-      to { transform: translateY(0) scale(1); opacity: 1; }
-    }
-    /* Insta gradient icon ring */
-    .modal-icon-wrap {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 76px; height: 76px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      margin-bottom: 20px;
-      box-shadow: 0 8px 30px rgba(220, 39, 67, 0.35);
-    }
-    .modal-icon-wrap i {
-      font-size: 34px;
-      color: #fff;
-    }
-    .modal-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 24px;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 10px;
-      letter-spacing: -0.5px;
-    }
-    .modal-desc {
-      font-size: 13.5px;
-      color: #8a8a9a;
-      line-height: 1.65;
-      margin-bottom: 28px;
-    }
-    .modal-desc strong {
-      color: #fff;
-      font-weight: 700;
-    }
-    /* The main follow button */
-    .modal-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #f09433 0%, #e6683c 30%, #dc2743 60%, #bc1888 100%);
-      color: #fff;
-      border: none;
-      font-family: 'Outfit', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 14px 28px;
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      width: 100%;
-      transition: all 0.25s ease;
-      box-shadow: 0 6px 24px rgba(220, 39, 67, 0.35);
-      letter-spacing: 0.3px;
-    }
-    .modal-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 32px rgba(220, 39, 67, 0.5);
-      filter: brightness(1.08);
-    }
-    .modal-btn:active { transform: scale(0.98); }
-    /* Countdown ring stage */
-    .modal-countdown-stage {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-    .modal-countdown-stage.active { display: flex; }
-    .countdown-ring-wrap {
-      position: relative;
-      width: 90px; height: 90px;
-    }
-    .countdown-ring-wrap svg {
-      transform: rotate(-90deg);
-    }
-    .countdown-ring-track {
-      fill: none;
-      stroke: rgba(255,255,255,0.06);
-      stroke-width: 5;
-    }
-    .countdown-ring-fill {
-      fill: none;
-      stroke: url(#instaGrad);
-      stroke-width: 5;
-      stroke-linecap: round;
-      stroke-dasharray: 251.2;
-      stroke-dashoffset: 0;
-      transition: stroke-dashoffset 1s linear;
-    }
-    .countdown-number {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Outfit', sans-serif;
-      font-size: 28px;
-      font-weight: 900;
-      color: #fff;
-      line-height: 1;
-    }
-    .countdown-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: #8a8a9a;
-      letter-spacing: 0.3px;
-    }
-    /* Success state */
-    .modal-success-stage {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .modal-success-stage.active { display: flex; }
-    @keyframes popIn {
-      from { transform: scale(0.7); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .success-circle {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: rgba(52, 199, 89, 0.12);
-      border: 2px solid rgba(52, 199, 89, 0.4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px; color: var(--green);
-    }
-    .success-text {
-      font-family: 'Outfit', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--green);
-    }
-    .success-sub {
-      font-size: 12px;
-      color: #8a8a9a;
-    }
+
 
     /* PWA-like Bottom Navigation for Mobile Devices */
     .bottom-nav {
@@ -820,26 +638,7 @@
       opacity: 1; transform: translateX(-50%) translateY(0);
     }
 
-    /* ── DevTools Warning Overlay ── */
-    #devtools-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(4,4,8,0.97);
-      z-index: 99999;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 16px;
-      text-align: center;
-      padding: 32px;
-    }
-    #devtools-overlay i { font-size: 48px; color: var(--orange); }
-    #devtools-overlay h2 {
-      font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800;
-      color: #fff; letter-spacing: -0.5px;
-    }
-    #devtools-overlay p { font-size: 13px; color: var(--muted); max-width: 380px; line-height: 1.6; }
+
 
     /* Footer */
     footer {
@@ -929,52 +728,7 @@
 </head>
 <body>
 
-  <!-- Instagram Unlock Gateway Modal -->
-  <div id="unlock-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <!-- SVG gradient definition for ring -->
-      <svg width="0" height="0" style="position:absolute">
-        <defs>
-          <linearGradient id="instaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#f09433"/>
-            <stop offset="50%" stop-color="#dc2743"/>
-            <stop offset="100%" stop-color="#bc1888"/>
-          </linearGradient>
-        </defs>
-      </svg>
 
-      <!-- Step 1: Default CTA -->
-      <div id="modal-step-cta">
-        <div class="modal-icon-wrap"><i class="fa-brands fa-instagram"></i></div>
-        <div class="modal-title">Unlock Premium Live Feeds</div>
-        <div class="modal-desc">
-          To access our decrypted premium streams, please follow our official Instagram page <strong>@krynnlabs</strong>.
-        </div>
-        <a href="https://www.instagram.com/krynnlabs" target="_blank" class="modal-btn" id="instagram-follow-btn" onclick="startUnlockTimer()">
-          <i class="fa-brands fa-instagram"></i>&nbsp; Follow @krynnlabs
-        </a>
-      </div>
-
-      <!-- Step 2: Countdown ring -->
-      <div class="modal-countdown-stage" id="modal-step-countdown">
-        <div class="countdown-ring-wrap">
-          <svg width="90" height="90" viewBox="0 0 90 90">
-            <circle class="countdown-ring-track" cx="45" cy="45" r="40"/>
-            <circle class="countdown-ring-fill" id="countdown-ring" cx="45" cy="45" r="40"/>
-          </svg>
-          <div class="countdown-number" id="countdown-sec">5</div>
-        </div>
-        <div class="countdown-label">Verifying your follow &amp; unlocking stream...</div>
-      </div>
-
-      <!-- Step 3: Success -->
-      <div class="modal-success-stage" id="modal-step-success">
-        <div class="success-circle"><i class="fa-solid fa-check"></i></div>
-        <div class="success-text">Stream Unlocked!</div>
-        <div class="success-sub">Welcome to KRYNN SPORTS. Enjoy the live feeds.</div>
-      </div>
-    </div>
-  </div>
 
   <!-- Header -->
   <header>
@@ -1079,12 +833,7 @@
     </div>
   </main>
 
-  <!-- DevTools Warning Overlay -->
-  <div id="devtools-overlay">
-    <i class="fa-solid fa-shield-halved"></i>
-    <h2>Content Protection Active</h2>
-    <p>Developer tools are not permitted while streaming. Please close DevTools to continue watching.</p>
-  </div>
+
 
   <!-- Share Link Toast -->
   <div class="share-toast" id="share-toast"><i class="fa-solid fa-check"></i> Link copied to clipboard!</div>
@@ -1344,13 +1093,7 @@
                     await shakaPlayerInstance.load(channel.streamUrl);
                     video.muted = false;
                     
-                    // Only autoplay if followed gateway is unlocked
-                    const isUnlocked = localStorage.getItem('krynn_stream_unlocked') === 'true';
-                    if (isUnlocked) {
-                        await video.play().catch(e => console.log('Autoplay deferred:', e));
-                    } else {
-                        console.log('Stream loaded but paused. Complete follow gateway to start playback.');
-                    }
+                    await video.play().catch(e => console.log('Autoplay deferred:', e));
                 } catch (error) {
                     console.error('Shaka dynamic stream load error:', error);
                 }
@@ -1578,91 +1321,7 @@
             }
         };
 
-        // --- Instagram Follow Gateway Timer (3-Stage Modal) --------------------
-        window.startUnlockTimer = function() {
-            // Prevent double-trigger if already counting down
-            if (window._unlockTimerRunning) return;
-            window._unlockTimerRunning = true;
 
-            // Circumference for r=40 circle: 2 * π * 40 ≈ 251.2
-            const CIRCUMFERENCE = 251.2;
-            const TOTAL_SECONDS = 5;
-
-            // --- Step 1 → Step 2: Show countdown ring ---
-            const stepCTA      = document.getElementById('modal-step-cta');
-            const stepCountdown = document.getElementById('modal-step-countdown');
-            const stepSuccess  = document.getElementById('modal-step-success');
-            const countdownNum = document.getElementById('countdown-sec');
-            const ringFill     = document.getElementById('countdown-ring');
-
-            if (stepCTA) stepCTA.style.display = 'none';
-            if (stepCountdown) stepCountdown.classList.add('active');
-
-            // Init ring to full
-            if (ringFill) {
-                ringFill.style.strokeDashoffset = '0';
-            }
-
-            let secondsLeft = TOTAL_SECONDS;
-            if (countdownNum) countdownNum.textContent = secondsLeft;
-
-            // Use requestAnimationFrame for smooth ring drain
-            let startTime = null;
-
-            function animateRing(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const elapsed = (timestamp - startTime) / 1000; // seconds elapsed
-                const fraction = Math.min(elapsed / TOTAL_SECONDS, 1);
-
-                // Drain the ring: offset goes from 0 → CIRCUMFERENCE
-                if (ringFill) {
-                    ringFill.style.strokeDashoffset = (CIRCUMFERENCE * fraction).toFixed(2);
-                }
-
-                // Update number every full second
-                const newSeconds = Math.max(0, TOTAL_SECONDS - Math.floor(elapsed));
-                if (countdownNum && parseInt(countdownNum.textContent) !== newSeconds) {
-                    countdownNum.textContent = newSeconds;
-                }
-
-                if (fraction < 1) {
-                    requestAnimationFrame(animateRing);
-                } else {
-                    // --- Step 2 → Step 3: Show success ---
-                    if (stepCountdown) stepCountdown.classList.remove('active');
-                    if (stepSuccess) stepSuccess.classList.add('active');
-
-                    // Save unlock state — all persistence layers simultaneously
-                    localStorage.setItem('krynn_stream_unlocked', 'true');
-
-                    // Notify server to permanently register this IP (fire-and-forget)
-                    fetch('/api/unlock-confirm', { method: 'POST' })
-                        .then(r => r.json())
-                        .then(d => console.log('[Unlock] Server confirmed:', d.message))
-                        .catch(e => console.warn('[Unlock] Server confirm failed:', e.message));
-
-                    // After brief success flash, dismiss modal and start playback
-                    setTimeout(() => {
-                        const modal = document.getElementById('unlock-modal');
-                        if (modal) {
-                            modal.style.opacity = '0';
-                            modal.style.transition = 'opacity 0.5s ease';
-                            setTimeout(() => {
-                                modal.classList.add('hidden');
-                                window._unlockTimerRunning = false;
-                                // Trigger stream playback
-                                const video = document.getElementById('video');
-                                if (video) {
-                                    video.play().catch(e => console.log('Unlock play trigger:', e));
-                                }
-                            }, 500);
-                        }
-                    }, 1200); // Show success for 1.2s
-                }
-            }
-
-            requestAnimationFrame(animateRing);
-        };
 
         // --- Page Init & Service Worker -----------------------------------------
 
@@ -1680,37 +1339,7 @@
                 });
             }
 
-            // ── Multi-layer unlock check: localStorage + server IP + cookie ──
-            async function checkUnlockStatus() {
-                const modal = document.getElementById('unlock-modal');
-                if (!modal) return;
 
-                // Layer 1: localStorage (instant, same browser)
-                if (localStorage.getItem('krynn_stream_unlocked') === 'true') {
-                    modal.classList.add('hidden');
-                    return;
-                }
-
-                // Layer 2: Server-side IP + cookie check (covers incognito, other browsers, same IP)
-                try {
-                    const res = await fetch('/api/unlock-check');
-                    const data = await res.json();
-                    if (data.unlocked) {
-                        // Sync back to localStorage so future checks are instant
-                        localStorage.setItem('krynn_stream_unlocked', 'true');
-                        modal.classList.add('hidden');
-                        return;
-                    }
-                } catch (e) {
-                    // Server unreachable — fall through, show modal
-                    console.warn('[Unlock] Could not reach server for unlock check:', e.message);
-                }
-
-                // Not unlocked — show the modal
-                modal.classList.remove('hidden');
-            }
-
-            checkUnlockStatus();
 
             // Initialize chat toggle state based on preference and viewport
             const chatPref = localStorage.getItem('krynn_chat_open');
@@ -1933,74 +1562,7 @@
     })();
 
 
-    // ──────────────────────────────────────────────────────────────
-    // 2. RIGHT-CLICK & DEVTOOLS PROTECTION
-    // ──────────────────────────────────────────────────────────────
-    (function initCopyProtection() {
-      // Disable right-click context menu
-      document.addEventListener('contextmenu', e => e.preventDefault());
 
-      // Disable common keyboard shortcuts for DevTools / view-source
-      document.addEventListener('keydown', e => {
-        const blockedKeys = [
-          { key: 'F12' },
-          { ctrl: true, shift: true, key: 'I' },  // Inspect
-          { ctrl: true, shift: true, key: 'J' },  // Console
-          { ctrl: true, shift: true, key: 'C' },  // Elements
-          { ctrl: true, key: 'U' },                // View Source
-          { ctrl: true, key: 'S' },                // Save Page
-          { ctrl: true, key: 'P' },                // Print
-        ];
-
-        for (const combo of blockedKeys) {
-          const ctrl = combo.ctrl ? (e.ctrlKey || e.metaKey) : true;
-          const shift = combo.shift ? e.shiftKey : true;
-          const keyMatch = combo.key
-            ? e.key === combo.key || e.code === combo.key
-            : true;
-
-          // Only block if ALL parts match
-          const ctrlOk  = combo.ctrl  ? (e.ctrlKey || e.metaKey) : !e.ctrlKey && !e.metaKey;
-          const shiftOk = combo.shift ? e.shiftKey : (combo.ctrl ? true : !e.shiftKey);
-
-          if (combo.key === 'F12' && e.key === 'F12') {
-            e.preventDefault(); e.stopPropagation(); return false;
-          }
-          if (combo.ctrl && combo.shift && ctrlOk && e.shiftKey && e.key.toUpperCase() === combo.key) {
-            e.preventDefault(); e.stopPropagation(); return false;
-          }
-          if (combo.ctrl && !combo.shift && ctrlOk && !e.shiftKey && e.key.toUpperCase() === combo.key) {
-            e.preventDefault(); e.stopPropagation(); return false;
-          }
-        }
-      });
-
-      // DevTools size detection — triggers if window is significantly smaller than screen
-      const overlay = document.getElementById('devtools-overlay');
-      let devtoolsOpen = false;
-
-      function checkDevtools() {
-        const threshold = 160;
-        const widthDiff  = window.outerWidth  - window.innerWidth;
-        const heightDiff = window.outerHeight - window.innerHeight;
-        const isOpen = widthDiff > threshold || heightDiff > threshold;
-
-        if (isOpen !== devtoolsOpen) {
-          devtoolsOpen = isOpen;
-          if (overlay) {
-            overlay.style.display = isOpen ? 'flex' : 'none';
-            // Pause video when devtools opened
-            const vid = document.getElementById('video');
-            if (vid) {
-              isOpen ? vid.pause() : vid.play().catch(() => {});
-            }
-          }
-        }
-      }
-
-      setInterval(checkDevtools, 800);
-      window.addEventListener('resize', checkDevtools);
-    })();
 
 
     // ──────────────────────────────────────────────────────────────

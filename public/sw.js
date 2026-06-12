@@ -1,30 +1,19 @@
-// KRYNN SPORTS Service Worker v3 — cache bust (removes old popup cache)
-const CACHE_VERSION = 'krynn-v3';
+// KRYNN SPORTS Service Worker v4
+// Clears old caches (which had the popup), then hands off to Monetag SW
 
-self.addEventListener('install', event => {
-  self.skipWaiting();
-});
+// Step 1: Force activate immediately so cache clearing happens right away
+self.addEventListener('install', () => self.skipWaiting());
 
 self.addEventListener('activate', event => {
+  // Clear ALL old caches so no stale popup HTML remains
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => {
-        if (key !== CACHE_VERSION) {
-          return caches.delete(key);
-        }
-      }))
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', event => {
-  // Network-first: always serve fresh content
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
-  );
-});
-
-// Monetag push notifications
+// Step 2: Hand control to Monetag push notification SW
 self.options = {
     "domain": "3nbf4.com",
     "zoneId": 11138495

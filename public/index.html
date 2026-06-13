@@ -2243,7 +2243,7 @@
             // Listen for error events from Shaka Player
             player.addEventListener('error', (event) => {
                 console.error('Shaka player error event:', event.detail);
-                showPlayerError(`Playback interrupted: ${event.detail.message || 'Source stream is unreachable (Error Code ' + event.detail.code + ')'}`);
+                tryNextChannelFailover(`shaka-player-error-${event.detail.code}`);
             });
 
             // Listen for native video element errors (HLS fallback tag)
@@ -2251,8 +2251,14 @@
                 const channel = channelsData[activeChannelIndex];
                 if (channel && channel.type !== 'iframe' && video.error) {
                     console.error('Video element error:', video.error);
-                    showPlayerError(`Native playback failed: ${video.error.message || 'Stream source was disconnected.'}`);
+                    tryNextChannelFailover(`video-error-${video.error.code}`);
                 }
+            });
+
+            // Reset failover count on successful playback
+            video.addEventListener('playing', () => {
+                console.log('[Channel Success] Stream playing successfully. Resetting failover count.');
+                channelFailoverCount = 0;
             });
 
             // Initialize rendering
@@ -2272,7 +2278,38 @@
             });
         }
 
-        window.selectChannel = async function(index) {
+        let channelFailoverCount = 0;
+
+        async function tryNextChannelFailover(reason) {
+            console.warn(`[Channel Failover] Current channel ${activeChannelIndex} failed (${reason}). Trying next channel...`);
+            
+            // Limit failover loop to prevent infinite loop if all channels are down
+            if (channelFailoverCount >= channelsData.length) {
+                console.error('[Channel Failover] All channels checked and failed.');
+                showPlayerError(`Failed to load stream: All available broadcast feeds are currently offline.`);
+                channelFailoverCount = 0; // reset
+                return;
+            }
+            
+            channelFailoverCount++;
+            let nextIndex = activeChannelIndex + 1;
+            if (nextIndex >= channelsData.length) {
+                nextIndex = 0;
+            }
+            
+            // Show toast message to user that we're failing over
+            if (window.showToast) {
+                window.showToast(`Feed offline. Auto-switching to ${channelsData[nextIndex].name}...`, 'fa-circle-notch fa-spin');
+            }
+            
+            // Switch channel
+            selectChannel(nextIndex, false);
+        }
+
+        window.selectChannel = async function(index, isManual = true) {
+            if (isManual) {
+                channelFailoverCount = 0;
+            }
             activeChannelIndex = index;
             const channel = channelsData[index];
             if (!channel) return;
@@ -2344,7 +2381,7 @@
                     await video.play().catch(e => console.log('Autoplay deferred:', e));
                 } catch (error) {
                     console.error('Shaka dynamic stream load error:', error);
-                    showPlayerError(`Failed to load stream: The feed might be offline or decryption keys have expired.`);
+                    tryNextChannelFailover('shaka-load-catch');
                 }
             }
         };

@@ -2383,10 +2383,24 @@
             if (!drawerList) return;
             drawerList.innerHTML = '';
 
-            channelsData.forEach((channel, index) => {
+            const channelsWithIndex = channelsData.map((channel, originalIndex) => ({
+                channel,
+                originalIndex
+            }));
+
+            channelsWithIndex.sort((a, b) => {
+                const aOnline = channelsHealthStatus[a.channel.streamUrl] !== false;
+                const bOnline = channelsHealthStatus[b.channel.streamUrl] !== false;
+                if (aOnline && !bOnline) return -1;
+                if (!aOnline && bOnline) return 1;
+                return 0;
+            });
+
+            channelsWithIndex.forEach(({ channel, originalIndex }) => {
                 const card = document.createElement('div');
                 card.className = 'drawer-channel-card';
-                if (index === activeChannelIndex) card.classList.add('active');
+                card.setAttribute('data-channel-index', originalIndex);
+                if (originalIndex === activeChannelIndex) card.classList.add('active');
 
                 const isOnline = channelsHealthStatus[channel.streamUrl] !== false; // Default true
                 const healthColor = isOnline ? 'var(--green)' : 'var(--red)';
@@ -2403,7 +2417,7 @@
                 `;
 
                 card.addEventListener('click', () => {
-                    selectChannel(index);
+                    selectChannel(originalIndex);
                     setTimeout(() => {
                         toggleQuickChannels(false);
                     }, 400);
@@ -2559,14 +2573,16 @@
             if (errorOverlay) errorOverlay.classList.remove('show');
 
             // Update active state in list selectors
-            document.querySelectorAll('.channel-select-card').forEach((card, idx) => {
-                if (idx === index) card.classList.add('active');
+            document.querySelectorAll('.channel-select-card').forEach((card) => {
+                const cardIdx = parseInt(card.getAttribute('data-channel-index'));
+                if (cardIdx === index) card.classList.add('active');
                 else card.classList.remove('active');
             });
 
             // Update active state in drawer selectors
-            document.querySelectorAll('.drawer-channel-card').forEach((card, idx) => {
-                if (idx === index) card.classList.add('active');
+            document.querySelectorAll('.drawer-channel-card').forEach((card) => {
+                const cardIdx = parseInt(card.getAttribute('data-channel-index'));
+                if (cardIdx === index) card.classList.add('active');
                 else card.classList.remove('active');
             });
 
@@ -2635,10 +2651,24 @@
             if (!listScroll) return;
             listScroll.innerHTML = '';
 
-            channelsData.forEach((channel, index) => {
+            const channelsWithIndex = channelsData.map((channel, originalIndex) => ({
+                channel,
+                originalIndex
+            }));
+
+            channelsWithIndex.sort((a, b) => {
+                const aOnline = channelsHealthStatus[a.channel.streamUrl] !== false;
+                const bOnline = channelsHealthStatus[b.channel.streamUrl] !== false;
+                if (aOnline && !bOnline) return -1;
+                if (!aOnline && bOnline) return 1;
+                return 0;
+            });
+
+            channelsWithIndex.forEach(({ channel, originalIndex }) => {
                 const card = document.createElement('div');
                 card.className = 'channel-select-card';
-                if (index === activeChannelIndex) card.classList.add('active');
+                card.setAttribute('data-channel-index', originalIndex);
+                if (originalIndex === activeChannelIndex) card.classList.add('active');
 
                 // Clean logo fallback
                 let logoUrl = channel.logo;
@@ -2662,7 +2692,7 @@
                 `;
 
                 card.addEventListener('click', () => {
-                    selectChannel(index);
+                    selectChannel(originalIndex);
                     scrollToSection('video-section');
                 });
 

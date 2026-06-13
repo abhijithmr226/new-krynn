@@ -746,6 +746,112 @@
     .footer-social a { color: var(--orange); text-decoration: none; }
     .footer-social a:hover { text-decoration: underline; }
 
+    /* Cookie Consent Banner (GDPR/AdSense Compliance) */
+    .cookie-consent-banner {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      max-width: 380px;
+      background: rgba(16, 16, 20, 0.88);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+    .cookie-consent-banner.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .cookie-consent-content {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .cookie-consent-icon {
+      font-size: 22px;
+      color: var(--orange);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .cookie-consent-text h5 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      text-align: left;
+    }
+    .cookie-consent-text p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      text-align: left;
+    }
+    .cookie-consent-text a {
+      color: var(--orange);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .cookie-consent-text a:hover {
+      text-decoration: underline;
+    }
+    .cookie-consent-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .cookie-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cookie-btn.accept {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.2);
+    }
+    .cookie-btn.accept:hover {
+      background: var(--orange-hover);
+      transform: translateY(-1px);
+    }
+    .cookie-btn.decline {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      border: 1px solid var(--card-border);
+    }
+    .cookie-btn.decline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* FAQ Accordion Styling */
+    .faq-card {
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .faq-card:hover {
+      border-color: rgba(255, 106, 0, 0.45) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .faq-header:hover span {
+      color: var(--orange) !important;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       body { padding-bottom: 74px; } /* Space for bottom navigation tab bar */
@@ -771,6 +877,12 @@
       .channel-select-card .card-name { font-size: 11px; }
       .matches-grid { grid-template-columns: 1fr; gap: 12px; }
       .bottom-nav { display: flex; }
+      .cookie-consent-banner {
+        bottom: 82px;
+        left: 16px;
+        right: 16px;
+        max-width: none;
+      }
       
       /* Mobile chat adjustments */
       .media-container {
@@ -1813,6 +1925,60 @@
         </table>
       </div>
     </div>
+
+    <!-- FAQ and Sports Guide Section (AdSense Content Boost) -->
+    <div class="upcoming-container" id="faq-section" style="margin-top: 32px; margin-bottom: 24px;">
+      <div class="section-title" style="margin-bottom: 20px;">
+        <i class="fa-solid fa-circle-question"></i> FIFA World Cup 2026 — Live Streaming Guide &amp; FAQ
+      </div>
+      
+      <div class="guide-intro" style="margin-bottom: 24px; color: var(--muted); font-size: 14px; line-height: 1.8;">
+        <p style="margin-bottom: 12px;">Welcome to the ultimate fan dashboard for the <strong>FIFA World Cup 2026</strong>. This historic 23rd edition of the tournament is co-hosted across three North American countries: the United States, Mexico, and Canada. With an expanded format of 48 nations competing in 104 matches, this represents the largest World Cup in association football history.</p>
+        <p>Our dashboard integrates real-time match data, group standings, live scoreboards, and decrypted streaming feeds. Below is a comprehensive guide to utilizing our platform and getting the best viewing experience.</p>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;">
+          <div class="faq-header" onclick="toggleFaq(this)" style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #fff;">How can I watch live matches on KRYNN SPORTS?</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 13px; color: var(--orange); transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-body" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 24px;">
+            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">To watch a live match, simply scroll to the <strong>Live Player Section</strong>. Select any channels or broadcast feeds from the menu on the side of the player. Our player supports both DASH (.mpd) and HLS (.m3u8) streams. If a stream fails to load, the player will automatically search and switch to working backup feeds.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;">
+          <div class="faq-header" onclick="toggleFaq(this)" style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #fff;">Are the live match scores and data accurate?</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 13px; color: var(--orange); transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-body" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 24px;">
+            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">Yes. Our real-time scoreboard is connected to live statistics APIs (including OpenFootball and SportScore). We display live scores, possession percentages, match probability projections, and complete group standings updated immediately after the final whistle of every match day.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;">
+          <div class="faq-header" onclick="toggleFaq(this)" style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #fff;">Why am I getting a playback decryption error?</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 13px; color: var(--orange); transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-body" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 24px;">
+            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">Many premium broadcast streams use Digital Rights Management (DRM) to protect their feeds. KRYNN SPORTS incorporates a built-in DRM client utilizing ClearKey decryption keys. If the keys expire or if the broadcaster changes their rotation, the stream may show a decryption error. When this happens, our system will attempt auto-failover, or you can manually select an alternate feed from the channel menu.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;">
+          <div class="faq-header" onclick="toggleFaq(this)" style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #fff;">Does KRYNN SPORTS host or broadcast copyrighted video content?</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 13px; color: var(--orange); transition: transform 0.3s;"></i>
+          </div>
+          <div class="faq-body" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 24px;">
+            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">No, KRYNN SPORTS does not host, upload, or index any video media on its own servers. The portal is simply a user-agent stream directory. It queries public URLs and applies decryption keys on-the-fly inside your local browser sandbox. For more details or legal claims, please review our <a href="/disclaimer" style="color: var(--orange); text-decoration: none; font-weight: 600;">Disclaimer</a> and DMCA policy page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
 
@@ -1844,11 +2010,28 @@
     <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds &nbsp;|&nbsp; Matches data fetched from SportScore</p>
     <p class="footer-social">Follow us on Instagram <a href="https://www.instagram.com/krynnlabs" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> @krynnlabs</a> for stream updates &amp; announcements</p>
     <div class="footer-links">
-      <a href="/privacy-policy">Privacy Policy</a>
       <a href="/about">About Us</a>
       <a href="/contact">Contact Us</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+      <a href="/disclaimer">Disclaimer</a>
     </div>
   </footer>
+
+  <!-- Cookie Consent Banner -->
+  <div class="cookie-consent-banner" id="cookie-consent">
+    <div class="cookie-consent-content">
+      <div class="cookie-consent-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+      <div class="cookie-consent-text">
+        <h5>We Value Your Privacy</h5>
+        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy">Privacy Policy</a> to learn more.</p>
+      </div>
+    </div>
+    <div class="cookie-consent-buttons">
+      <button class="cookie-btn decline" onclick="declinePrivacyConsent()">Decline</button>
+      <button class="cookie-btn accept" onclick="acceptPrivacyConsent()">Accept &amp; Continue</button>
+    </div>
+  </div>
 
   <script>
     (async function() {
@@ -3789,6 +3972,54 @@
       const chatTabActive = document.getElementById('tab-chat')?.classList.contains('active');
       if (!chatTabActive) setActiveNavTab(tabMap[current] ?? 0);
     }, { passive: true });
+
+    // FAQ Accordion toggle functionality
+    window.toggleFaq = function(header) {
+      const card = header.parentNode;
+      const body = header.nextElementSibling;
+      const icon = header.querySelector('i');
+      
+      // Close other FAQs
+      document.querySelectorAll('.faq-card').forEach(otherCard => {
+        if (otherCard !== card) {
+          otherCard.querySelector('.faq-body').style.maxHeight = null;
+          otherCard.querySelector('.faq-header i').style.transform = '';
+          otherCard.style.borderColor = 'var(--card-border)';
+        }
+      });
+
+      if (body.style.maxHeight) {
+        body.style.maxHeight = null;
+        icon.style.transform = '';
+        card.style.borderColor = 'var(--card-border)';
+      } else {
+        body.style.maxHeight = body.scrollHeight + "px";
+        icon.style.transform = 'rotate(180deg)';
+        card.style.borderColor = 'var(--orange)';
+      }
+    };
+
+    // GDPR AdSense Cookie Consent Logic
+    function checkPrivacyConsent() {
+      const consent = localStorage.getItem('krynn_privacy_consent');
+      if (!consent) {
+        setTimeout(() => {
+          document.getElementById('cookie-consent')?.classList.add('show');
+        }, 1500);
+      }
+    }
+
+    window.acceptPrivacyConsent = function() {
+      localStorage.setItem('krynn_privacy_consent', 'accepted');
+      document.getElementById('cookie-consent')?.classList.remove('show');
+    };
+
+    window.declinePrivacyConsent = function() {
+      localStorage.setItem('krynn_privacy_consent', 'declined');
+      document.getElementById('cookie-consent')?.classList.remove('show');
+    };
+
+    document.addEventListener('DOMContentLoaded', checkPrivacyConsent);
 
   </script>
 </body>

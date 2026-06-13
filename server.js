@@ -1146,6 +1146,12 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'contact.html'));
 });
+app.get('/terms', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'terms.html'));
+});
+app.get('/disclaimer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'disclaimer.html'));
+});
 
 // Fallback to serve index.html for UI SPA routes
 app.get('*', (req, res) => {

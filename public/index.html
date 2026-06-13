@@ -2438,19 +2438,40 @@
 
             // Listen for error events from Shaka Player
             player.addEventListener('error', (event) => {
-                console.error('Shaka player error event:', event.detail);
-                const code = event.detail ? event.detail.code : 0;
-                const isDrmError = (code >= 6000 && code < 7000);
-                const reason = isDrmError ? `shaka-drm-error-${code}` : `shaka-player-error-${code}`;
-                tryNextChannelFailover(reason);
+                if (isSwitchingChannel) {
+                    console.warn('Ignored Shaka player error event during transition:', event.detail);
+                    return;
+                }
+                // Only trigger failover if the error is CRITICAL (severity === 2)
+                if (event.detail && event.detail.severity === 2) {
+                    console.error('Fatal Shaka player error event:', event.detail);
+                    const code = event.detail.code;
+                    // Ignore code 1007 (LOAD_INTERRUPTED) which fires during manual channel changes
+                    if (code === 1007) return;
+                    const isDrmError = (code >= 6000 && code < 7000);
+                    const reason = isDrmError ? `shaka-drm-error-${code}` : `shaka-player-error-${code}`;
+                    tryNextChannelFailover(reason);
+                } else {
+                    console.warn('Non-fatal Shaka player error event:', event.detail);
+                }
             });
 
             // Listen for native video element errors (HLS fallback tag)
             video.addEventListener('error', (e) => {
+                if (isSwitchingChannel) {
+                    console.warn('Ignored video element error during transition:', video.error);
+                    return;
+                }
                 const channel = channelsData[activeChannelIndex];
                 if (channel && channel.type !== 'iframe' && video.error) {
-                    console.error('Video element error:', video.error);
-                    tryNextChannelFailover(`video-error-${video.error.code}`);
+                    const code = video.error.code;
+                    // Only trigger for actual network or decoding fatal errors (code 2 = NETWORK, 3 = DECODE)
+                    if (code === 2 || code === 3) {
+                        console.error('Fatal video element error:', video.error);
+                        tryNextChannelFailover(`video-error-${code}`);
+                    } else {
+                        console.warn('Ignored non-fatal video element error:', video.error);
+                    }
                 }
             });
 
@@ -2459,6 +2480,7 @@
                 console.log('[Channel Success] Stream playing successfully. Resetting failover count.');
                 channelFailoverCount = 0;
                 encounteredDrmError = false;
+                isSwitchingChannel = false;
             });
 
             // Initialize rendering
@@ -2480,8 +2502,14 @@
 
         let channelFailoverCount = 0;
         let encounteredDrmError = false;
+        let isSwitchingChannel = false;
 
         async function tryNextChannelFailover(reason) {
+            if (isSwitchingChannel) {
+                console.warn(`[Channel Failover] Switch in progress, ignoring duplicate failover trigger for: ${reason}`);
+                return;
+            }
+            
             console.warn(`[Channel Failover] Current channel ${activeChannelIndex} failed (${reason}). Trying next channel...`);
             
             if (reason.includes('drm')) {
@@ -2498,6 +2526,7 @@
                 }
                 channelFailoverCount = 0; // reset
                 encounteredDrmError = false;
+                isSwitchingChannel = false;
                 return;
             }
             
@@ -2517,6 +2546,7 @@
         }
 
         window.selectChannel = async function(index, isManual = true) {
+            isSwitchingChannel = true;
             if (isManual) {
                 channelFailoverCount = 0;
             }
@@ -2557,6 +2587,7 @@
                 if (shakaContainer) shakaContainer.style.display = 'none';
                 if (iframeContainer) iframeContainer.style.display = 'block';
                 if (playerIframe) playerIframe.src = channel.streamUrl;
+                isSwitchingChannel = false;
             } else {
                 if (playerIframe) playerIframe.src = 'about:blank';
                 if (iframeContainer) iframeContainer.style.display = 'none';
@@ -2564,6 +2595,7 @@
 
                 if (!shakaPlayerInstance) {
                     console.warn('Player instance not ready yet.');
+                    isSwitchingChannel = false;
                     return;
                 }
 
@@ -2589,8 +2621,10 @@
                     video.muted = false;
                     
                     await video.play().catch(e => console.log('Autoplay deferred:', e));
+                    isSwitchingChannel = false;
                 } catch (error) {
                     console.error('Shaka dynamic stream load error:', error);
+                    isSwitchingChannel = false;
                     tryNextChannelFailover('shaka-load-catch');
                 }
             }

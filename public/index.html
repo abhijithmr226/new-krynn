@@ -2439,7 +2439,10 @@
             // Listen for error events from Shaka Player
             player.addEventListener('error', (event) => {
                 console.error('Shaka player error event:', event.detail);
-                tryNextChannelFailover(`shaka-player-error-${event.detail.code}`);
+                const code = event.detail ? event.detail.code : 0;
+                const isDrmError = (code >= 6000 && code < 7000);
+                const reason = isDrmError ? `shaka-drm-error-${code}` : `shaka-player-error-${code}`;
+                tryNextChannelFailover(reason);
             });
 
             // Listen for native video element errors (HLS fallback tag)
@@ -2455,6 +2458,7 @@
             video.addEventListener('playing', () => {
                 console.log('[Channel Success] Stream playing successfully. Resetting failover count.');
                 channelFailoverCount = 0;
+                encounteredDrmError = false;
             });
 
             // Initialize rendering
@@ -2475,15 +2479,25 @@
         }
 
         let channelFailoverCount = 0;
+        let encounteredDrmError = false;
 
         async function tryNextChannelFailover(reason) {
             console.warn(`[Channel Failover] Current channel ${activeChannelIndex} failed (${reason}). Trying next channel...`);
             
-            // Limit failover loop to prevent infinite loop if all channels are down
-            if (channelFailoverCount >= channelsData.length) {
-                console.error('[Channel Failover] All channels checked and failed.');
-                showPlayerError(`Failed to load stream: All available broadcast feeds are currently offline.`);
+            if (reason.includes('drm')) {
+                encounteredDrmError = true;
+            }
+            
+            // Limit failover loop to prevent infinite loop if all channels are down (allow 2 full cycles)
+            if (channelFailoverCount >= channelsData.length * 2) {
+                console.error('[Channel Failover] All channels checked twice and failed.');
+                if (encounteredDrmError) {
+                    showPlayerError(`DRM Decryption failed: Decryption keys may have expired or rotated on the server. Please verify provider settings.`);
+                } else {
+                    showPlayerError(`Failed to load stream: All available broadcast feeds are currently offline.`);
+                }
                 channelFailoverCount = 0; // reset
+                encounteredDrmError = false;
                 return;
             }
             

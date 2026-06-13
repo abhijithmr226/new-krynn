@@ -449,7 +449,7 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
       pointer-events: none;
       opacity: 0.82;
-      transition: opacity 0.35s ease;
+      transition: opacity 0.35s ease, top 0.35s ease;
     }
     /* When the page is in fullscreen, fix the watermark to the viewport */
     .krynn-watermark.fullscreen-pinned {
@@ -1722,31 +1722,52 @@
     }
 
     /* Floating Match Countdown Badge */
+    /* Floating Match Countdown Badge */
     .upcoming-match-badge {
       position: absolute;
       top: 16px;
-      left: 140px; /* to the right of the Feeds Menu button */
-      z-index: 99;
+      right: 20px; /* sit on top-right of watermark, aligned to the right edge */
+      z-index: 9999;
       display: flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, rgba(6, 6, 9, 0.85) 0%, rgba(20, 10, 0, 0.8) 100%);
+      background: linear-gradient(135deg, rgba(6,6,9,0.82) 0%, rgba(20,10,0,0.78) 100%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: 6px 12px;
+      padding: 7px 14px;
       border-radius: 8px;
       border: 1px solid rgba(255, 106, 0, 0.25);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
       font-family: 'Outfit', sans-serif;
       font-size: 11px;
       font-weight: 700;
       color: #fff;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.35s ease;
     }
     .upcoming-match-badge.show {
+      opacity: 0.82;
+    }
+    .player-wrapper:hover .upcoming-match-badge.show {
+      opacity: 1;
+    }
+    .upcoming-match-badge.fullscreen-pinned {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 2147483647;
       opacity: 0.9;
+    }
+    :fullscreen .upcoming-match-badge,
+    :-webkit-full-screen .upcoming-match-badge,
+    :-moz-full-screen .upcoming-match-badge,
+    :-ms-fullscreen .upcoming-match-badge {
+      position: fixed !important;
+      top: 18px !important;
+      right: 22px !important;
+      z-index: 2147483647 !important;
+      opacity: 0.9 !important;
     }
     .badge-flag {
       width: 18px;
@@ -1760,12 +1781,53 @@
       letter-spacing: 0.5px;
     }
 
+    /* Dynamic vertical stacking when countdown is shown: push KRYNN SPORTS watermark down */
+    .upcoming-match-badge.show ~ .krynn-watermark {
+      top: 54px;
+    }
+    .upcoming-match-badge.show.fullscreen-pinned ~ .krynn-watermark {
+      top: 56px;
+    }
+    :fullscreen .upcoming-match-badge.show ~ .krynn-watermark,
+    :-webkit-full-screen .upcoming-match-badge.show ~ .krynn-watermark,
+    :-moz-full-screen .upcoming-match-badge.show ~ .krynn-watermark,
+    :-ms-fullscreen .upcoming-match-badge.show ~ .krynn-watermark {
+      top: 56px !important;
+    }
+
     @media (max-width: 768px) {
       .upcoming-match-badge {
-        top: 56px;
-        left: 16px;
+        top: 12px;
+        right: 12px; /* stack on top of watermark on mobile */
+        left: auto;
         font-size: 10px;
         padding: 4px 8px;
+        gap: 4px;
+      }
+      .upcoming-match-badge.fullscreen-pinned {
+        top: 12px;
+        right: 12px;
+      }
+      :fullscreen .upcoming-match-badge,
+      :-webkit-full-screen .upcoming-match-badge,
+      :-moz-full-screen .upcoming-match-badge,
+      :-ms-fullscreen .upcoming-match-badge {
+        top: 12px !important;
+        right: 12px !important;
+      }
+      
+      /* Mobile stack when shown */
+      .upcoming-match-badge.show ~ .krynn-watermark {
+        top: 44px;
+      }
+      .upcoming-match-badge.show.fullscreen-pinned ~ .krynn-watermark {
+        top: 44px;
+      }
+      :fullscreen .upcoming-match-badge.show ~ .krynn-watermark,
+      :-webkit-full-screen .upcoming-match-badge.show ~ .krynn-watermark,
+      :-moz-full-screen .upcoming-match-badge.show ~ .krynn-watermark,
+      :-ms-fullscreen .upcoming-match-badge.show ~ .krynn-watermark {
+        top: 44px !important;
       }
     }
   </style>
@@ -3892,18 +3954,68 @@
         // --- Upcoming Match Countdown Badge Logic ---
         let badgeInterval = null;
 
+        function getTeamAbbreviation(name) {
+            if (!name) return '—';
+            if (name.length <= 3) return name.toUpperCase();
+            
+            const clean = cleanName(name);
+            const abbreviations = {
+                'algeria': 'ALG',
+                'argentina': 'ARG',
+                'australia': 'AUS',
+                'austria': 'AUT',
+                'belgium': 'BEL',
+                'bosnia and herzegovina': 'BIH',
+                'bosnia & herzegovina': 'BIH',
+                'brazil': 'BRA',
+                'cabo verde': 'CPV',
+                'canada': 'CAN',
+                'colombia': 'COL',
+                'congo dr': 'COD',
+                'congo': 'COD',
+                'cote divoire': 'CIV',
+                "cote d'ivoire": 'CIV',
+                'croatia': 'CRO',
+                'curacao': 'CUW',
+                'czechia': 'CZE',
+                'czech republic': 'CZE',
+                'ecuador': 'ECU',
+                'egypt': 'EGY',
+                'england': 'ENG',
+                'france': 'FRA',
+                'germany': 'GER',
+                'ghana': 'GHA',
+                'haiti': 'HAI',
+                'iran': 'IRN',
+                'iraq': 'IRQ',
+                'italy': 'ITA',
+                'japan': 'JPN',
+                'mexico': 'MEX',
+                'morocco': 'MAR',
+                'netherlands': 'NED',
+                'poland': 'POL',
+                'portugal': 'POR',
+                'qatar': 'QAT',
+                'saudi arabia': 'KSA',
+                'senegal': 'SEN',
+                'serbia': 'SRB',
+                'spain': 'ESP',
+                'switzerland': 'SUI',
+                'tunisia': 'TUN',
+                'united states': 'USA',
+                'uruguay': 'URU',
+                'wales': 'WAL',
+                'south korea': 'KOR',
+                'turkiye': 'TUR'
+            };
+            return abbreviations[clean] || name.substring(0, 3).toUpperCase();
+        }
+
         window.updateUpcomingMatchCountdown = function() {
             if (!window.allWorldCupFixtures) return;
 
-            const liveMatches = window.allWorldCupFixtures.filter(f => f.status === 'live');
             const badge = document.getElementById('upcoming-match-badge');
             if (!badge) return;
-
-            if (liveMatches.length > 0) {
-                badge.classList.remove('show');
-                clearInterval(badgeInterval);
-                return;
-            }
 
             const now = new Date();
             const upcomingMatches = window.allWorldCupFixtures
@@ -3923,8 +4035,8 @@
             
             document.getElementById('badge-home-flag').src = homeLogo;
             document.getElementById('badge-away-flag').src = awayLogo;
-            document.getElementById('badge-home-name').textContent = nextMatch.home;
-            document.getElementById('badge-away-name').textContent = nextMatch.away;
+            document.getElementById('badge-home-name').textContent = getTeamAbbreviation(nextMatch.home);
+            document.getElementById('badge-away-name').textContent = getTeamAbbreviation(nextMatch.away);
 
             badge.classList.add('show');
 
@@ -4015,7 +4127,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=17')
+                    navigator.serviceWorker.register('/sw.js?v=18')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates
@@ -4105,6 +4217,8 @@
         // Move watermark into frame
         const wm = document.getElementById('krynn-watermark');
         if (wm) { wm.classList.add('fullscreen-pinned'); }
+        const ucmb = document.getElementById('upcoming-match-badge');
+        if (ucmb) { ucmb.classList.add('fullscreen-pinned'); }
         // Update fullscreen button icon
         const fsBtn = document.querySelector('.ctrl-btn[onclick="toggleFullscreen()"]');
         if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit';
@@ -4117,6 +4231,8 @@
         tryUnlockOrientation();
         const wm = document.getElementById('krynn-watermark');
         if (wm) { wm.classList.remove('fullscreen-pinned'); }
+        const ucmb = document.getElementById('upcoming-match-badge');
+        if (ucmb) { ucmb.classList.remove('fullscreen-pinned'); }
         const fsBtn = document.querySelector('.ctrl-btn[onclick="toggleFullscreen()"]');
         if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
     }
@@ -4149,9 +4265,9 @@
     // ── Standard Fullscreen Change Handler (Android/Desktop) ────────────
     function handleFullscreenChange() {
         const watermark  = document.getElementById('krynn-watermark');
+        const upcomingBadge = document.getElementById('upcoming-match-badge');
         const playerFrame = document.getElementById('player-frame');
         const fsBtn = document.querySelector('.ctrl-btn[onclick="toggleFullscreen()"]');
-        if (!watermark) return;
 
         const isFullscreen = !!(
             document.fullscreenElement ||
@@ -4165,18 +4281,24 @@
                 document.webkitFullscreenElement ||
                 document.mozFullScreenElement ||
                 document.msFullscreenElement;
-            if (fsEl && watermark.parentNode !== fsEl) fsEl.appendChild(watermark);
-            watermark.classList.add('fullscreen-pinned');
+            if (fsEl) {
+                if (watermark && watermark.parentNode !== fsEl) fsEl.appendChild(watermark);
+                if (upcomingBadge && upcomingBadge.parentNode !== fsEl) fsEl.appendChild(upcomingBadge);
+            }
+            if (watermark) watermark.classList.add('fullscreen-pinned');
+            if (upcomingBadge) upcomingBadge.classList.add('fullscreen-pinned');
 
             // Lock to landscape on mobile
             if (isMobileDevice) tryLockLandscape();
 
             if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit';
         } else {
-            if (playerFrame && watermark.parentNode !== playerFrame) {
-                playerFrame.appendChild(watermark);
+            if (playerFrame) {
+                if (watermark && watermark.parentNode !== playerFrame) playerFrame.appendChild(watermark);
+                if (upcomingBadge && upcomingBadge.parentNode !== playerFrame) playerFrame.appendChild(upcomingBadge);
             }
-            watermark.classList.remove('fullscreen-pinned');
+            if (watermark) watermark.classList.remove('fullscreen-pinned');
+            if (upcomingBadge) upcomingBadge.classList.remove('fullscreen-pinned');
 
             // Unlock orientation when exiting
             if (isMobileDevice) tryUnlockOrientation();

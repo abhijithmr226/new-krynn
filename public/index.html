@@ -5,13 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6232926894418612"
      crossorigin="anonymous"></script>
-  <!-- Popunder and Social Bar Ads -->
-  <script src="https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js"></script>
-  <script src="https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js"></script>
-  <!-- New User-Requested Ads -->
-  <script>(function(s){s.dataset.zone='11138501',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-  <script>(function(s){s.dataset.zone='11142733',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-  <script src="https://quge5.com/88/tag.min.js" data-zone="249064" async data-cfasync="false"></script>
+  <!-- Dynamic Ad Provider Script (Adsterra or Monetag Choice) -->
+  <script>
+    (function() {
+      const provider = localStorage.getItem('krynn_ad_provider') || 'adsterra';
+      if (provider === 'adsterra') {
+        // Load Adsterra Scripts
+        const s1 = document.createElement('script');
+        s1.src = 'https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js';
+        document.head.appendChild(s1);
+
+        const s2 = document.createElement('script');
+        s2.src = 'https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js';
+        document.head.appendChild(s2);
+      } else if (provider === 'monetag') {
+        // Load Monetag Scripts
+        // 1. Popunder
+        (function(s){
+          s.dataset.zone='11138501';
+          s.src='https://al5sm.com/tag.min.js';
+        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+        // 2. Vignette Banner
+        (function(s){
+          s.dataset.zone='11142733';
+          s.src='https://n6wxm.com/vignette.min.js';
+        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+        // 3. Multi Tag (Push, Vignette, In-Page Push, OnClick)
+        const s3 = document.createElement('script');
+        s3.src = 'https://quge5.com/88/tag.min.js';
+        s3.dataset.zone = '249064';
+        s3.async = true;
+        s3.setAttribute('data-cfasync', 'false');
+        document.head.appendChild(s3);
+
+        // Hide Adsterra native banner container and mirror feed button
+        const style = document.createElement('style');
+        style.innerHTML = '#ad-native-container, #mirror-feed-btn { display: none !important; }';
+        document.head.appendChild(style);
+      }
+    })();
+  </script>
   <!-- Premium SEO Meta Tags -->
   <title>KRYNN SPORTS — Live FIFA World Cup 2026 Streaming, Fixtures &amp; Standings</title>
   <meta name="description" content="Watch premium live FIFA World Cup 2026 football streams. Real-time live scoreboard, official 104-match fixtures schedule, dynamic group standings, and match win probability stats.">
@@ -1745,7 +1780,11 @@
             <button class="share-btn" onclick="shareStream()" title="Share this stream">
               <i class="fa-solid fa-share-nodes"></i> Share
             </button>
-            <a class="ctrl-btn" href="https://www.effectivecpmnetwork.com/h5w1ryzbxr?key=e84c28e15446501957ab4abd631eff11" target="_blank" title="Alternative stream link (Ad supported)" style="text-decoration: none; color: #fff; background: rgba(255, 106, 0, 0.15); border: 1px solid var(--orange); display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-server"></i> Mirror Feed</a>
+            <select id="ad-provider-select" onchange="changeAdProvider(this.value)" class="ctrl-btn" style="background: rgba(255, 106, 0, 0.1); border: 1px solid var(--orange); color: #fff; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; outline: none; transition: all 0.2s;">
+              <option value="adsterra" style="background:#101014; color:#fff;">Ad Server: Adsterra</option>
+              <option value="monetag" style="background:#101014; color:#fff;">Ad Server: Monetag</option>
+            </select>
+            <a class="ctrl-btn" id="mirror-feed-btn" href="https://www.effectivecpmnetwork.com/h5w1ryzbxr?key=e84c28e15446501957ab4abd631eff11" target="_blank" title="Alternative stream link (Ad supported)" style="text-decoration: none; color: #fff; background: rgba(255, 106, 0, 0.15); border: 1px solid var(--orange); display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-server"></i> Mirror Feed</a>
             <button class="ctrl-btn" id="quick-feeds-btn" onclick="toggleQuickChannels()"><i class="fa-solid fa-tv"></i> Feeds</button>
             <button class="ctrl-btn" id="chat-toggle-btn" onclick="toggleChat()"><i class="fa-solid fa-comments"></i> Chat</button>
             <button class="ctrl-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i> Fullscreen</button>
@@ -3671,6 +3710,11 @@
             }
         });
 
+        window.changeAdProvider = function(val) {
+            localStorage.setItem('krynn_ad_provider', val);
+            window.location.reload();
+        };
+
         // --- Live Chat Toggle Logic ---------------------------------------------
         window.toggleChat = function() {
             const container = document.querySelector('.media-container');
@@ -3706,6 +3750,12 @@
                     });
                 }
             });
+
+            // Initialize ad provider selector value
+            const adSelect = document.getElementById('ad-provider-select');
+            if (adSelect) {
+                adSelect.value = localStorage.getItem('krynn_ad_provider') || 'adsterra';
+            }
 
             fetchSportScoreMatches();
             // Refresh scores every 45 seconds

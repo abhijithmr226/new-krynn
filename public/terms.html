@@ -5,10 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6232926894418612"
      crossorigin="anonymous"></script>
-  <!-- New User-Requested Ads -->
-  <script>(function(s){s.dataset.zone='11138501',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-  <script>(function(s){s.dataset.zone='11142733',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-  <script src="https://quge5.com/88/tag.min.js" data-zone="249064" async data-cfasync="false"></script>
+  <!-- Dynamic Ad Provider Script (Adsterra or Monetag Choice) -->
+  <script>
+    (function() {
+      const provider = localStorage.getItem('krynn_ad_provider') || 'adsterra';
+      if (provider === 'adsterra') {
+        // Load Adsterra Scripts
+        const s1 = document.createElement('script');
+        s1.src = 'https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js';
+        document.head.appendChild(s1);
+
+        const s2 = document.createElement('script');
+        s2.src = 'https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js';
+        document.head.appendChild(s2);
+      } else if (provider === 'monetag') {
+        // Load Monetag Scripts
+        // 1. Popunder
+        (function(s){
+          s.dataset.zone='11138501';
+          s.src='https://al5sm.com/tag.min.js';
+        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+        // 2. Vignette Banner
+        (function(s){
+          s.dataset.zone='11142733';
+          s.src='https://n6wxm.com/vignette.min.js';
+        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+        // 3. Multi Tag (Push, Vignette, In-Page Push, OnClick)
+        const s3 = document.createElement('script');
+        s3.src = 'https://quge5.com/88/tag.min.js';
+        s3.dataset.zone = '249064';
+        s3.async = true;
+        s3.setAttribute('data-cfasync', 'false');
+        document.head.appendChild(s3);
+      }
+    })();
+  </script>
   <title>Terms of Service — KRYNN SPORTS</title>
   <meta name="description" content="KRYNN SPORTS Terms of Service: Read the rules, guidelines, and agreements for using our live sports streaming dashboard.">
   <meta name="robots" content="index, follow">

@@ -8,6 +8,10 @@
   <!-- Popunder and Social Bar Ads -->
   <script src="https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js"></script>
   <script src="https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js"></script>
+  <!-- New User-Requested Ads -->
+  <script>(function(s){s.dataset.zone='11138501',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script>(function(s){s.dataset.zone='11142733',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script src="https://quge5.com/88/tag.min.js" data-zone="249064" async data-cfasync="false"></script>
   <!-- Premium SEO Meta Tags -->
   <title>KRYNN SPORTS — Live FIFA World Cup 2026 Streaming, Fixtures &amp; Standings</title>
   <meta name="description" content="Watch premium live FIFA World Cup 2026 football streams. Real-time live scoreboard, official 104-match fixtures schedule, dynamic group standings, and match win probability stats.">
@@ -3688,6 +3692,21 @@
         // --- Page Init & Service Worker -----------------------------------------
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Prevent popunder/onclick ads from triggering when clicking inside the video player or chat panel
+            const adProtectedElements = [
+                document.getElementById('player-frame'),
+                document.getElementById('chat-section')
+            ];
+            adProtectedElements.forEach(el => {
+                if (el) {
+                    ['click', 'mousedown', 'mouseup', 'pointerdown', 'pointerup', 'touchstart', 'touchend'].forEach(eventType => {
+                        el.addEventListener(eventType, (e) => {
+                            e.stopPropagation();
+                        });
+                    });
+                }
+            });
+
             fetchSportScoreMatches();
             // Refresh scores every 45 seconds
             setInterval(fetchSportScoreMatches, 45000);

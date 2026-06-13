@@ -4044,8 +4044,12 @@
             const tick = () => {
                 const diffMs = new Date(nextMatch.time) - new Date();
                 if (diffMs <= 0) {
-                    badge.classList.remove('show');
                     clearInterval(badgeInterval);
+                    // Mark as live instantly in local memory to select next match
+                    nextMatch.status = 'live';
+                    // Switch to the next countdown immediately
+                    updateUpcomingMatchCountdown();
+                    // Sync scores in the background
                     fetchSportScoreMatches();
                     return;
                 }
@@ -4127,7 +4131,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=19')
+                    navigator.serviceWorker.register('/sw.js?v=20')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates

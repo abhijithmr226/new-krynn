@@ -1879,9 +1879,10 @@
           <span><i class="fa-solid fa-comments"></i> Live Fan Chat</span>
           <button class="chat-close-btn" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="chat-widget-container" style="flex: 1; background: #060609; min-height: 300px; display: flex; flex-direction: column;">
-          <!-- Embedded Tawk.to Chat Interface -->
-          <iframe src="https://tawk.to/chat/6a2d7b56d6a95f1c2c58ca0a/1jr0qjivv" style="width: 100%; height: 100%; border: none; flex: 1; border-radius: 8px;" allow="autoplay"></iframe>
+        <div class="chat-widget-container" style="flex: 1; background: #060609; min-height: 300px; display: flex; flex-direction: column; overflow: hidden; border-radius: 8px;">
+          <!-- Minnit Chat Live Chat Room -->
+          <script src="https://minnit.chat/js/embed.js?c=1772345192" defer></script>
+          <span style="display: none;" class="minnit-chat-sembed" data-chatname="https://organizations.minnit.chat/768757246470535/c/Main?embed" data-style="width:100%; height:100%; border:none; background:transparent;" data-version="1.55">Chat</span>
         </div>
       </div>
     </div>
@@ -3867,7 +3868,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=10')
+                    navigator.serviceWorker.register('/sw.js?v=11')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates
@@ -4259,18 +4260,5 @@
 
   </script>
 
-  <!--Start of Tawk.to Script-->
-  <script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/6a2d7b56d6a95f1c2c58ca0a/1jr0qjivv';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
-  </script>
-  <!--End of Tawk.to Script-->
 </body>
 </html>

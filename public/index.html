@@ -1882,12 +1882,26 @@
         <div class="chat-widget-container" style="flex: 1; background: #060609; min-height: 300px; display: flex; flex-direction: column; overflow: hidden; border-radius: 8px;">
           <!-- Minnit Chat Live Chat Room -->
           <div style="flex: 1; width: 100%; position: relative;">
+            <script src="https://minnit.chat/js/chatsdk.js?c=1772345196" defer></script>
             <script src="https://minnit.chat/js/embed.js?c=1772345192" defer></script>
-            <span style="display: none;" class="minnit-chat-sembed" data-chatname="https://organizations.minnit.chat/768757246470535/c/Main?embed" data-style="width:100%; height:100%; border:none; background:transparent; position:absolute; top:0; left:0;" data-version="1.55">Chat</span>
+            <span style="display: none;" class="minnit-chat-sembed" data-iframeid="chat" data-chatname="https://organizations.minnit.chat/768757246470535/c/Main?embed&sdk&sdkversion=1.1mobile&dark&language=en" data-style="width:100%; height:100%; border:none; background:transparent; position:absolute; top:0; left:0;" data-version="1.55">Chat</span>
           </div>
           <p class="powered-by-minnit" style="font-size: 10px; color: var(--muted); margin: 6px auto; text-align: center;">
-            <a href="https://minnit.chat" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: 600;">Chatroom embedded via Minnit Chat</a>
+            <a href="https://minnit.chat" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: 600;">Get your own free chatroom with Minnit Chat</a>
           </p>
+          <script>
+            let minnit;
+            document.addEventListener("DOMContentLoaded", function(event) {
+               minnit = new MinnitChat({"iframe": document.getElementById("chat")});
+               minnit.connect();
+               minnit.on("messageHistory", function(data) {
+                   console.log("received new message history:", data);
+               });
+               minnit.on("message", function(data) {
+                   console.log("received message:", data);
+               });
+            });
+          </script>
         </div>
       </div>
     </div>
@@ -3873,7 +3887,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=13')
+                    navigator.serviceWorker.register('/sw.js?v=14')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates

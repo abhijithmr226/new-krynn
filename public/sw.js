@@ -1,4 +1,4 @@
-// KRYNN SPORTS Service Worker v13
+// KRYNN SPORTS Service Worker v14
 // Clean PWA service worker — no third-party scripts
 
 self.addEventListener('install', () => self.skipWaiting());

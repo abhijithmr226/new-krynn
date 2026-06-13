@@ -2399,6 +2399,13 @@
             if (!name) return '';
             let n = name.toLowerCase().trim();
             n = n.replace(/&/g, 'and');
+            n = n.replace(/ç/g, 'c');
+            n = n.replace(/[áàâä]/g, 'a');
+            n = n.replace(/[éèêë]/g, 'e');
+            n = n.replace(/[íìîï]/g, 'i');
+            n = n.replace(/[óòôö]/g, 'o');
+            n = n.replace(/[úùûü]/g, 'u');
+            n = n.replace(/ñ/g, 'n');
             n = n.replace(/[^a-z0-9\s]/g, '');
             n = n.replace(/\s+/g, ' ');
             if (n === 'usa' || n === 'united states of america') return 'united states';
@@ -2408,6 +2415,7 @@
             if (n === 'ir iran') return 'iran';
             if (n === 'congo dr' || n === 'dr congo' || n === 'democratic republic of the congo') return 'congo dr';
             if (n === 'cabo verde' || n === 'cape verde') return 'cabo verde';
+            if (n === 'turkey') return 'turkiye';
             return n;
         }
 
@@ -2617,26 +2625,23 @@
             const rHome = TEAM_RATINGS[cleanName(home)] || 70;
             const rAway = TEAM_RATINGS[cleanName(away)] || 70;
 
-            let expHome = (rHome / 35) + (hash % 3) * 0.4;
-            let expAway = (rAway / 35) + ((hash >> 2) % 3) * 0.4;
-
             const diff = (rHome - rAway) / 10;
-            if (diff > 0) {
-                expHome += diff * 0.5;
-            } else {
-                expAway -= diff * 0.5;
+            
+            let expHome = 1.0 + (diff * 0.25) + (hash % 4) * 0.3;
+            let expAway = 1.0 - (diff * 0.25) + ((hash >> 2) % 4) * 0.3;
+
+            let homeScore = Math.max(0, Math.floor(expHome - 0.2));
+            let awayScore = Math.max(0, Math.floor(expAway - 0.2));
+
+            if (hash % 9 === 0) {
+                homeScore += (hash % 3);
+            }
+            if ((hash >> 3) % 9 === 0) {
+                awayScore += ((hash >> 3) % 3);
             }
 
-            let homeScore = Math.floor(expHome);
-            let awayScore = Math.floor(expAway);
-
-            if (homeScore > 5) homeScore = hash % 4;
-            if (awayScore > 5) awayScore = (hash >> 3) % 4;
-
-            // Avoid too many draws or 0-0s, make it exciting
-            if (homeScore === 0 && awayScore === 0 && (hash % 5 === 0)) {
-                homeScore = 1;
-            }
+            homeScore = Math.min(homeScore, 5);
+            awayScore = Math.min(awayScore, 5);
 
             return { homeScore, awayScore };
         }
@@ -2746,6 +2751,9 @@
                         };
                     });
                     
+                    // Sort chronologically by kickoff date/time
+                    mapped.sort((a, b) => new Date(a.time) - new Date(b.time));
+
                     // Normalize fixture states dynamically based on current time
                     window.allWorldCupFixtures = normalizeWorldCupFixtureStates(mapped);
                     
@@ -2811,6 +2819,10 @@
                 away_logo: '',
                 score: null
             }));
+            
+            // Sort chronologically by kickoff date/time
+            mapped.sort((a, b) => new Date(a.time) - new Date(b.time));
+
             window.allWorldCupFixtures = normalizeWorldCupFixtureStates(mapped);
             
             const countEl = document.getElementById('upcoming-total-count');

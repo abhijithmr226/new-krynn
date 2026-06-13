@@ -2406,16 +2406,18 @@
             n = n.replace(/[óòôö]/g, 'o');
             n = n.replace(/[úùûü]/g, 'u');
             n = n.replace(/ñ/g, 'n');
-            n = n.replace(/[^a-z0-9\s]/g, '');
+            n = n.replace(/[^a-z0-9\s']/g, '');
             n = n.replace(/\s+/g, ' ');
             if (n === 'usa' || n === 'united states of america') return 'united states';
-            if (n === 'south korea' || n === 'republic of korea') return 'korea republic';
+            if (n === 'south korea' || n === 'republic of korea' || n === 'korea republic') return 'south korea';
             if (n === 'czech republic') return 'czechia';
-            if (n === 'ivory coast') return 'cote divoire';
+            if (n === 'ivory coast') return "cote d'ivoire";
+            if (n === 'cote divoire') return "cote d'ivoire";
             if (n === 'ir iran') return 'iran';
             if (n === 'congo dr' || n === 'dr congo' || n === 'democratic republic of the congo') return 'congo dr';
             if (n === 'cabo verde' || n === 'cape verde') return 'cabo verde';
             if (n === 'turkey') return 'turkiye';
+            if (n === 'bosnia and herzegovina') return 'bosnia & herzegovina';
             return n;
         }
 
@@ -2426,15 +2428,19 @@
             'austria': 'at',
             'belgium': 'be',
             'bosnia and herzegovina': 'ba',
+            'bosnia & herzegovina': 'ba',
             'brazil': 'br',
             'cabo verde': 'cv',
             'canada': 'ca',
             'colombia': 'co',
             'congo dr': 'cd',
+            'congo': 'cd',
             'cote divoire': 'ci',
+            "cote d'ivoire": 'ci',
             'croatia': 'hr',
             'curacao': 'cw',
             'czechia': 'cz',
+            'czech republic': 'cz',
             'ecuador': 'ec',
             'egypt': 'eg',
             'england': 'gb-eng',
@@ -2447,6 +2453,7 @@
             'japan': 'jp',
             'jordan': 'jo',
             'korea republic': 'kr',
+            'south korea': 'kr',
             'mexico': 'mx',
             'morocco': 'ma',
             'netherlands': 'nl',
@@ -2465,6 +2472,7 @@
             'switzerland': 'ch',
             'tunisia': 'tn',
             'turkiye': 'tr',
+            'turkey': 'tr',
             'united states': 'us',
             'uruguay': 'uy',
             'uzbekistan': 'uz'
@@ -2678,23 +2686,23 @@
                 let score = f.score;
                 let statusText = f.status_text;
                 
-                // Use date string for deterministic seed
-                const dateStr = f.time.substring(0, 10);
-                let detScore = null;
-                if (!score) {
-                    detScore = getDeterministicScore(f.home, f.away, dateStr);
-                } else {
-                    detScore = { homeScore: score.homeScore, awayScore: score.awayScore };
-                }
-                
-                if (elapsedMins >= 120) {
+                // If the fixture already has a real API score, trust it completely
+                if (score && (score.homeScore !== null && score.awayScore !== null)) {
+                    // Match has a real score — mark as finished
                     status = "finished";
-                    score = detScore;
+                    return { ...f, status, status_text: statusText, score };
+                }
+
+                // No real score — determine state by time
+                if (elapsedMins >= 120) {
+                    // Match is old enough to be finished but no score available yet
+                    // Don't fake it — show as finished with unknown score
+                    status = "finished";
+                    score = null; // no fake score
                 } else if (elapsedMins >= 0) {
+                    // Currently live
                     status = "live";
-                    const live = getLiveScore(f.home, f.away, dateStr, elapsedMins);
-                    score = { homeScore: live.homeScore, awayScore: live.awayScore };
-                    
+                    score = null; // no fake score during live
                     if (elapsedMins >= 45 && elapsedMins <= 60) {
                         statusText = "HT";
                     } else if (elapsedMins > 60) {
@@ -2703,6 +2711,7 @@
                         statusText = `${elapsedMins}'`;
                     }
                 } else {
+                    // Future match
                     status = "upcoming";
                     score = null;
                 }

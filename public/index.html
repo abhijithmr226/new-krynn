@@ -2812,7 +2812,7 @@
             initPlayerGesturesAndChevrons();
 
             // Load default channel (index 0)
-            selectChannel(0);
+            selectChannel(0, false);
 
             // Shaka overflow menu updates
             document.querySelectorAll('.shaka-overflow-menu-button').forEach(button => {
@@ -4140,7 +4140,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=15')
+                    navigator.serviceWorker.register('/sw.js?v=16')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates

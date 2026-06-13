@@ -3406,12 +3406,25 @@
                 }, 800);
             }
 
-            // Register PWA Service Worker
+            // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(reg => console.log('Service Worker Registered!', reg.scope))
+                    navigator.serviceWorker.register('/sw.js?v=5')
+                        .then(reg => {
+                            console.log('Service Worker Registered!', reg.scope);
+                            // Force check for updates
+                            reg.update();
+                        })
                         .catch(err => console.warn('Service Worker registration failed:', err));
+                });
+
+                // Reload the page when the service worker changes (e.g. updates) to apply changes
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        refreshing = true;
+                        window.location.reload();
+                    }
                 });
             }
 

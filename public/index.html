@@ -1716,13 +1716,141 @@
       background: rgba(255,255,255,0.05);
       color: var(--muted);
     }
-    .standings-row-0 .standings-pos-badge {
-      background: rgba(0, 255, 0, 0.15);
-      color: var(--green);
-    }
     .standings-row-1 .standings-pos-badge {
       background: rgba(0, 255, 0, 0.15);
       color: var(--green);
+    }
+
+    /* Upcoming Match Countdown Overlay */
+    .upcoming-match-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(6, 6, 9, 0.95) 0%, rgba(20, 10, 0, 0.92) 100%);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .upcoming-match-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .countdown-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .countdown-teams-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .countdown-team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .countdown-flag {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    }
+    .countdown-team-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .countdown-vs {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .countdown-timer-box {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .timer-segment {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 60px;
+    }
+    .timer-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 8px 12px;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    }
+    .timer-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+    .countdown-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .countdown-meta span i {
+      color: var(--orange);
+      margin-right: 4px;
+    }
+    .countdown-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .countdown-teams-row { gap: 16px; }
+      .countdown-flag { width: 48px; height: 48px; }
+      .countdown-team-name { font-size: 15px; }
+      .timer-val { font-size: 24px; padding: 6px 8px; }
+      .timer-segment { min-width: 48px; }
+      .countdown-meta { font-size: 11px; }
     }
   </style>
 </head>
@@ -1809,6 +1937,47 @@
           <button class="player-menu-btn" onclick="toggleQuickChannels()" title="Quick Channels Menu">
             <i class="fa-solid fa-tv"></i> <span>Feeds Menu</span>
           </button>
+
+          <!-- Upcoming Match Countdown Overlay -->
+          <div class="upcoming-match-overlay" id="upcoming-match-overlay">
+            <div class="countdown-title"><i class="fa-solid fa-clock"></i> Next Match Countdown</div>
+            <div class="countdown-teams-row">
+              <div class="countdown-team">
+                <img id="countdown-home-logo" class="countdown-flag" src="krynn_logo.png" alt="Home">
+                <span id="countdown-home-name" class="countdown-team-name">—</span>
+              </div>
+              <div class="countdown-vs">VS</div>
+              <div class="countdown-team">
+                <img id="countdown-away-logo" class="countdown-flag" src="krynn_logo.png" alt="Away">
+                <span id="countdown-away-name" class="countdown-team-name">—</span>
+              </div>
+            </div>
+            <div class="countdown-timer-box">
+              <div class="timer-segment">
+                <span id="countdown-days" class="timer-val">00</span>
+                <span class="timer-lbl">Days</span>
+              </div>
+              <div class="timer-segment">
+                <span id="countdown-hours" class="timer-val">00</span>
+                <span class="timer-lbl">Hrs</span>
+              </div>
+              <div class="timer-segment">
+                <span id="countdown-mins" class="timer-val">00</span>
+                <span class="timer-lbl">Mins</span>
+              </div>
+              <div class="timer-segment">
+                <span id="countdown-secs" class="timer-val">00</span>
+                <span class="timer-lbl">Secs</span>
+              </div>
+            </div>
+            <div class="countdown-meta">
+              <span id="countdown-match-time"><i class="fa-regular fa-calendar-days"></i> —</span>
+              <span id="countdown-match-venue"><i class="fa-solid fa-location-dot"></i> —</span>
+            </div>
+            <div class="countdown-actions">
+              <button class="ctrl-btn" onclick="dismissCountdownOverlay()"><i class="fa-solid fa-play"></i> Watch Feeds</button>
+            </div>
+          </div>
 
           <!-- Player Error Overlay -->
           <div class="player-error-overlay" id="player-error-overlay">
@@ -2703,6 +2872,7 @@
             isSwitchingChannel = true;
             if (isManual) {
                 channelFailoverCount = 0;
+                dismissCountdownOverlay();
             }
             activeChannelIndex = index;
             const channel = channelsData[index];
@@ -3239,6 +3409,9 @@
                     // Update Live Scoreboard using normalized authentic fixtures
                     updateLiveScoreboard();
                     
+                    // Update Upcoming Match Overlay Countdown
+                    updateUpcomingMatchCountdown();
+                    
                     // Trigger EPG render
                     filterUpcomingMatches();
                 } else {
@@ -3304,6 +3477,7 @@
             
             calculateAndRenderStandings(window.allWorldCupFixtures);
             updateLiveScoreboard();
+            updateUpcomingMatchCountdown();
             filterUpcomingMatches();
         }
 
@@ -3829,7 +4003,86 @@
             }
         };
 
+        // --- Upcoming Match Countdown Overlay Logic ---
+        let countdownInterval = null;
+        let isCountdownDismissed = false;
 
+        window.dismissCountdownOverlay = function() {
+            isCountdownDismissed = true;
+            const overlay = document.getElementById('upcoming-match-overlay');
+            if (overlay) overlay.classList.remove('show');
+            clearInterval(countdownInterval);
+        };
+
+        window.updateUpcomingMatchCountdown = function() {
+            if (!window.allWorldCupFixtures) return;
+
+            const liveMatches = window.allWorldCupFixtures.filter(f => f.status === 'live');
+            const overlay = document.getElementById('upcoming-match-overlay');
+            if (!overlay) return;
+
+            if (liveMatches.length > 0 || isCountdownDismissed) {
+                overlay.classList.remove('show');
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const now = new Date();
+            const upcomingMatches = window.allWorldCupFixtures
+                .filter(f => f.status === 'upcoming' && new Date(f.time) > now)
+                .sort((a, b) => new Date(a.time) - new Date(b.time));
+
+            if (upcomingMatches.length === 0) {
+                overlay.classList.remove('show');
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const nextMatch = upcomingMatches[0];
+
+            const homeLogo = getTeamFlagUrl(nextMatch.home);
+            const awayLogo = getTeamFlagUrl(nextMatch.away);
+            
+            document.getElementById('countdown-home-logo').src = homeLogo;
+            document.getElementById('countdown-away-logo').src = awayLogo;
+            document.getElementById('countdown-home-name').textContent = nextMatch.home;
+            document.getElementById('countdown-away-name').textContent = nextMatch.away;
+
+            const matchDate = new Date(nextMatch.time);
+            const formattedTime = matchDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }) + ' IST';
+            const formattedDate = matchDate.toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' });
+            
+            document.getElementById('countdown-match-time').innerHTML = `<i class="fa-regular fa-calendar-days"></i> ${formattedDate} at ${formattedTime}`;
+            document.getElementById('countdown-match-venue').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${nextMatch.status_text || 'FIFA World Cup 2026 Venue'}`;
+
+            overlay.classList.add('show');
+
+            clearInterval(countdownInterval);
+            const tick = () => {
+                const diffMs = new Date(nextMatch.time) - new Date();
+                if (diffMs <= 0) {
+                    overlay.classList.remove('show');
+                    clearInterval(countdownInterval);
+                    fetchSportScoreMatches();
+                    return;
+                }
+
+                const d = Math.floor(diffMs / (24 * 3600 * 1000));
+                const h = Math.floor((diffMs % (24 * 3600 * 1000)) / (3600 * 1000));
+                const m = Math.floor((diffMs % (3600 * 1000)) / 60000);
+                const s = Math.floor((diffMs % 60000) / 1000);
+
+                const pad = (num) => String(num).padStart(2, '0');
+
+                document.getElementById('countdown-days').textContent = pad(d);
+                document.getElementById('countdown-hours').textContent = pad(h);
+                document.getElementById('countdown-mins').textContent = pad(m);
+                document.getElementById('countdown-secs').textContent = pad(s);
+            };
+
+            tick();
+            countdownInterval = setInterval(tick, 1000);
+        };
 
         // --- Page Init & Service Worker -----------------------------------------
 
@@ -3887,7 +4140,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=14')
+                    navigator.serviceWorker.register('/sw.js?v=15')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates

@@ -40,9 +40,23 @@
         s3.setAttribute('data-cfasync', 'false');
         document.head.appendChild(s3);
 
-        // Hide Adsterra native banner container and mirror feed button
+        // Hide Adsterra native banner container and handle mirror feed button
         const style = document.createElement('style');
-        style.innerHTML = '#ad-native-container, #mirror-feed-btn { display: none !important; }';
+        
+        // Monetag direct link configuration (change this placeholder value if you get a Smartlink/Direct Link from Monetag)
+        const MONETAG_DIRECT_LINK = 'YOUR_MONETAG_DIRECT_LINK_HERE';
+        if (MONETAG_DIRECT_LINK && MONETAG_DIRECT_LINK !== 'YOUR_MONETAG_DIRECT_LINK_HERE') {
+          style.innerHTML = '#ad-native-container { display: none !important; }';
+          document.addEventListener('DOMContentLoaded', () => {
+            const mirrorBtn = document.getElementById('mirror-feed-btn');
+            if (mirrorBtn) {
+              mirrorBtn.href = MONETAG_DIRECT_LINK;
+              mirrorBtn.title = "Alternative stream link (Monetag Ad supported)";
+            }
+          });
+        } else {
+          style.innerHTML = '#ad-native-container, #mirror-feed-btn { display: none !important; }';
+        }
         document.head.appendChild(style);
       }
     })();
@@ -3789,7 +3803,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=5')
+                    navigator.serviceWorker.register('/sw.js?v=6')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates

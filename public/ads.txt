@@ -1,1 +1,9 @@
 google.com, pub-6232926894418612, DIRECT, f08c47fec0942fa0
+
+# Adsterra Authorization Records
+# Replace the placeholder below with your Adsterra publisher account line:
+# e.g., hosting.adsterra.com, [YOUR_PUBLISHER_ID], DIRECT, f08c47fec0942fa0
+
+# Monetag (PropellerAds) Authorization Records
+# Replace the placeholder below with your Monetag publisher account line:
+# e.g., propellerads.com, [YOUR_PUBLISHER_ID], DIRECT

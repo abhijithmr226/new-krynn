@@ -295,6 +295,7 @@
 
     .player-frame {
       width: 100%; height: 0; padding-bottom: 56.25%; position: relative; background: #000;
+      overflow: hidden;
     }
     
     /* Broadcast Watermark overlay */
@@ -732,6 +733,740 @@
       .bottom-nav { display: none; } /* Hidden in landscape — more screen for video */
       .chat-wrapper { height: 220px; }
     }
+
+    /* --- Floating Channels Menu Button --- */
+    .player-menu-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 5;
+      background: rgba(10, 10, 14, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: all 0.25s ease;
+      opacity: 0;
+    }
+    .player-frame:hover .player-menu-btn,
+    .player-frame.user-active .player-menu-btn {
+      opacity: 0.85;
+    }
+    .player-menu-btn:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      opacity: 1 !important;
+      transform: scale(1.03);
+    }
+    .player-frame.drawer-open .player-menu-btn {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* --- Channels Side Drawer Overlay --- */
+    .quick-channels-drawer {
+      position: absolute;
+      top: 0;
+      right: -280px; /* Hidden by default */
+      width: 280px;
+      height: 100%;
+      background: rgba(10, 10, 14, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    }
+    .quick-channels-drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 14px;
+    }
+    .drawer-header span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .drawer-header i {
+      color: var(--orange);
+    }
+    .drawer-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    .drawer-close-btn:hover {
+      color: var(--orange);
+    }
+    .drawer-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .drawer-content::-webkit-scrollbar {
+      width: 4px;
+    }
+    .drawer-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .drawer-content::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+    }
+    .drawer-channel-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+    .drawer-channel-card:hover {
+      background: rgba(255, 106, 0, 0.08);
+      border-color: rgba(255, 106, 0, 0.3);
+      transform: translateX(-2px);
+    }
+    .drawer-channel-card.active {
+      background: rgba(255, 106, 0, 0.15);
+      border-color: var(--orange);
+      box-shadow: 0 0 10px rgba(255, 106, 0, 0.15);
+    }
+    .drawer-channel-logo-container {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+    .drawer-channel-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+    .drawer-channel-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+    .drawer-channel-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .drawer-channel-meta {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* --- On-screen Chevrons --- */
+    .player-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(10, 10, 14, 0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transition: all 0.25s ease;
+      opacity: 0;
+    }
+    .player-frame:hover .player-nav-btn,
+    .player-frame.user-active .player-nav-btn {
+      opacity: 0.8;
+    }
+    .player-nav-btn:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      opacity: 1 !important;
+      transform: translateY(-50%) scale(1.08);
+    }
+    .player-nav-btn.prev {
+      left: 16px;
+    }
+    .player-nav-btn.next {
+      right: 16px;
+    }
+    .player-frame.drawer-open .player-nav-btn {
+      display: none;
+    }
+
+    /* --- Swipe visual Switch Indicator --- */
+    .channel-switch-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: rgba(10, 10, 14, 0.88);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      padding: 16px 24px;
+      border-radius: 12px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .channel-switch-indicator.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .channel-switch-indicator i {
+      font-size: 20px;
+      color: var(--orange);
+      opacity: 0.5;
+    }
+    .channel-switch-indicator.next .arrow-right {
+      animation: bounceRight 0.6s infinite alternate;
+      opacity: 1;
+    }
+    .channel-switch-indicator.prev .arrow-left {
+      animation: bounceLeft 0.6s infinite alternate;
+      opacity: 1;
+    }
+    .indicator-details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .indicator-action {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+    .indicator-channel-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 4px;
+    }
+    @keyframes bounceRight {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(6px); }
+    }
+    @keyframes bounceLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-6px); }
+    }
+
+    /* --- Troubleshoot Notice Tip Bar --- */
+    .player-tip-bar {
+      background: rgba(255, 106, 0, 0.05);
+      border-top: 1px solid var(--card-border);
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .player-tip-bar i {
+      color: var(--orange);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 480px) {
+      .quick-channels-drawer {
+        width: 220px;
+        right: -220px;
+      }
+    }
+
+    /* --- Upcoming Matches Table --- */
+    .upcoming-table-wrapper {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow-x: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .upcoming-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    .upcoming-table th, .upcoming-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--card-border);
+      vertical-align: middle;
+    }
+    .upcoming-table th {
+      background: #0f0f13;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    .upcoming-table tr:last-child td {
+      border-bottom: none;
+    }
+    .upcoming-team-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #fff;
+    }
+    .upcoming-team-logo {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+    .upcoming-match-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .upcoming-comp {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .upcoming-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange);
+    }
+    .win-chance-cell {
+      min-width: 280px;
+    }
+    .prob-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .prob-labels span.home-win { color: var(--orange); }
+    .prob-labels span.away-win { color: #007aff; }
+
+    /* --- Win Probability Bar --- */
+    .probability-bar-container {
+      display: flex;
+      width: 100%;
+      height: 22px;
+      border-radius: 11px;
+      overflow: hidden;
+      font-size: 10px;
+      font-weight: 800;
+      color: #fff;
+      text-align: center;
+      line-height: 22px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .prob-segment {
+      height: 100%;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    }
+    .prob-segment.home {
+      background: linear-gradient(90deg, #ff6a00, #ff8533);
+      box-shadow: inset 0 0 10px rgba(255,106,0,0.5);
+    }
+    .prob-segment.draw {
+      background: #3a3a4c;
+    }
+    .prob-segment.away {
+      background: linear-gradient(90deg, #007aff, #00a2ff);
+      box-shadow: inset 0 0 10px rgba(0,122,255,0.5);
+    }
+
+    @media (max-width: 768px) {
+      /* Mobile card layout for upcoming fixtures */
+      .upcoming-table thead {
+        display: none;
+      }
+      
+      .upcoming-table tr.upcoming-row {
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.02);
+        margin-bottom: 16px;
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      
+      .upcoming-table tr.upcoming-row td {
+        display: block;
+        padding: 8px 0 !important;
+        border-bottom: none !important;
+        width: 100% !important;
+      }
+      
+      /* Match Details header */
+      .upcoming-table tr.upcoming-row td:nth-child(1) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding-bottom: 12px !important;
+        margin-bottom: 8px;
+      }
+      
+      /* Teams Row */
+      .upcoming-table tr.upcoming-row td:nth-child(2),
+      .upcoming-table tr.upcoming-row td:nth-child(4) {
+        display: inline-block;
+        width: 48% !important;
+        vertical-align: middle;
+      }
+      
+      .upcoming-table tr.upcoming-row td:nth-child(4) {
+        text-align: right;
+        float: right;
+      }
+      
+      /* Win Probability / Score cell */
+      .upcoming-table tr.upcoming-row td:nth-child(3) {
+        display: block;
+        width: 100% !important;
+        margin: 12px 0;
+        clear: both;
+      }
+      
+      /* Actions Row */
+      .upcoming-table tr.upcoming-row td:nth-child(5) {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding-top: 12px !important;
+        margin-top: 8px;
+      }
+      
+      .win-chance-cell {
+        min-width: unset;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      /* Mobile optimization for Group Standings table */
+      .standings-table th:nth-child(4), .standings-table td:nth-child(4), /* W */
+      .standings-table th:nth-child(5), .standings-table td:nth-child(5), /* D */
+      .standings-table th:nth-child(6), .standings-table td:nth-child(6), /* L */
+      .standings-table th:nth-child(7), .standings-table td:nth-child(7), /* GF */
+      .standings-table th:nth-child(8), .standings-table td:nth-child(8)  /* GA */ {
+        display: none;
+      }
+      .standings-table th, .standings-table td {
+        padding: 8px 6px !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Instagram Follow Banner Styling */
+    .ig-follow-banner {
+      width: 100%;
+      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(225, 48, 108, 0.07) 100%);
+      border: 1px solid rgba(225, 48, 108, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    .ig-banner-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .ig-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .ig-icon {
+      font-size: 28px;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(220, 39, 67, 0.35));
+    }
+    .ig-banner-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ig-banner-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+    .ig-banner-sub {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .ig-follow-btn {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(220, 39, 67, 0.25);
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ig-follow-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 39, 67, 0.45);
+    }
+    .ig-banner-close {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      transition: color 0.2s;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ig-banner-close:hover {
+      color: var(--orange);
+    }
+
+    /* Mobile viewports for Instagram Banner */
+    @media (max-width: 768px) {
+      .ig-banner-inner {
+        padding: 14px 16px;
+        gap: 12px;
+      }
+      .ig-banner-left {
+        width: 100%;
+      }
+      .ig-follow-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+      }
+      .ig-banner-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+    }
+
+    /* --- Notification active state --- */
+    .watch-btn.notify-active {
+      background: rgba(52, 199, 89, 0.15) !important;
+      border: 1px solid var(--green) !important;
+      color: var(--green) !important;
+      box-shadow: 0 0 10px rgba(52, 199, 89, 0.2) !important;
+    }
+
+    /* --- Player Error Overlay --- */
+    .player-error-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 10, 14, 0.88);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+      border: 1px solid rgba(255, 59, 48, 0.2);
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .player-error-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .error-overlay-icon {
+      font-size: 48px;
+      color: var(--red);
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 10px rgba(255, 59, 48, 0.4));
+      animation: pulseError 2s infinite alternate;
+    }
+    @keyframes pulseError {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+    .error-overlay-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .error-overlay-msg {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 400px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .error-overlay-btn {
+      background: var(--orange);
+      border: none;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.2);
+    }
+    .error-overlay-btn:hover {
+      background: var(--orange-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Standings Widget Styles */
+    .standings-tabs .tab-btn {
+      padding: 6px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      outline: none;
+      font-family: 'Outfit', sans-serif;
+    }
+    .standings-tabs .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .standings-tabs .tab-btn.active {
+      background: linear-gradient(135deg, var(--orange), #ff6b00);
+      color: #fff;
+      border-color: var(--orange);
+      box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
+    }
+    .standings-table th, .standings-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .standings-table tr {
+      transition: background-color 0.2s;
+    }
+    .standings-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .standings-pos-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 11px;
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+    }
+    .standings-row-0 .standings-pos-badge {
+      background: rgba(0, 255, 0, 0.15);
+      color: var(--green);
+    }
+    .standings-row-1 .standings-pos-badge {
+      background: rgba(0, 255, 0, 0.15);
+      color: var(--green);
+    }
   </style>
 </head>
 <body>
@@ -805,11 +1540,27 @@
             <button class="share-btn" onclick="shareStream()" title="Share this stream">
               <i class="fa-solid fa-share-nodes"></i> Share
             </button>
+            <button class="ctrl-btn" id="quick-feeds-btn" onclick="toggleQuickChannels()"><i class="fa-solid fa-tv"></i> Feeds</button>
             <button class="ctrl-btn" id="chat-toggle-btn" onclick="toggleChat()"><i class="fa-solid fa-comments"></i> Chat</button>
             <button class="ctrl-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i> Fullscreen</button>
           </div>
         </div>
         <div class="player-frame" id="player-frame">
+          <!-- Floating Channels Menu button inside the player frame -->
+          <button class="player-menu-btn" onclick="toggleQuickChannels()" title="Quick Channels Menu">
+            <i class="fa-solid fa-tv"></i> <span>Feeds Menu</span>
+          </button>
+
+          <!-- Player Error Overlay -->
+          <div class="player-error-overlay" id="player-error-overlay">
+            <i class="fa-solid fa-triangle-exclamation error-overlay-icon"></i>
+            <div class="error-overlay-title">Playback Error Encountered</div>
+            <div class="error-overlay-msg" id="player-error-msg">This broadcast feed is currently experiencing issues. Please try reloading or select another feed from the drawer.</div>
+            <button class="error-overlay-btn" onclick="retryActiveChannel()">
+              <i class="fa-solid fa-rotate-right"></i> Retry Connection
+            </button>
+          </div>
+
           <!-- Krynn Watermark overlay - stays here always, CSS handles fullscreen pinning -->
           <div class="krynn-watermark" id="krynn-watermark">
             <div class="watermark-dot"></div>
@@ -827,6 +1578,39 @@
           <div id="iframe-container" style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:1; display:none; background:#000;">
             <iframe id="player-iframe" style="width:100%; height:100%; border:none;" allowfullscreen allow="autoplay; encrypted-media"></iframe>
           </div>
+
+          <!-- Quick Channels Side Drawer overlay -->
+          <div class="quick-channels-drawer" id="quick-channels-drawer">
+            <div class="drawer-header">
+              <span><i class="fa-solid fa-tv"></i> Broadcast Feeds</span>
+              <button class="drawer-close-btn" onclick="toggleQuickChannels(false)"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="drawer-content" id="drawer-channels-list">
+              <!-- Dynamically populated list -->
+            </div>
+          </div>
+
+          <!-- Swipe/Switch Channel visual indicator overlay -->
+          <div class="channel-switch-indicator" id="channel-switch-indicator">
+            <i class="fa-solid fa-arrow-left arrow-left"></i>
+            <div class="indicator-details">
+              <span class="indicator-action">Switching to</span>
+              <span class="indicator-channel-name" id="indicator-channel-name">Stream</span>
+            </div>
+            <i class="fa-solid fa-arrow-right arrow-right"></i>
+          </div>
+
+          <!-- Next/Prev overlay chevrons for easy tapping on mobile/desktop -->
+          <button class="player-nav-btn prev" onclick="playPrevChannel()" aria-label="Previous Channel">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="player-nav-btn next" onclick="playNextChannel()" aria-label="Next Channel">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="player-tip-bar">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>If stream is not working or buffering, try to switch to a different broadcast feed from the horizontal list or the <strong>Feeds</strong> drawer. You can also swipe left/right on the player.</span>
         </div>
       </div>
 
@@ -859,6 +1643,88 @@
       </div>
       <div class="matches-grid" id="matches-grid">
         <!-- Live football matches fetched from SportScore -->
+      </div>
+    </div>
+
+    <!-- Upcoming Matches & Win Probability -->
+    <div class="upcoming-container" id="upcoming-matches-section" style="margin-top: 16px;">
+      <div class="section-title">
+        <i class="fa-solid fa-calendar-days"></i> Upcoming Matches &amp; Win Probability
+      </div>
+      
+      <!-- Search & Show All controls -->
+      <div class="upcoming-controls" style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; padding: 0 4px;">
+        <div class="search-input-wrapper" style="position: relative; flex: 1; min-width: 240px;">
+          <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px;"></i>
+          <input type="text" id="upcoming-search" placeholder="Search team, group, or stadium..." style="width: 100%; padding: 10px 12px 10px 38px; border: 1px solid var(--card-border); border-radius: 12px; background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 13px; outline: none; transition: border-color 0.2s;" oninput="filterUpcomingMatches()">
+        </div>
+        <button id="btn-toggle-upcoming" class="watch-btn" onclick="toggleUpcomingMatches()" style="padding: 10px 18px; border-radius: 12px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-list-ul"></i> Show All (<span id="upcoming-total-count">0</span>)
+        </button>
+      </div>
+
+      <div class="upcoming-table-wrapper">
+        <table class="upcoming-table">
+          <thead>
+            <tr>
+              <th>Match Details</th>
+              <th>Home Team</th>
+              <th style="text-align: center;">Score / Win Probability</th>
+              <th style="text-align: right;">Away Team</th>
+              <th style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="upcoming-matches-body">
+            <!-- Dynamically populated from JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- World Cup Group Standings Widget -->
+    <div class="upcoming-container" id="standings-section" style="margin-top: 24px;">
+      <div class="section-title" style="margin-bottom: 16px;">
+        <i class="fa-solid fa-trophy"></i> World Cup Standings &amp; Stage Tracker
+      </div>
+      
+      <!-- Group Tabs Bar -->
+      <div class="standings-tabs-wrapper" style="margin-bottom: 16px; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; border-bottom: 1px solid var(--card-border);">
+        <div class="standings-tabs" style="display: flex; gap: 8px;">
+          <button class="tab-btn active" onclick="selectStandingsGroup('A')">Group A</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('B')">Group B</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('C')">Group C</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('D')">Group D</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('E')">Group E</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('F')">Group F</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('G')">Group G</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('H')">Group H</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('I')">Group I</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('J')">Group J</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('K')">Group K</button>
+          <button class="tab-btn" onclick="selectStandingsGroup('L')">Group L</button>
+        </div>
+      </div>
+
+      <div class="upcoming-table-wrapper">
+        <table class="upcoming-table standings-table">
+          <thead>
+            <tr>
+              <th style="width: 50px; text-align: center;">Pos</th>
+              <th>Team</th>
+              <th style="text-align: center;">P</th>
+              <th style="text-align: center;">W</th>
+              <th style="text-align: center;">D</th>
+              <th style="text-align: center;">L</th>
+              <th style="text-align: center;">GF</th>
+              <th style="text-align: center;">GA</th>
+              <th style="text-align: center;">GD</th>
+              <th style="text-align: center; font-weight: 700; color: var(--orange);">Pts</th>
+            </tr>
+          </thead>
+          <tbody id="standings-table-body">
+            <!-- Dynamically populated from JS -->
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
@@ -1029,6 +1895,238 @@
 
         let shakaPlayerInstance = null;
         let activeChannelIndex = 0;
+        let channelsHealthStatus = {}; // { [streamUrl]: isOnline }
+
+        window.showPlayerError = function(msg) {
+            const overlay = document.getElementById('player-error-overlay');
+            const msgEl = document.getElementById('player-error-msg');
+            if (overlay && msgEl) {
+                msgEl.innerHTML = `${msg}<br><br><span style="color:var(--muted); font-size:11px;">Tip: Try switching to a different broadcast feed from the <b>Feeds Menu</b>.</span>`;
+                overlay.classList.add('show');
+            }
+        };
+
+        window.retryActiveChannel = function() {
+            const overlay = document.getElementById('player-error-overlay');
+            if (overlay) overlay.classList.remove('show');
+            selectChannel(activeChannelIndex);
+        };
+
+        window.toggleMatchReminder = function(matchId, home, away, event) {
+            event.stopPropagation();
+            
+            let reminders = JSON.parse(localStorage.getItem('krynn_match_reminders') || '[]');
+            const index = reminders.indexOf(matchId);
+            const isAdding = index === -1;
+            
+            if (isAdding) {
+                reminders.push(matchId);
+                localStorage.setItem('krynn_match_reminders', JSON.stringify(reminders));
+                
+                // Request notification permission
+                if ('Notification' in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification('KRYNN SPORTS Reminder Active', {
+                                body: `We will notify you before ${home} vs ${away} kick-off!`,
+                                icon: 'worldcup_logo.png'
+                            });
+                        }
+                    });
+                }
+                
+                window.showToast(`Reminder set for ${home} vs ${away}!`);
+            } else {
+                reminders.splice(index, 1);
+                localStorage.setItem('krynn_match_reminders', JSON.stringify(reminders));
+                window.showToast(`Reminder cancelled for ${home} vs ${away}`);
+            }
+            
+            // Update the button state dynamically
+            const btn = event.currentTarget;
+            if (btn) {
+                btn.className = `watch-btn ${isAdding ? 'notify-active' : ''}`;
+                btn.innerHTML = `<i class="${isAdding ? 'fa-solid fa-check' : 'fa-solid fa-bell'}"></i> ${isAdding ? 'Subscribed' : 'Notify'}`;
+            }
+        };
+
+        async function checkChannelsHealth() {
+            try {
+                const urls = channelsData.map(c => c.streamUrl);
+                const res = await fetch('/api/health-check-urls', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls })
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+                const healthMap = data.health || {};
+                
+                channelsData.forEach(channel => {
+                    const status = healthMap[channel.streamUrl];
+                    channelsHealthStatus[channel.streamUrl] = (status >= 200 && status < 400);
+                });
+                
+                // Update elements in carousel and drawer list
+                renderChannelList();
+                renderDrawerChannelList();
+            } catch (err) {
+                console.warn('Channel health check failed:', err);
+            }
+        }
+
+        // --- Swipe Gestures & Custom Controls Setup ---
+        function initPlayerGesturesAndChevrons() {
+            const playerFrame = document.getElementById('player-frame');
+            if (!playerFrame) return;
+
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let touchEndY = 0;
+
+            playerFrame.addEventListener('touchstart', (e) => {
+                // Ignore swipes starting on actual controls or overlay buttons
+                const target = e.target;
+                if (target.closest('.shaka-bottom-controls') || 
+                    target.closest('.shaka-range-container') || 
+                    target.closest('.shaka-overflow-menu') || 
+                    target.closest('.shaka-settings-menu') || 
+                    target.closest('.quick-channels-drawer') || 
+                    target.closest('.player-nav-btn') || 
+                    target.closest('.player-menu-btn')) {
+                    touchStartX = 0;
+                    touchStartY = 0;
+                    return;
+                }
+
+                if (e.touches.length === 1) {
+                    touchStartX = e.touches[0].screenX;
+                    touchStartY = e.touches[0].screenY;
+                }
+            }, { passive: true });
+
+            playerFrame.addEventListener('touchend', (e) => {
+                if (touchStartX === 0) return; // Ignore if swipe started on controls
+
+                if (e.changedTouches.length === 1) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    touchEndY = e.changedTouches[0].screenY;
+                    
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+                    
+                    // Horizontal swipe threshold
+                    if (Math.abs(deltaX) > 60 && Math.abs(deltaY) < 40) {
+                        if (deltaX < 0) {
+                            playNextChannel();
+                        } else {
+                            playPrevChannel();
+                        }
+                    }
+                }
+            }, { passive: true });
+
+            // Show chevrons on touch/mouse interaction
+            let userActiveTimeout = null;
+            function triggerUserActive() {
+                playerFrame.classList.add('user-active');
+                clearTimeout(userActiveTimeout);
+                userActiveTimeout = setTimeout(() => {
+                    playerFrame.classList.remove('user-active');
+                }, 3000);
+            }
+            playerFrame.addEventListener('touchstart', triggerUserActive, { passive: true });
+            playerFrame.addEventListener('mousemove', triggerUserActive, { passive: true });
+        }
+
+        window.playNextChannel = function() {
+            let nextIndex = activeChannelIndex + 1;
+            if (nextIndex >= channelsData.length) nextIndex = 0;
+            selectChannel(nextIndex);
+            showSwipeIndicator('next', channelsData[nextIndex].name);
+        };
+
+        window.playPrevChannel = function() {
+            let prevIndex = activeChannelIndex - 1;
+            if (prevIndex < 0) prevIndex = channelsData.length - 1;
+            selectChannel(prevIndex);
+            showSwipeIndicator('prev', channelsData[prevIndex].name);
+        };
+
+        let indicatorTimeout = null;
+        function showSwipeIndicator(direction, channelName) {
+            const ind = document.getElementById('channel-switch-indicator');
+            const nameEl = document.getElementById('indicator-channel-name');
+            if (!ind || !nameEl) return;
+            
+            nameEl.textContent = channelName;
+            ind.className = 'channel-switch-indicator show';
+            if (direction === 'next') {
+                ind.classList.add('next');
+            } else if (direction === 'prev') {
+                ind.classList.add('prev');
+            }
+            
+            clearTimeout(indicatorTimeout);
+            indicatorTimeout = setTimeout(() => {
+                ind.classList.remove('show');
+            }, 1200);
+        }
+
+        window.toggleQuickChannels = function(forceState) {
+            const drawer = document.getElementById('quick-channels-drawer');
+            const btn = document.getElementById('quick-feeds-btn');
+            const frame = document.getElementById('player-frame');
+            if (!drawer) return;
+            
+            const isOpen = forceState !== undefined ? forceState : !drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.add('open');
+                if (btn) btn.classList.add('active');
+                if (frame) frame.classList.add('drawer-open');
+            } else {
+                drawer.classList.remove('open');
+                if (btn) btn.classList.remove('active');
+                if (frame) frame.classList.remove('drawer-open');
+            }
+        };
+
+        function renderDrawerChannelList() {
+            const drawerList = document.getElementById('drawer-channels-list');
+            if (!drawerList) return;
+            drawerList.innerHTML = '';
+
+            channelsData.forEach((channel, index) => {
+                const card = document.createElement('div');
+                card.className = 'drawer-channel-card';
+                if (index === activeChannelIndex) card.classList.add('active');
+
+                const isOnline = channelsHealthStatus[channel.streamUrl] !== false; // Default true
+                const healthColor = isOnline ? 'var(--green)' : 'var(--red)';
+                const healthLabel = isOnline ? 'LIVE' : 'OFFLINE';
+
+                card.innerHTML = `
+                    <div class="drawer-channel-logo-container">
+                        <img class="drawer-channel-logo" src="${channel.logo}" onerror="this.src='krynn_logo.png'">
+                    </div>
+                    <div class="drawer-channel-info">
+                        <div class="drawer-channel-name">${channel.name}</div>
+                        <div class="drawer-channel-meta" style="color: ${healthColor}; font-weight: 700;">${channel.type} • ${healthLabel}</div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    selectChannel(index);
+                    setTimeout(() => {
+                        toggleQuickChannels(false);
+                    }, 400);
+                });
+
+                drawerList.appendChild(card);
+            });
+        }
 
         // --- Shaka Player Implementation ---------------------------------------
 
@@ -1053,8 +2151,25 @@
                 }
             });
 
+            // Listen for error events from Shaka Player
+            player.addEventListener('error', (event) => {
+                console.error('Shaka player error event:', event.detail);
+                showPlayerError(`Playback interrupted: ${event.detail.message || 'Source stream is unreachable (Error Code ' + event.detail.code + ')'}`);
+            });
+
+            // Listen for native video element errors (HLS fallback tag)
+            video.addEventListener('error', (e) => {
+                const channel = channelsData[activeChannelIndex];
+                if (channel && channel.type !== 'iframe' && video.error) {
+                    console.error('Video element error:', video.error);
+                    showPlayerError(`Native playback failed: ${video.error.message || 'Stream source was disconnected.'}`);
+                }
+            });
+
             // Initialize rendering
             renderChannelList();
+            renderDrawerChannelList();
+            initPlayerGesturesAndChevrons();
 
             // Load default channel (index 0)
             selectChannel(0);
@@ -1073,8 +2188,18 @@
             const channel = channelsData[index];
             if (!channel) return;
 
+            // Hide error overlay on channel switch
+            const errorOverlay = document.getElementById('player-error-overlay');
+            if (errorOverlay) errorOverlay.classList.remove('show');
+
             // Update active state in list selectors
             document.querySelectorAll('.channel-select-card').forEach((card, idx) => {
+                if (idx === index) card.classList.add('active');
+                else card.classList.remove('active');
+            });
+
+            // Update active state in drawer selectors
+            document.querySelectorAll('.drawer-channel-card').forEach((card, idx) => {
                 if (idx === index) card.classList.add('active');
                 else card.classList.remove('active');
             });
@@ -1089,6 +2214,9 @@
             
             if (channel.type === 'iframe') {
                 if (video) video.pause();
+                if (shakaPlayerInstance) {
+                    shakaPlayerInstance.unload().catch(() => {});
+                }
                 
                 if (shakaContainer) shakaContainer.style.display = 'none';
                 if (iframeContainer) iframeContainer.style.display = 'block';
@@ -1127,6 +2255,7 @@
                     await video.play().catch(e => console.log('Autoplay deferred:', e));
                 } catch (error) {
                     console.error('Shaka dynamic stream load error:', error);
+                    showPlayerError(`Failed to load stream: The feed might be offline or decryption keys have expired.`);
                 }
             }
         };
@@ -1143,6 +2272,9 @@
 
                 // Clean logo fallback
                 let logoUrl = channel.logo;
+                const isOnline = channelsHealthStatus[channel.streamUrl] !== false; // Default true
+                const healthColor = isOnline ? 'var(--green)' : 'var(--red)';
+                const healthLabel = isOnline ? 'LIVE' : 'OFFLINE';
 
                 card.innerHTML = `
                     <div class="card-logo-container">
@@ -1152,8 +2284,8 @@
                         <div class="card-name">${channel.name}</div>
                         <div class="card-meta">
                             <span class="card-type">${channel.type}</span>
-                            <span class="card-status">
-                                <span class="card-status-dot"></span> LIVE
+                            <span class="card-status" style="color: ${healthColor}; font-weight: 700;">
+                                <span class="card-status-dot" style="background: ${healthColor};"></span> ${healthLabel}
                             </span>
                         </div>
                     </div>
@@ -1182,88 +2314,770 @@
 
         // --- SportScore API Fixtures (Strict World Cup Only) ----------------------
 
+        // --- SportScore API Fixtures (Strict World Cup Only) ----------------------
+
+        function cleanName(name) {
+            if (!name) return '';
+            let n = name.toLowerCase().trim();
+            n = n.replace(/&/g, 'and');
+            n = n.replace(/[^a-z0-9\s]/g, '');
+            n = n.replace(/\s+/g, ' ');
+            if (n === 'usa' || n === 'united states of america') return 'united states';
+            if (n === 'south korea' || n === 'republic of korea') return 'korea republic';
+            if (n === 'czech republic') return 'czechia';
+            if (n === 'ivory coast') return 'cote divoire';
+            if (n === 'ir iran') return 'iran';
+            if (n === 'congo dr' || n === 'dr congo' || n === 'democratic republic of the congo') return 'congo dr';
+            if (n === 'cabo verde' || n === 'cape verde') return 'cabo verde';
+            return n;
+        }
+
+        const COUNTRY_CODES = {
+            'algeria': 'dz',
+            'argentina': 'ar',
+            'australia': 'au',
+            'austria': 'at',
+            'belgium': 'be',
+            'bosnia and herzegovina': 'ba',
+            'brazil': 'br',
+            'cabo verde': 'cv',
+            'canada': 'ca',
+            'colombia': 'co',
+            'congo dr': 'cd',
+            'cote divoire': 'ci',
+            'croatia': 'hr',
+            'curacao': 'cw',
+            'czechia': 'cz',
+            'ecuador': 'ec',
+            'egypt': 'eg',
+            'england': 'gb-eng',
+            'france': 'fr',
+            'germany': 'de',
+            'ghana': 'gh',
+            'haiti': 'ht',
+            'iran': 'ir',
+            'iraq': 'iq',
+            'japan': 'jp',
+            'jordan': 'jo',
+            'korea republic': 'kr',
+            'mexico': 'mx',
+            'morocco': 'ma',
+            'netherlands': 'nl',
+            'new zealand': 'nz',
+            'norway': 'no',
+            'panama': 'pa',
+            'paraguay': 'py',
+            'portugal': 'pt',
+            'qatar': 'qa',
+            'saudi arabia': 'sa',
+            'scotland': 'gb-sct',
+            'senegal': 'sn',
+            'south africa': 'za',
+            'spain': 'es',
+            'sweden': 'se',
+            'switzerland': 'ch',
+            'tunisia': 'tn',
+            'turkiye': 'tr',
+            'united states': 'us',
+            'uruguay': 'uy',
+            'uzbekistan': 'uz'
+        };
+
+        const TEAM_RATINGS = {
+            'algeria': 75,
+            'argentina': 88,
+            'australia': 77,
+            'austria': 80,
+            'belgium': 83,
+            'bosnia and herzegovina': 74,
+            'brazil': 86,
+            'cabo verde': 72,
+            'canada': 75,
+            'colombia': 82,
+            'congo dr': 72,
+            'cote divoire': 76,
+            'croatia': 81,
+            'curacao': 65,
+            'czechia': 77,
+            'ecuador': 77,
+            'egypt': 76,
+            'england': 86,
+            'france': 87,
+            'germany': 84,
+            'ghana': 73,
+            'haiti': 68,
+            'iran': 77,
+            'iraq': 73,
+            'japan': 80,
+            'jordan': 71,
+            'korea republic': 78,
+            'mexico': 78,
+            'morocco': 82,
+            'netherlands': 84,
+            'new zealand': 69,
+            'norway': 78,
+            'panama': 74,
+            'paraguay': 74,
+            'portugal': 85,
+            'qatar': 73,
+            'saudi arabia': 73,
+            'scotland': 75,
+            'senegal': 78,
+            'south africa': 73,
+            'spain': 86,
+            'sweden': 79,
+            'switzerland': 78,
+            'tunisia': 74,
+            'turkiye': 78,
+            'united states': 79,
+            'uruguay': 83,
+            'uzbekistan': 72
+        };
+
+        function getWinProbability(home, away) {
+            const rHome = TEAM_RATINGS[cleanName(home)] || 70;
+            const rAway = TEAM_RATINGS[cleanName(away)] || 70;
+            
+            // Generate real-time drift based on timestamp
+            const noise = (Math.sin(Date.now() / 15000) * 1.8);
+            const diff = (rHome - rAway) + noise;
+            
+            // Symmetric logistic curve calculations
+            const pHome = 1 / (1 + Math.exp(-diff / 8));
+            const pAway = 1 / (1 + Math.exp(diff / 8));
+            
+            // Dynamic draw probability that fluctuates slightly
+            const drawChance = 0.22 + (Math.cos(Date.now() / 20000) * 0.02);
+            const playChance = 1 - drawChance;
+            
+            let homeWin = Math.round(playChance * pHome * 100);
+            let awayWin = Math.round(playChance * pAway * 100);
+            
+            // Safe boundaries to prevent 0% or extreme values
+            homeWin = Math.max(10, Math.min(80, homeWin));
+            awayWin = Math.max(10, Math.min(80, awayWin));
+            
+            const draw = 100 - homeWin - awayWin;
+            
+            return { homeWin, draw, awayWin };
+        }
+
+        const mockUpcomingFixtures = [
+            {
+                competition: "2026 FIFA World Cup — Group Stage",
+                home: "Qatar",
+                home_logo: "",
+                away: "Switzerland",
+                away_logo: "",
+                time: new Date(Date.now() + 2 * 3600 * 1000).toISOString(),
+                status: "upcoming",
+                status_text: "Levi's Stadium, San Francisco"
+            },
+            {
+                competition: "2026 FIFA World Cup — Group Stage",
+                home: "Brazil",
+                home_logo: "",
+                away: "Morocco",
+                away_logo: "",
+                time: new Date(Date.now() + 5 * 3600 * 1000).toISOString(),
+                status: "upcoming",
+                status_text: "MetLife Stadium, New York"
+            },
+            {
+                competition: "2026 FIFA World Cup — Group Stage",
+                home: "Haiti",
+                home_logo: "",
+                away: "Scotland",
+                away_logo: "",
+                time: new Date(Date.now() + 8 * 3600 * 1000).toISOString(),
+                status: "upcoming",
+                status_text: "Gillette Stadium, Boston"
+            },
+            {
+                competition: "2026 FIFA World Cup — Group Stage",
+                home: "Australia",
+                home_logo: "",
+                away: "Turkiye",
+                away_logo: "",
+                time: new Date(Date.now() + 11 * 3600 * 1000).toISOString(),
+                status: "upcoming",
+                status_text: "BC Place, Vancouver"
+            },
+            {
+                competition: "2026 FIFA World Cup — Group Stage",
+                home: "Cote d'Ivoire",
+                home_logo: "",
+                away: "Ecuador",
+                away_logo: "",
+                time: new Date(Date.now() + 30 * 3600 * 1000).toISOString(),
+                status: "upcoming",
+                status_text: "Lincoln Financial Field, Philadelphia"
+            },
+            {
+                competition: "2026 FIFA World Cup — Group Stage",
+                home: "Germany",
+                home_logo: "",
+                away: "Curacao",
+                away_logo: "",
+                time: new Date(Date.now() + 24 * 3600 * 1000).toISOString(),
+                status: "upcoming",
+                status_text: "NRG Stadium, Houston"
+            }
+        ];
+
+        const mockLiveMatches = [
+            {
+                competition: "FIFA World Cup — Group Stage",
+                home: "Germany",
+                home_logo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg",
+                home_score: 2,
+                away: "Spain",
+                away_logo: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg",
+                away_score: 1,
+                time: new Date().toISOString(),
+                status: "live",
+                status_text: "64'"
+            },
+            {
+                competition: "FIFA World Cup — Group Stage",
+                home: "Argentina",
+                home_logo: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg",
+                home_score: 0,
+                away: "Brazil",
+                away_logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg",
+                away_score: 0,
+                time: new Date().toISOString(),
+                status: "live",
+                status_text: "12'"
+            }
+        ];
+
         window.fetchSportScoreMatches = async function() {
             const grid = document.getElementById('matches-grid');
-            if (!grid) return;
-            
-            grid.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
-                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; color: var(--orange); margin-bottom: 12px;"></i>
-                    <p>Fetching live World Cup scores...</p>
-                </div>
-            `;
-
-            try {
-                // Fetch live football matches
-                const res = await fetch(`https://sportscore.com/api/widget/matches/?sport=football&limit=12`);
-                const data = await res.json();
-                
-                if (!data.matches || data.matches.length === 0) {
-                    showEmptyScoreboard();
-                    return;
-                }
-
-                // Strictly filter matches belonging to World Cup or FIFA
-                const worldCupMatches = data.matches.filter(m => {
-                    const comp = (m.competition || '').toLowerCase();
-                    return comp.includes('world cup') || comp.includes('fifa') || comp.includes('wc ');
-                });
-
-                if (worldCupMatches.length === 0) {
-                    showEmptyScoreboard();
-                    return;
-                }
-
-                grid.innerHTML = worldCupMatches.map(m => {
-                    const isLive = m.status === 'live';
-                    const matchDate = new Date(m.time);
-                    const formattedTime = matchDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const formattedDate = matchDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
-                    
-                    return `
-                        <div class="match-card ${isLive ? 'live-now' : ''}">
-                            <div class="match-meta">
-                                <span class="match-group" title="${m.competition}">${m.competition}</span>
-                                <span class="match-status-badge ${m.status}">${
-                                    isLive ? '● LIVE' :
-                                    m.status === 'upcoming' ? '⏰ UPCOMING' : '✓ FINISHED'
-                                }</span>
-                            </div>
-                            <div class="match-teams-row">
-                                <div class="match-team">
-                                    <img class="team-flag" src="${m.home_logo || ''}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;">
-                                    <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.home}</div>
-                                </div>
-                                <div class="match-score">
-                                    <div class="score-display">${m.home_score !== null ? m.home_score : '-'} : ${m.away_score !== null ? m.away_score : '-'}</div>
-                                    <div class="score-sep" style="font-size: 10px; color: var(--muted); margin-top: 2px;">${m.status_text || ''}</div>
-                                </div>
-                                <div class="match-team">
-                                    <img class="team-flag" src="${m.away_logo || ''}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;">
-                                    <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.away}</div>
-                                </div>
-                            </div>
-                            <div class="match-info-row">
-                                <span><i class="fa-regular fa-clock"></i> ${formattedDate} ${formattedTime}</span>
-                                ${isLive 
-                                    ? `<button class="watch-btn" onclick="scrollToSection('video-section')"><i class="fa-solid fa-play"></i> WATCH</button>`
-                                    : `<button class="watch-btn upcoming-btn" style="opacity: 0.5; cursor: default;"><i class="fa-solid fa-bell"></i> INFO</button>`
-                                }
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-            } catch (err) {
-                console.error("SportScore fetch error:", err);
+            if (grid) {
                 grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--red); border: 1px dashed rgba(255, 106, 0, 0.2); border-radius: 12px; background: rgba(255,255,255,0.01);">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 32px; margin-bottom: 12px;"></i>
-                        <p>Scoreboard server currently offline. Retrying connection...</p>
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 32px; color: var(--orange); margin-bottom: 12px;"></i>
+                        <p>Fetching live World Cup scores...</p>
                     </div>
                 `;
             }
+
+            // 1. Fetch live scores from SportScore
+            try {
+                const res = await fetch(`/api/sportscore`);
+                const data = await res.json();
+                
+                let worldCupMatches = [];
+                let otherLiveMatches = [];
+
+                if (data.matches && data.matches.length > 0) {
+                    worldCupMatches = data.matches.filter(m => {
+                        const comp = (m.competition || '').toLowerCase();
+                        return comp.includes('world cup') || comp.includes('fifa') || comp.includes('wc ');
+                    });
+                    otherLiveMatches = data.matches.filter(m => m.status === 'live');
+                }
+
+                // Render Live matches: Prioritize active World Cup, then actual general live matches, then mock matches
+                if (worldCupMatches.filter(m => m.status === 'live').length > 0) {
+                    renderLiveMatches(worldCupMatches.filter(m => m.status === 'live'));
+                } else if (otherLiveMatches.length > 0) {
+                    renderLiveMatches(otherLiveMatches.slice(0, 8));
+                } else if (worldCupMatches.length > 0) {
+                    renderLiveMatches(worldCupMatches.slice(0, 8));
+                } else {
+                    renderLiveMatches(mockLiveMatches);
+                }
+            } catch (err) {
+                console.error("SportScore fetch error:", err);
+                renderLiveMatches(mockLiveMatches);
+            }
+
+            // 2. Fetch official World Cup schedules from openfootball (via proxy)
+            try {
+                const res = await fetch(`/api/worldcup/fixtures`);
+                if (!res.ok) throw new Error(`Status ${res.status}`);
+                const data = await res.json();
+                
+                if (data && data.fixtures && data.fixtures.length > 0) {
+                    // Map official format to list renderer format
+                    window.allWorldCupFixtures = data.fixtures.map(f => {
+                        return {
+                            matchNumber: f.matchNumber,
+                            competition: `${data.tournament.edition} — ${f.stage.replace(/-/g, ' ').toUpperCase()}`,
+                            home: f.homeTeam,
+                            home_logo: '',
+                            away: f.awayTeam,
+                            away_logo: '',
+                            time: f.kickoffUtc,
+                            status: f.score ? "finished" : "upcoming",
+                            status_text: f.stadium + ', ' + f.hostCity.replace(/-/g, ' ').toUpperCase(),
+                            group: f.group,
+                            score: f.score
+                        };
+                    });
+                    
+                    // Update upcoming total count in button
+                    const upcomingWC = window.allWorldCupFixtures.filter(f => new Date(f.time) >= new Date());
+                    const countEl = document.getElementById('upcoming-total-count');
+                    if (countEl) countEl.textContent = upcomingWC.length > 0 ? upcomingWC.length : window.allWorldCupFixtures.length;
+
+                    // Trigger standings computation
+                    calculateAndRenderStandings(window.allWorldCupFixtures);
+                    
+                    // Trigger EPG render
+                    filterUpcomingMatches();
+                } else {
+                    useMockFixtures();
+                }
+            } catch (err) {
+                console.error("World Cup fixtures fetch error:", err);
+                useMockFixtures();
+            }
         };
+
+        function useMockFixtures() {
+            window.allWorldCupFixtures = mockUpcomingFixtures.map(f => ({
+                ...f,
+                home_logo: '',
+                away_logo: ''
+            }));
+            const countEl = document.getElementById('upcoming-total-count');
+            if (countEl) countEl.textContent = window.allWorldCupFixtures.length;
+            calculateAndRenderStandings(window.allWorldCupFixtures);
+            filterUpcomingMatches();
+        }
+
+        window.showAllUpcoming = false;
+
+        window.toggleUpcomingMatches = function() {
+            window.showAllUpcoming = !window.showAllUpcoming;
+            const btn = document.getElementById('btn-toggle-upcoming');
+            if (btn) {
+                if (window.showAllUpcoming) {
+                    btn.innerHTML = `<i class="fa-solid fa-compress-arrows-alt"></i> Show Next 6`;
+                } else {
+                    const upcomingWC = (window.allWorldCupFixtures || []).filter(f => new Date(f.time) >= new Date());
+                    const count = upcomingWC.length > 0 ? upcomingWC.length : (window.allWorldCupFixtures || []).length;
+                    btn.innerHTML = `<i class="fa-solid fa-list-ul"></i> Show All (${count})`;
+                }
+            }
+            filterUpcomingMatches();
+        };
+
+        window.filterUpcomingMatches = function() {
+            if (!window.allWorldCupFixtures) return;
+            
+            const searchInput = document.getElementById('upcoming-search');
+            const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            
+            const now = new Date();
+            let list = window.allWorldCupFixtures;
+            
+            if (!window.showAllUpcoming && !query) {
+                list = list.filter(f => new Date(f.time) >= now);
+                if (list.length === 0) {
+                    list = window.allWorldCupFixtures.slice(-6);
+                } else {
+                    list = list.slice(0, 6);
+                }
+            } else if (query) {
+                list = list.filter(f => {
+                    const home = (f.home || '').toLowerCase();
+                    const away = (f.away || '').toLowerCase();
+                    const group = (f.group || '').toLowerCase();
+                    const text = (f.status_text || '').toLowerCase();
+                    return home.includes(query) || away.includes(query) || group.includes(query) || text.includes(query);
+                });
+            }
+            
+            renderUpcomingTable(list);
+        };
+
+        window.activeStandingsGroup = 'A';
+
+        window.selectStandingsGroup = function(grp) {
+            window.activeStandingsGroup = grp;
+            const buttons = document.querySelectorAll('.standings-tabs .tab-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.trim().endsWith(grp)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            renderStandings();
+        };
+
+        window.calculateAndRenderStandings = function(fixtures) {
+            window.fixturesDataForStandings = fixtures;
+            renderStandings();
+        };
+
+        window.renderStandings = function() {
+            const fixtures = window.fixturesDataForStandings;
+            const tbody = document.getElementById('standings-table-body');
+            if (!tbody || !fixtures) return;
+
+            const currentGroup = `group ${window.activeStandingsGroup}`.toLowerCase();
+            const groupTeams = new Set();
+            
+            const groupMatches = fixtures.filter(f => {
+                const fg = (f.group || '').toLowerCase().trim();
+                return fg === currentGroup || fg === window.activeStandingsGroup.toLowerCase();
+            });
+
+            groupMatches.forEach(m => {
+                if (m.home) groupTeams.add(m.home);
+                if (m.away) groupTeams.add(m.away);
+            });
+
+            const stats = {};
+            groupTeams.forEach(team => {
+                stats[team] = {
+                    teamName: team,
+                    played: 0,
+                    wins: 0,
+                    draws: 0,
+                    losses: 0,
+                    goalsFor: 0,
+                    goalsAgainst: 0,
+                    points: 0
+                };
+            });
+
+            groupMatches.forEach(m => {
+                if (!m.score) return;
+                
+                const tHome = m.home;
+                const tAway = m.away;
+                const scoreHome = parseInt(m.score.homeScore);
+                const scoreAway = parseInt(m.score.awayScore);
+
+                if (isNaN(scoreHome) || isNaN(scoreAway)) return;
+
+                const sHome = stats[tHome];
+                const sAway = stats[tAway];
+                
+                if (sHome && sAway) {
+                    sHome.played++;
+                    sAway.played++;
+                    sHome.goalsFor += scoreHome;
+                    sHome.goalsAgainst += scoreAway;
+                    sAway.goalsFor += scoreAway;
+                    sAway.goalsAgainst += scoreHome;
+
+                    if (scoreHome > scoreAway) {
+                        sHome.wins++;
+                        sHome.points += 3;
+                        sAway.losses++;
+                    } else if (scoreHome < scoreAway) {
+                        sAway.wins++;
+                        sAway.points += 3;
+                        sHome.losses++;
+                    } else {
+                        sHome.draws++;
+                        sHome.points += 1;
+                        sAway.draws++;
+                        sAway.points += 1;
+                    }
+                }
+            });
+
+            const standingsArray = Object.values(stats).sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                const gdA = a.goalsFor - a.goalsAgainst;
+                const gdB = b.goalsFor - b.goalsAgainst;
+                if (gdB !== gdA) return gdB - gdA;
+                if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+                return a.teamName.localeCompare(b.teamName);
+            });
+
+            tbody.innerHTML = standingsArray.map((t, idx) => {
+                const gd = t.goalsFor - t.goalsAgainst;
+                const gdFormatted = gd > 0 ? `+${gd}` : gd;
+                const teamLogo = getTeamFlagUrl(t.teamName);
+
+                return `
+                    <tr class="standings-row-${idx}">
+                        <td style="text-align: center;">
+                            <span class="standings-pos-badge">${idx + 1}</span>
+                        </td>
+                        <td>
+                            <div class="upcoming-team-cell">
+                                <img class="upcoming-team-logo" src="${teamLogo}" onerror="this.src='krynn_logo.png'" style="width: 24px; height: 24px; margin-right: 8px;">
+                                <span style="font-weight: 600;">${t.teamName}</span>
+                            </div>
+                        </td>
+                        <td style="text-align: center; font-weight: 500;">${t.played}</td>
+                        <td style="text-align: center; color: var(--green);">${t.wins}</td>
+                        <td style="text-align: center; color: var(--muted);">${t.draws}</td>
+                        <td style="text-align: center; color: var(--red);">${t.losses}</td>
+                        <td style="text-align: center; color: var(--muted);">${t.goalsFor}</td>
+                        <td style="text-align: center; color: var(--muted);">${t.goalsAgainst}</td>
+                        <td style="text-align: center; font-weight: 500; color: ${gd > 0 ? 'var(--green)' : gd < 0 ? 'var(--red)' : 'var(--muted)'}">${gdFormatted}</td>
+                        <td style="text-align: center; font-weight: 800; color: var(--orange); font-size: 14px;">${t.points}</td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        function formatCalendarDate(date) {
+            const pad = (num) => String(num).padStart(2, '0');
+            return date.getUTCFullYear() +
+                   pad(date.getUTCMonth() + 1) +
+                   pad(date.getUTCDate()) + 'T' +
+                   pad(date.getUTCHours()) +
+                   pad(date.getUTCMinutes()) +
+                   pad(date.getUTCSeconds()) + 'Z';
+        }
+
+        window.exportToGoogleCalendar = function(home, away, timeStr, locationText, event) {
+            if (event) event.stopPropagation();
+            const matchDate = new Date(timeStr);
+            const endDate = new Date(matchDate.getTime() + 2 * 3600 * 1000);
+            
+            const title = encodeURIComponent(`FIFA World Cup 2026: ${home} vs ${away}`);
+            const dates = `${formatCalendarDate(matchDate)}/${formatCalendarDate(endDate)}`;
+            const details = encodeURIComponent(`Watch live on KRYNN SPORTS. Kickoff at ${matchDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST.`);
+            const location = encodeURIComponent(locationText || 'FIFA World Cup 2026 Venue');
+            
+            const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+            window.open(url, '_blank');
+        };
+
+        window.exportToICS = function(home, away, timeStr, locationText, event) {
+            if (event) event.stopPropagation();
+            const matchDate = new Date(timeStr);
+            const endDate = new Date(matchDate.getTime() + 2 * 3600 * 1000);
+            
+            const start = formatCalendarDate(matchDate);
+            const end = formatCalendarDate(endDate);
+            const summary = `FIFA World Cup 2026: ${home} vs ${away}`;
+            const description = `Watch live on KRYNN SPORTS. Kickoff at ${matchDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST.`;
+            const location = locationText || 'FIFA World Cup 2026 Venue';
+            
+            const icsLines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//KRYNN SPORTS//FIFA World Cup 2026 Reminders//EN',
+                'CALSCALE:GREGORIAN',
+                'BEGIN:VEVENT',
+                `SUMMARY:${summary}`,
+                `DTSTART:${start}`,
+                `DTEND:${end}`,
+                `LOCATION:${location}`,
+                `DESCRIPTION:${description}`,
+                'STATUS:CONFIRMED',
+                'SEQUENCE:0',
+                'BEGIN:VALARM',
+                'TRIGGER:-PT15M',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:Reminder',
+                'END:VALARM',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ];
+            
+            const icsString = icsLines.join('\r\n');
+            const blob = new Blob([icsString], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${home.replace(/\s+/g, '_')}_vs_${away.replace(/\s+/g, '_')}.ics`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            window.showToast(`Calendar file downloaded for ${home} vs ${away}!`, 'fa-calendar-check');
+        };
+
+        function renderLiveMatches(matchesList) {
+            const grid = document.getElementById('matches-grid');
+            if (!grid) return;
+
+            grid.innerHTML = matchesList.map(m => {
+                const isLive = m.status === 'live';
+                const matchDate = new Date(m.time);
+                // Format explicitly in Indian Standard Time (IST)
+                const formattedTime = matchDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }) + ' IST';
+                const formattedDate = matchDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', timeZone: 'Asia/Kolkata' });
+                
+                const homeLogo = m.home_logo && m.home_logo.startsWith('http') ? m.home_logo : getTeamFlagUrl(m.home);
+                const awayLogo = m.away_logo && m.away_logo.startsWith('http') ? m.away_logo : getTeamFlagUrl(m.away);
+                
+                return `
+                    <div class="match-card ${isLive ? 'live-now' : ''}">
+                        <div class="match-meta">
+                            <span class="match-group" title="${m.competition}">${m.competition}</span>
+                            <span class="match-status-badge ${m.status}">${
+                                isLive ? '● LIVE' :
+                                m.status === 'upcoming' ? '⏰ UPCOMING' : '✓ FINISHED'
+                            }</span>
+                        </div>
+                        <div class="match-teams-row">
+                            <div class="match-team">
+                                <img class="team-flag" src="${homeLogo}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;">
+                                <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.home}</div>
+                            </div>
+                            <div class="match-score">
+                                <div class="score-display">${m.home_score !== null ? m.home_score : '-'} : ${m.away_score !== null ? m.away_score : '-'}</div>
+                                <div class="score-sep" style="font-size: 10px; color: var(--muted); margin-top: 2px;">${m.status_text || ''}</div>
+                            </div>
+                            <div class="match-team">
+                                <img class="team-flag" src="${awayLogo}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;">
+                                <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.away}</div>
+                            </div>
+                        </div>
+                        <div class="match-info-row">
+                            <span><i class="fa-regular fa-clock"></i> ${formattedDate} ${formattedTime}</span>
+                            ${isLive 
+                                ? `<button class="watch-btn" onclick="scrollToSection('video-section')"><i class="fa-solid fa-play"></i> WATCH</button>`
+                                : `<button class="watch-btn upcoming-btn" style="opacity: 0.5; cursor: default;"><i class="fa-solid fa-bell"></i> INFO</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTeamFlagUrl(teamName) {
+            if (!teamName) return 'krynn_logo.png';
+            if (teamName.startsWith('http')) return teamName;
+            const clean = cleanName(teamName);
+            const code = COUNTRY_CODES[clean];
+            if (code) {
+                return `https://flagcdn.com/w40/${code}.png`;
+            }
+            return 'krynn_logo.png';
+        }
+
+        function renderUpcomingTable(upcomingList) {
+            const upcomingBody = document.getElementById('upcoming-matches-body');
+            if (!upcomingBody) return;
+            
+            upcomingBody.innerHTML = upcomingList.map(m => {
+                const matchDate = new Date(m.time);
+                // Format explicitly in Indian Standard Time (IST)
+                const formattedTime = matchDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }) + ' IST';
+                const formattedDate = matchDate.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', timeZone: 'Asia/Kolkata' });
+                const probs = getWinProbability(m.home, m.away);
+                const matchId = `${m.home.toLowerCase().trim()}_vs_${m.away.toLowerCase().trim()}`.replace(/\s+/g, '_');
+                
+                const reminders = JSON.parse(localStorage.getItem('krynn_match_reminders') || '[]');
+                const isReminded = reminders.includes(matchId);
+
+                const homeLogo = m.home_logo && m.home_logo.startsWith('http') ? m.home_logo : getTeamFlagUrl(m.home);
+                const awayLogo = m.away_logo && m.away_logo.startsWith('http') ? m.away_logo : getTeamFlagUrl(m.away);
+
+                let scoreOrProbsHtml = '';
+                if (m.score) {
+                    scoreOrProbsHtml = `
+                        <div class="score-display-wrapper" style="text-align: center; background: rgba(0, 255, 0, 0.05); padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(0, 255, 0, 0.15); display: inline-block;">
+                            <span style="font-weight: 700; color: var(--green); letter-spacing: 1px; font-size: 10px;">✓ FINISHED</span>
+                            <div style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 2px;">${m.score.homeScore} : ${m.score.awayScore}</div>
+                        </div>
+                    `;
+                } else {
+                    scoreOrProbsHtml = `
+                        <div class="prob-labels">
+                            <span class="home-win">Win: <strong class="lbl-home-win">${probs.homeWin}%</strong></span>
+                            <span>Draw: <strong class="lbl-draw-win">${probs.draw}%</strong></span>
+                            <span class="away-win">Win: <strong class="lbl-away-win">${probs.awayWin}%</strong></span>
+                        </div>
+                        <div class="probability-bar-container">
+                            <div class="prob-segment home" style="width: ${probs.homeWin}%">${probs.homeWin}%</div>
+                            <div class="prob-segment draw" style="width: ${probs.draw}%">${probs.draw}%</div>
+                            <div class="prob-segment away" style="width: ${probs.awayWin}%">${probs.awayWin}%</div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <tr class="upcoming-row" data-home="${m.home}" data-away="${m.away}" data-match-id="${matchId}">
+                        <td>
+                            <div class="upcoming-match-info">
+                                <span class="upcoming-comp">${m.competition}</span>
+                                <span class="upcoming-time"><i class="fa-regular fa-clock"></i> ${formattedDate} ${formattedTime}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="upcoming-team-cell">
+                                <img class="upcoming-team-logo" src="${homeLogo}" onerror="this.src='krynn_logo.png'">
+                                <span>${m.home}</span>
+                            </div>
+                        </td>
+                        <td class="win-chance-cell" style="text-align: center;">
+                            ${scoreOrProbsHtml}
+                        </td>
+                        <td>
+                            <div class="upcoming-team-cell" style="justify-content: flex-end; text-align: right;">
+                                <span>${m.away}</span>
+                                <img class="upcoming-team-logo" src="${awayLogo}" onerror="this.src='krynn_logo.png'">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="upcoming-actions" style="display: flex; gap: 6px; align-items: center; justify-content: center;">
+                                <button class="watch-btn ${isReminded ? 'notify-active' : ''}" 
+                                        onclick="toggleMatchReminder('${matchId}', '${m.home.replace(/'/g, "\\'")}', '${m.away.replace(/'/g, "\\'")}', event)" 
+                                        style="font-size: 10px; padding: 5px 10px; border-radius: 12px; white-space: nowrap;"
+                                        title="Toggle notification reminder">
+                                    <i class="${isReminded ? 'fa-solid fa-check' : 'fa-solid fa-bell'}"></i> ${isReminded ? 'Subscribed' : 'Notify'}
+                                </button>
+                                <div class="calendar-export-actions" style="display: flex; gap: 4px;">
+                                    <button class="watch-btn" 
+                                            onclick="exportToGoogleCalendar('${m.home.replace(/'/g, "\\'")}', '${m.away.replace(/'/g, "\\'")}', '${m.time}', '${m.status_text.replace(/'/g, "\\'")}', event)"
+                                            style="padding: 5px 8px; border-radius: 8px; font-size: 10px; background: rgba(66, 133, 244, 0.15); border-color: rgba(66, 133, 244, 0.4); color: #4285f4; cursor: pointer;"
+                                            title="Add to Google Calendar">
+                                        <i class="fa-brands fa-google"></i>
+                                    </button>
+                                    <button class="watch-btn" 
+                                            onclick="exportToICS('${m.home.replace(/'/g, "\\'")}', '${m.away.replace(/'/g, "\\'")}', '${m.time}', '${m.status_text.replace(/'/g, "\\'")}', event)"
+                                            style="padding: 5px 8px; border-radius: 8px; font-size: 10px; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.15); color: #fff; cursor: pointer;"
+                                            title="Download ICS Calendar File">
+                                        <i class="fa-regular fa-calendar-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Live Realtime calculations updates loop
+        setInterval(() => {
+            document.querySelectorAll('.upcoming-row').forEach(row => {
+                const home = row.dataset.home;
+                const away = row.dataset.away;
+                if (!home || !away) return;
+                
+                const probs = getWinProbability(home, away);
+                
+                const segHome = row.querySelector('.prob-segment.home');
+                if (segHome) {
+                    segHome.style.width = probs.homeWin + '%';
+                    segHome.textContent = probs.homeWin + '%';
+                }
+                const segDraw = row.querySelector('.prob-segment.draw');
+                if (segDraw) {
+                    segDraw.style.width = probs.draw + '%';
+                    segDraw.textContent = probs.draw + '%';
+                }
+                const segAway = row.querySelector('.prob-segment.away');
+                if (segAway) {
+                    segAway.style.width = probs.awayWin + '%';
+                    segAway.textContent = probs.awayWin + '%';
+                }
+                
+                const lblHome = row.querySelector('.lbl-home-win');
+                if (lblHome) lblHome.textContent = probs.homeWin + '%';
+                const lblDraw = row.querySelector('.lbl-draw-win');
+                if (lblDraw) lblDraw.textContent = probs.draw + '%';
+                const lblAway = row.querySelector('.lbl-away-win');
+                if (lblAway) lblAway.textContent = probs.awayWin + '%';
+            });
+        }, 3000);
 
         function showEmptyScoreboard() {
             const grid = document.getElementById('matches-grid');
@@ -1360,6 +3174,11 @@
             fetchSportScoreMatches();
             // Refresh scores every 45 seconds
             setInterval(fetchSportScoreMatches, 45000);
+
+            // Run initial channel health check
+            checkChannelsHealth();
+            // Refresh channel health status every 60 seconds
+            setInterval(checkChannelsHealth, 60000);
 
             // Register PWA Service Worker
             if ('serviceWorker' in navigator) {
@@ -1552,16 +3371,15 @@
       function animateCount(newVal) {
         const badge = document.getElementById('viewer-badge');
         if (badge) {
-          badge.style.transform = 'scale(1.12)';
-          badge.style.borderColor = 'rgba(255,106,0,0.5)';
+          badge.style.transform = 'scale(1.08)';
+          badge.style.borderColor = 'rgba(255,106,0,0.4)';
           setTimeout(() => {
             badge.style.transform = '';
             badge.style.borderColor = '';
           }, 300);
         }
-        countEl.textContent = newVal >= 1000
-          ? (newVal / 1000).toFixed(1) + 'K'
-          : newVal;
+        // Format with commas for highly visible real-time fluctuation
+        countEl.textContent = Number(newVal).toLocaleString();
       }
 
       // Try SSE for real-time count
@@ -1613,27 +3431,27 @@
         } else {
           // Clipboard fallback
           await navigator.clipboard.writeText(window.location.origin);
-          showShareToast('✅ Link copied to clipboard!');
+          window.showToast('Link copied to clipboard!');
         }
       } catch (err) {
         if (err.name !== 'AbortError') {
           try {
             await navigator.clipboard.writeText(window.location.origin);
-            showShareToast('✅ Link copied to clipboard!');
+            window.showToast('Link copied to clipboard!');
           } catch (_) {
-            showShareToast('📋 Share: ' + window.location.origin);
+            window.showToast('Share link: ' + window.location.origin, 'fa-share-nodes');
           }
         }
       }
     };
 
-    function showShareToast(msg) {
+    window.showToast = function(msg, iconClass = 'fa-check') {
       const toast = document.getElementById('share-toast');
       if (!toast) return;
-      toast.innerHTML = '<i class="fa-solid fa-check"></i> ' + msg;
+      toast.innerHTML = `<i class="fa-solid ${iconClass}"></i> ` + msg;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
-    }
+    };
 
 
     // ──────────────────────────────────────────────────────────────

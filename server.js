@@ -786,13 +786,15 @@ app.post('/api/portals/select', (req, res) => {
 const sseClients = new Set();
 
 // Base "seed" viewers — gives a realistic floor count even with few SSE connections
-const VIEWER_SEED = 120;
+let currentViewerCount = 12450; // starts with a realistic audience size
 
 function getLiveViewerCount() {
-  // Real SSE connections + seed + small jitter for realism
+  // Real SSE connections + seed + active drift for realism
   const real = sseClients.size;
-  const jitter = Math.floor(Math.random() * 12) - 6; // ±6
-  return Math.max(1, VIEWER_SEED + real + jitter);
+  // Drift the audience count dynamically by a small value between -12 and +12
+  const drift = Math.floor(Math.random() * 25) - 12;
+  currentViewerCount = Math.max(8500, Math.min(18000, currentViewerCount + drift));
+  return currentViewerCount + real;
 }
 
 function broadcastViewerCount() {
@@ -803,8 +805,8 @@ function broadcastViewerCount() {
   }
 }
 
-// Broadcast every 10 seconds
-setInterval(broadcastViewerCount, 10000);
+// Broadcast every 3 seconds for active realtime fluctuation
+setInterval(broadcastViewerCount, 3000);
 
 // GET /api/viewer-stream — SSE endpoint
 app.get('/api/viewer-stream', (req, res) => {
@@ -833,6 +835,154 @@ app.get('/api/viewer-stream', (req, res) => {
 // GET /api/viewer-count — simple poll fallback
 app.get('/api/viewer-count', (req, res) => {
   res.json({ count: getLiveViewerCount() });
+});
+
+// GET /api/sportscore — Proxy for SportScore matches widget to bypass CORS
+app.get('/api/sportscore', async (req, res) => {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+    const response = await fetch('https://sportscore.com/api/widget/matches/?sport=football&limit=12', {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://sportscore.com/'
+      }
+    });
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`SportScore API responded with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error('[SportScore Proxy Error]:', err.message);
+    res.status(502).json({ error: 'Failed to fetch matches from SportScore', details: err.message });
+  }
+});
+
+// Helper to parse openfootball date & time (e.g., "13:00 UTC-6") into standard ISO UTC string
+function parseOpenFootballDateTime(dateStr, timeStr) {
+  if (!timeStr) return new Date(dateStr).toISOString();
+  
+  let tz = "Z";
+  const tzMatch = timeStr.match(/UTC([+-]\d+)/);
+  if (tzMatch) {
+    const offset = parseInt(tzMatch[1]);
+    const sign = offset >= 0 ? '+' : '-';
+    const absOffset = Math.abs(offset);
+    const hours = String(absOffset).padStart(2, '0');
+    tz = `${sign}${hours}:00`;
+  }
+  
+  const timeMatch = timeStr.match(/^(\d{2}:\d{2})/);
+  const hm = timeMatch ? timeMatch[1] : "00:00";
+  
+  try {
+    const isoString = `${dateStr}T${hm}:00${tz}`;
+    return new Date(isoString).toISOString();
+  } catch (e) {
+    return new Date(dateStr).toISOString();
+  }
+}
+
+// GET /api/worldcup/fixtures — Proxy for openfootball 2026 World Cup fixtures & scores
+app.get('/api/worldcup/fixtures', async (req, res) => {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+    const response = await fetch('https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json', {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`OpenFootball responded with status ${response.status}`);
+    }
+    
+    const openFootballData = await response.json();
+    
+    // Map openfootball matches array to standardized fixture list
+    const fixtures = openFootballData.matches.map((m, idx) => {
+      const kickoffUtc = parseOpenFootballDateTime(m.date, m.time);
+      return {
+        matchNumber: idx + 1,
+        date: m.date,
+        kickoffUtc: kickoffUtc,
+        stage: (m.round || 'group-stage').toLowerCase().replace(/\s+/g, '-'),
+        group: m.group || '',
+        homeTeam: m.team1,
+        awayTeam: m.team2,
+        stadium: m.ground || '',
+        hostCity: (m.ground || '').toLowerCase().replace(/\s+/g, '-'),
+        score: m.score ? {
+          homeScore: m.score.ft[0],
+          awayScore: m.score.ft[1]
+        } : null
+      };
+    });
+
+    res.json({
+      tournament: {
+        edition: "2026 FIFA World Cup",
+        startDate: "2026-06-11",
+        endDate: "2026-07-19"
+      },
+      fixtures: fixtures
+    });
+  } catch (err) {
+    console.error('[World Cup Fixtures Proxy Error]:', err.message);
+    res.status(502).json({ error: 'Failed to fetch World Cup fixtures', details: err.message });
+  }
+});
+
+// POST /api/health-check-urls — Concurrently checks external URLs to verify channel health
+app.post('/api/health-check-urls', async (req, res) => {
+  const { urls } = req.body;
+  if (!urls || !Array.isArray(urls)) {
+    return res.status(400).json({ error: 'Missing or invalid urls parameter' });
+  }
+
+  const results = {};
+  const TIMEOUT_MS = 4000;
+
+  await Promise.allSettled(urls.map(async (url) => {
+    if (!url) return;
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+      const response = await fetch(url, {
+        method: 'HEAD',
+        signal: controller.signal,
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      clearTimeout(timeoutId);
+      results[url] = response.status;
+    } catch (err) {
+      // If HEAD fails, try a GET request with an immediate abort
+      try {
+        const ctrl2 = new AbortController();
+        const t2 = setTimeout(() => ctrl2.abort(), TIMEOUT_MS);
+        const res2 = await fetch(url, {
+          method: 'GET',
+          signal: ctrl2.signal,
+          headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
+        clearTimeout(t2);
+        ctrl2.abort();
+        results[url] = res2.status;
+      } catch {
+        results[url] = 0;
+      }
+    }
+  }));
+
+  res.json({ health: results });
 });
 // ─────────────────────────────────────────────────────────────────────────────
 

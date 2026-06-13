@@ -1786,7 +1786,7 @@
       top: 54px;
     }
     .upcoming-match-badge.show.fullscreen-pinned ~ .krynn-watermark {
-      top: 56px;
+      top: 56px !important;
     }
     :fullscreen .upcoming-match-badge.show ~ .krynn-watermark,
     :-webkit-full-screen .upcoming-match-badge.show ~ .krynn-watermark,
@@ -1818,10 +1818,10 @@
       
       /* Mobile stack when shown */
       .upcoming-match-badge.show ~ .krynn-watermark {
-        top: 44px;
+        top: 44px !important;
       }
       .upcoming-match-badge.show.fullscreen-pinned ~ .krynn-watermark {
-        top: 44px;
+        top: 44px !important;
       }
       :fullscreen .upcoming-match-badge.show ~ .krynn-watermark,
       :-webkit-full-screen .upcoming-match-badge.show ~ .krynn-watermark,
@@ -4127,7 +4127,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=18')
+                    navigator.serviceWorker.register('/sw.js?v=19')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates
@@ -4282,8 +4282,8 @@
                 document.mozFullScreenElement ||
                 document.msFullscreenElement;
             if (fsEl) {
-                if (watermark && watermark.parentNode !== fsEl) fsEl.appendChild(watermark);
                 if (upcomingBadge && upcomingBadge.parentNode !== fsEl) fsEl.appendChild(upcomingBadge);
+                if (watermark && watermark.parentNode !== fsEl) fsEl.appendChild(watermark);
             }
             if (watermark) watermark.classList.add('fullscreen-pinned');
             if (upcomingBadge) upcomingBadge.classList.add('fullscreen-pinned');
@@ -4294,8 +4294,8 @@
             if (fsBtn) fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit';
         } else {
             if (playerFrame) {
-                if (watermark && watermark.parentNode !== playerFrame) playerFrame.appendChild(watermark);
                 if (upcomingBadge && upcomingBadge.parentNode !== playerFrame) playerFrame.appendChild(upcomingBadge);
+                if (watermark && watermark.parentNode !== playerFrame) playerFrame.appendChild(watermark);
             }
             if (watermark) watermark.classList.remove('fullscreen-pinned');
             if (upcomingBadge) upcomingBadge.classList.remove('fullscreen-pinned');

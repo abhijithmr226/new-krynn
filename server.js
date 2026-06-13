@@ -1136,6 +1136,17 @@ app.post('/api/health-check-urls', async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 
+// Static page routes — served without .html extension
+app.get('/privacy-policy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'contact.html'));
+});
+
 // Fallback to serve index.html for UI SPA routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

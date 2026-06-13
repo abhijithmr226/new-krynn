@@ -27,6 +27,11 @@ let state = {
 let hlsInstance = null;
 let mpegtsInstance = null;
 
+// Auto-failover state
+let _failoverAttempted = false;  // true after we've already tried the alternate format
+let _stallWatchdog = null;       // setInterval handle for stall detection
+let _lastCurrentTime = 0;        // last recorded currentTime for stall detection
+
 // Category Translation Helper
 function formatCategoryName(name) {
   if (!name) return '';
@@ -983,11 +988,19 @@ function updatePlayerFavBtnState() {
   }
 }
 
-function startVideoPlayback(type, id, format) {
+function startVideoPlayback(type, id, format, isFailover = false) {
   const video = document.getElementById('main-video');
   const errorOverlay = document.getElementById('player-error-overlay');
   const loadingOverlay = document.getElementById('player-loading-overlay');
-  
+
+  // Reset failover flag on fresh (non-failover) play attempts
+  if (!isFailover) {
+    _failoverAttempted = false;
+  }
+
+  // Stop any active stall watchdog
+  _clearStallWatchdog();
+
   // Hide native controls while loading
   video.removeAttribute('controls');
 
@@ -998,10 +1011,60 @@ function startVideoPlayback(type, id, format) {
   destroyPlayers();
 
   const playUrl = `/api/play/${type}/${id}?ext=${format}`;
-  console.log('Playing stream:', playUrl, 'Format:', format);
+  console.log(`${isFailover ? '[FAILOVER]' : '[PLAY]'} Stream: ${playUrl} Format: ${format}`);
 
   video.src = '';
-  
+
+  // Helper: attempt automatic failover to alternate format
+  const tryFailover = (reason) => {
+    if (_failoverAttempted || type !== 'live') {
+      // Already tried failover or non-live content — check the error code
+      console.warn('Failover already attempted or non-live stream. Checking stream status.');
+      testStreamError(playUrl);
+      return;
+    }
+    _failoverAttempted = true;
+    const altFormat = format === 'm3u8' ? 'ts' : 'm3u8';
+    console.warn(`Stream failed (${reason}). Auto-switching to ${altFormat.toUpperCase()}...`);
+
+    // Brief visual feedback
+    const loadingText = loadingOverlay.querySelector('p') || loadingOverlay.querySelector('span');
+    if (loadingText) loadingText.textContent = `Switching to ${altFormat.toUpperCase()} stream...`;
+    loadingOverlay.classList.remove('hidden');
+    errorOverlay.classList.add('hidden');
+
+    // Update format dropdown to reflect the switch
+    const formatSelect = document.getElementById('stream-format');
+    if (formatSelect) formatSelect.value = altFormat;
+
+    setTimeout(() => startVideoPlayback(type, id, altFormat, true), 1000);
+  };
+
+  // Start stall watchdog for live streams (detects frozen/stalled playback)
+  const _startStallWatchdog = () => {
+    if (type !== 'live') return;
+    _lastCurrentTime = 0;
+    let stallCount = 0;
+    _stallWatchdog = setInterval(() => {
+      if (video.paused || video.ended || video.seeking) {
+        stallCount = 0;
+        return;
+      }
+      if (video.currentTime === _lastCurrentTime && video.readyState >= 2) {
+        stallCount++;
+        console.warn(`[STALL] No progress for ${stallCount * 4}s (currentTime=${video.currentTime})`);
+        if (stallCount >= 2) { // 8 seconds stalled
+          _clearStallWatchdog();
+          console.error('[STALL] Stream appears frozen. Attempting failover.');
+          tryFailover('stall');
+        }
+      } else {
+        stallCount = 0;
+        _lastCurrentTime = video.currentTime;
+      }
+    }, 4000);
+  };
+
   if (format === 'm3u8') {
     if (Hls.isSupported()) {
       hlsInstance = new Hls({
@@ -1010,19 +1073,18 @@ function startVideoPlayback(type, id, format) {
       });
       hlsInstance.loadSource(playUrl);
       hlsInstance.attachMedia(video);
-      
+
       hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
         loadingOverlay.classList.add('hidden');
-        video.setAttribute('controls', 'true'); // Show native controls once video is ready to play
+        video.setAttribute('controls', 'true');
         video.play().catch(e => console.error('Play request failed', e));
+        _startStallWatchdog();
       });
 
       hlsInstance.on(Hls.Events.ERROR, function (event, data) {
         if (data.fatal) {
           console.error('HLS Fatal error:', data);
-          
-          // Test if 456 error or other network blockage
-          testStreamError(playUrl);
+          tryFailover('hls-fatal');
         }
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -1030,11 +1092,12 @@ function startVideoPlayback(type, id, format) {
       video.src = playUrl;
       video.addEventListener('loadedmetadata', () => {
         loadingOverlay.classList.add('hidden');
-        video.setAttribute('controls', 'true'); // Show native controls
+        video.setAttribute('controls', 'true');
         video.play().catch(e => console.error('Native play failed', e));
+        _startStallWatchdog();
       });
       video.addEventListener('error', () => {
-        testStreamError(playUrl);
+        tryFailover('native-hls-error');
       });
     } else {
       showPlaybackError('HLS streaming is not supported on this browser.');
@@ -1043,16 +1106,17 @@ function startVideoPlayback(type, id, format) {
     // TS or direct movie files (MKV/MP4)
     if (format === 'ts' && mpegts.isSupported()) {
       mpegtsInstance = mpegts.createPlayer({
-        type: 'mse', // MPEG-TS demuxer
+        type: 'mse',
         url: playUrl,
         isLive: type === 'live'
       });
       mpegtsInstance.attachMediaElement(video);
       mpegtsInstance.load();
-      
+
       video.addEventListener('playing', () => {
         loadingOverlay.classList.add('hidden');
-        video.setAttribute('controls', 'true'); // Show native controls
+        video.setAttribute('controls', 'true');
+        _startStallWatchdog();
       }, { once: true });
 
       video.play().catch(e => {
@@ -1061,20 +1125,28 @@ function startVideoPlayback(type, id, format) {
 
       mpegtsInstance.on('error', (errorType, errorDetail, errorInfo) => {
         console.error('Mpegts error:', errorType, errorDetail, errorInfo);
-        testStreamError(playUrl);
+        tryFailover('mpegts-error');
       });
     } else {
-      // Fallback: standard html5 source (great for mp4/mkv movies or native playback)
+      // Fallback: standard html5 source (mp4/mkv movies or native playback)
       video.src = playUrl;
       video.addEventListener('loadedmetadata', () => {
         loadingOverlay.classList.add('hidden');
-        video.setAttribute('controls', 'true'); // Show native controls
+        video.setAttribute('controls', 'true');
         video.play().catch(e => console.error('Direct file play failed', e));
       });
       video.addEventListener('error', () => {
-        testStreamError(playUrl);
+        tryFailover('html5-error');
       });
     }
+  }
+}
+
+// Clear the stall watchdog timer
+function _clearStallWatchdog() {
+  if (_stallWatchdog) {
+    clearInterval(_stallWatchdog);
+    _stallWatchdog = null;
   }
 }
 
@@ -1121,6 +1193,7 @@ function showPlaybackError(msg, is456 = false) {
 }
 
 function destroyPlayers() {
+  _clearStallWatchdog();
   if (hlsInstance) {
     hlsInstance.destroy();
     hlsInstance = null;

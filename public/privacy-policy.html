@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — KRYNN SPORTS</title>
+  <meta name="description" content="KRYNN SPORTS Privacy Policy: Learn how we handle user data, cookies, and your privacy rights.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://krynn.tv/privacy-policy">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#060609">
+  <link rel="apple-touch-icon" href="krynn_logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #060609;
+      --bg-card: #101014;
+      --border: #1c1c24;
+      --orange: #ff6a00;
+      --orange-glow: rgba(255,106,0,0.15);
+      --text: #ffffff;
+      --muted: #71717a;
+      --accent-gradient: linear-gradient(135deg,#ff5500,#ff8c00);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #15100c, #020204);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: rgba(6,6,9,0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(20px);
+    }
+    .logo-link {
+      display: flex; align-items: center; gap: 12px; text-decoration: none;
+    }
+    .logo-img { height: 40px; width: auto; object-fit: contain; }
+    .brand-title {
+      font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 800;
+      color: #fff; display: flex; align-items: center; gap: 5px;
+    }
+    .brand-title span { color: var(--orange); }
+    .back-btn {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 13px;
+      font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer;
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .back-btn:hover { background: var(--orange); border-color: var(--orange); }
+
+    /* Main */
+    .main {
+      max-width: 820px; margin: 0 auto; padding: 48px 20px 80px;
+    }
+    .page-hero {
+      text-align: center; margin-bottom: 48px;
+    }
+    .page-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,106,0,0.12); border: 1px solid rgba(255,106,0,0.35);
+      color: var(--orange); font-family: 'Outfit', sans-serif; font-size: 10px;
+      font-weight: 800; letter-spacing: 1.5px; padding: 5px 12px; border-radius: 4px;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .page-title {
+      font-family: 'Outfit', sans-serif; font-size: 38px; font-weight: 900;
+      letter-spacing: -0.5px; margin-bottom: 12px;
+    }
+    .page-subtitle {
+      color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 520px; margin: 0 auto;
+    }
+    .last-updated {
+      margin-top: 10px; font-size: 12px; color: var(--muted);
+    }
+
+    /* Card sections */
+    .policy-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 32px 36px; margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+    .policy-card:hover { border-color: rgba(255,106,0,0.2); }
+    .card-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+    }
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--orange-glow); border: 1px solid rgba(255,106,0,0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange); font-size: 18px; flex-shrink: 0;
+    }
+    .card-title {
+      font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; color: #fff;
+    }
+    .card-body { color: #a1a1aa; font-size: 14px; line-height: 1.8; }
+    .card-body p { margin-bottom: 12px; }
+    .card-body p:last-child { margin-bottom: 0; }
+    .card-body ul { padding-left: 20px; margin: 10px 0; }
+    .card-body ul li { margin-bottom: 8px; }
+    .card-body a { color: var(--orange); text-decoration: none; }
+    .card-body a:hover { text-decoration: underline; }
+    .highlight-box {
+      background: rgba(255,106,0,0.06); border: 1px solid rgba(255,106,0,0.2);
+      border-radius: 8px; padding: 16px 20px; margin-top: 16px;
+    }
+    .highlight-box p { color: #d4d4d8; margin: 0; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
+      font-size: 12px; color: var(--muted); margin-top: 20px;
+    }
+    footer .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 10px; }
+    footer .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    footer .footer-links a:hover { color: var(--orange); }
+    footer span { color: var(--orange); }
+
+    @media (max-width: 600px) {
+      .main { padding: 32px 16px 60px; }
+      .page-title { font-size: 28px; }
+      .policy-card { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo-link">
+      <img src="krynn_logo.png" alt="KRYNN" class="logo-img">
+      <h1 class="brand-title">KRYNN <span>SPORTS</span></h1>
+    </a>
+    <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+  </header>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="page-tag"><i class="fa-solid fa-shield-halved"></i> Legal</div>
+      <h1 class="page-title">Privacy Policy</h1>
+      <p class="page-subtitle">We are committed to protecting your privacy. This policy explains what data we collect, how it is used, and your rights.</p>
+      <p class="last-updated">Last updated: June 13, 2026</p>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-circle-info"></i></div>
+        <div class="card-title">1. Information We Collect</div>
+      </div>
+      <div class="card-body">
+        <p>KRYNN SPORTS is a browser-based live streaming portal. We collect minimal information necessary to provide our service:</p>
+        <ul>
+          <li><strong>Usage Data:</strong> Anonymous analytics such as page views, session duration, and general geographic region (country level) collected via standard server logs.</li>
+          <li><strong>Local Storage:</strong> Your channel favorites, player preferences, and UI settings are stored locally in your browser using <code>localStorage</code>. This data never leaves your device.</li>
+          <li><strong>IP Address:</strong> Your IP address may be logged by our server for security, abuse prevention, and diagnostic purposes. It is not sold or shared with third parties.</li>
+        </ul>
+        <div class="highlight-box">
+          <p><i class="fa-solid fa-circle-check" style="color:var(--orange);margin-right:6px;"></i> We do <strong>not</strong> collect your name, email address, phone number, or any personally identifiable information unless you contact us directly.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+        <div class="card-title">2. Cookies &amp; Local Storage</div>
+      </div>
+      <div class="card-body">
+        <p>We use browser <strong>localStorage</strong> (not cookies) to save:</p>
+        <ul>
+          <li>Your favorited channels, movies, and series</li>
+          <li>Your selected stream format preferences (HLS/TS)</li>
+        </ul>
+        <p>We do <strong>not</strong> use tracking cookies, advertising cookies, or third-party cookie networks. Some embedded CDN resources (e.g., fonts from Google Fonts) may set their own cookies subject to Google's own privacy policy.</p>
+      </div>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-share-nodes"></i></div>
+        <div class="card-title">3. Third-Party Services</div>
+      </div>
+      <div class="card-body">
+        <p>KRYNN SPORTS uses the following third-party resources whose own privacy policies apply:</p>
+        <ul>
+          <li><strong>Google Fonts</strong> — for typography (Inter, Outfit). Google may log font requests.</li>
+          <li><strong>Font Awesome CDN</strong> — for icons. Cloudflare may log requests.</li>
+          <li><strong>Shaka Player / HLS.js / mpegts.js</strong> — open source video player libraries loaded from CDN.</li>
+          <li><strong>StreamScore / Sportradar</strong> — live match data API for scoreboard functionality.</li>
+        </ul>
+        <p>We do not use Google Analytics, Facebook Pixel, or any other behavioural tracking services.</p>
+      </div>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-tv"></i></div>
+        <div class="card-title">4. Stream Content &amp; IPTV</div>
+      </div>
+      <div class="card-body">
+        <p>KRYNN SPORTS acts as a client interface for IPTV streams. Stream URLs and channel metadata are fetched from IPTV provider APIs configured by the operator of this instance. We are not responsible for the content provided by those third-party IPTV sources.</p>
+        <p>Your IPTV portal credentials (if any) are stored only in server-side configuration files on the host machine and are never transmitted to any analytics or advertising service.</p>
+      </div>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-lock"></i></div>
+        <div class="card-title">5. Data Security</div>
+      </div>
+      <div class="card-body">
+        <p>We take reasonable precautions to protect the data processed by this service:</p>
+        <ul>
+          <li>All stream proxying is performed server-side to prevent direct credential exposure in the browser.</li>
+          <li>Server logs are periodically purged and are not accessible publicly.</li>
+          <li>We recommend accessing this service over HTTPS to protect data in transit.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-user-shield"></i></div>
+        <div class="card-title">6. Your Rights</div>
+      </div>
+      <div class="card-body">
+        <p>Since we collect minimal personal data, your primary rights are:</p>
+        <ul>
+          <li><strong>Right to clear local data:</strong> You can clear all locally stored preferences by clearing your browser's localStorage for this site at any time.</li>
+          <li><strong>Right to request deletion:</strong> If you believe we hold any personal data about you (e.g., from server logs), you may contact us to request deletion.</li>
+          <li><strong>Right to know:</strong> You can always contact us to ask what data, if any, is associated with your IP address in our logs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="policy-card">
+      <div class="card-header">
+        <div class="card-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="card-title">7. Contact</div>
+      </div>
+      <div class="card-body">
+        <p>For any privacy-related questions or requests, please reach out via our <a href="/contact">Contact page</a> or follow us on Instagram <a href="https://www.instagram.com/krynnlabs" target="_blank" rel="noopener noreferrer">@krynnlabs</a>.</p>
+        <p>We will respond to all legitimate privacy requests within 30 days.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds</p>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/about">About Us</a>
+      <a href="/contact">Contact Us</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="keywords" content="FIFA World Cup 2026, World Cup Live Stream, Football Live Streaming, Soccer Streams, World Cup Schedule, World Cup Standings, World Cup Fixtures, Live Scoreboard, Match Predictions, KRYNN SPORTS, KRYNN TV">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="KRYNN TV">
-  <meta name="monetag" content="2348e78fc128fa54711d9fa0cd26462e">
+
   <link rel="canonical" href="https://krynn.tv/">
   
   <!-- Open Graph / Facebook -->
@@ -85,11 +85,7 @@
   }
   </script>
 
-  <!-- Monetag: Push Notifications / In-Page Push -->
-  <script src="https://quge5.com/88/tag.min.js" data-zone="249064" async data-cfasync="false"></script>
 
-  <!-- Monetag: Onclick Popunder -->
-  <script data-cfasync="false">(function(s){s.dataset.zone='11138501',s.src='https://al5sm.com/tag.min.js',s.setAttribute('data-cfasync','false')})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
 
   <!-- Fonts -->
@@ -735,6 +731,18 @@
       margin-top: 16px;
     }
     footer span { color: var(--orange); }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .footer-links a {
+      color: var(--muted); text-decoration: none; font-size: 12px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--orange); }
+    .footer-social { margin-top: 6px; }
+    .footer-social a { color: var(--orange); text-decoration: none; }
+    .footer-social a:hover { text-decoration: underline; }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
@@ -1580,10 +1588,7 @@
       </div>
     </div>
 
-    <!-- Monetag: In-Page Push Ad Slot -->
-    <div id="monetag-inpage-wrap" style="width:100%;text-align:center;min-height:0;overflow:hidden;">
-      <script data-cfasync="false" async src="https://quge5.com/88/tag.min.js" data-zone="249064"></script>
-    </div>
+
 
     <!-- Instagram Follow Banner -->
     <div class="ig-follow-banner" id="ig-banner">
@@ -1836,6 +1841,11 @@
   <footer>
     <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds &nbsp;|&nbsp; Matches data fetched from SportScore</p>
     <p class="footer-social">Follow us on Instagram <a href="https://www.instagram.com/krynnlabs" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> @krynnlabs</a> for stream updates &amp; announcements</p>
+    <div class="footer-links">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/about">About Us</a>
+      <a href="/contact">Contact Us</a>
+    </div>
   </footer>
 
   <script>

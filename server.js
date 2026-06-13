@@ -615,21 +615,6 @@ app.get('/api/play/:type/:id', (req, res) => {
 
   if (!type || !id) return res.status(400).json({ error: 'Missing stream id or type' });
 
-  // Playback Safety: Verify referer to prevent hotlinking
-  const referer = req.headers.referer || req.headers.referrer;
-  const host = req.headers.host;
-  if (referer && !referer.includes(host)) {
-    console.log(`[Proxy Block] Unauthorized referer: ${referer}`);
-    return res.status(403).json({ error: 'Unauthorized hotlink. Playback is restricted to the KRYNN SPORTS app.' });
-  }
-
-  // Block automated download tools
-  const ua = (req.headers['user-agent'] || '').toLowerCase();
-  const blockedTools = ['curl', 'wget', 'aria2', 'python', 'http-client'];
-  if (blockedTools.some(tool => ua.includes(tool))) {
-    return res.status(403).json({ error: 'Direct media download is not allowed.' });
-  }
-
   const portal = getActivePortal();
   let playUrl = '';
   

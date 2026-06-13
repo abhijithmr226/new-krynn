@@ -2232,6 +2232,30 @@
             "logo": "krynn_logo.png",
             "streamUrl": "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8",
             "type": "hls"
+          },
+          {
+            "name": "TSN-1 (360p)",
+            "logo": "https://r2.thesportsdb.com/images/media/channel/logo/yrrvpq1433380019.png",
+            "streamUrl": "https://server1host.run.place:9443/today/tsn1_360p/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Ni8xMy8yMDI2IDM6NDE6MzEgUE0maGFzaF92YWx1ZT1lU0cvejBSa3ZPU2h1cU5jUndidGtRPT0mdmFsaWRtaW51dGVzPTYw",
+            "type": "hls"
+          },
+          {
+            "name": "TSN-1 (4800p)",
+            "logo": "https://r2.thesportsdb.com/images/media/channel/logo/yrrvpq1433380019.png",
+            "streamUrl": "https://server8host.run.place:9443/today/tsn1_4800p/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Ni8xMy8yMDI2IDM6NDE6MzEgUE0maGFzaF92YWx1ZT1lU0cvejBSa3ZPU2h1cU5jUndidGtRPT0mdmFsaWRtaW51dGVzPTYw",
+            "type": "hls"
+          },
+          {
+            "name": "Fox-2 (480p)",
+            "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT9dm4fKhUJScpNW_G3BwcRnqU5t2rPjGIzw&s",
+            "streamUrl": "https://server2host.run.place:9443/today/fox2_480p/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Ni8xMy8yMDI2IDM6NDE6MzEgUE0maGFzaF92YWx1ZT1lU0cvejBSa3ZPU2h1cU5jUndidGtRPT0mdmFsaWRtaW51dGVzPTYw",
+            "type": "hls"
+          },
+          {
+            "name": "TSN-4 (480p)",
+            "logo": "https://r2.thesportsdb.com/images/media/channel/logo/yrrvpq1433380019.png",
+            "streamUrl": "https://server3host.run.place:9443/today/tsn4_480p/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Ni8xMy8yMDI2IDM6NDE6MzEgUE0maGFzaF92YWx1ZT1lU0cvejBSa3ZPU2h1cU5jUndidGtRPT0mdmFsaWRtaW51dGVzPTYw",
+            "type": "hls"
           }
         ];
 
@@ -3803,7 +3827,7 @@
             // Register PWA Service Worker with cache busting query parameter to force update
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js?v=6')
+                    navigator.serviceWorker.register('/sw.js?v=7')
                         .then(reg => {
                             console.log('Service Worker Registered!', reg.scope);
                             // Force check for updates

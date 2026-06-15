@@ -647,34 +647,48 @@ const { HttpsProxyAgent } = require('https-proxy-agent');
 const proxyAgentHttps = new https.Agent({ keepAlive: true });
 const proxyAgentHttp = new http.Agent({ keepAlive: true });
 
-// Dynamic Brazil Proxy Caching Resolver
-let cachedBrazilProxy = null;
+// Dynamic Brazil Proxy Caching & Rotating Resolver
+let cachedProxiesList = [];
 let lastProxyFetch = 0;
+let proxyIndex = 0;
 
-async function getBrazilProxy() {
+async function getBrazilProxy(forceNew = false) {
   const now = Date.now();
-  // Cache for 5 minutes to keep it fresh but avoid rate limits
-  if (cachedBrazilProxy && (now - lastProxyFetch < 5 * 60 * 1000)) {
-    return cachedBrazilProxy;
+  
+  if (forceNew || cachedProxiesList.length === 0 || (now - lastProxyFetch > 5 * 60 * 1000)) {
+    try {
+      console.log('[Proxy Fetch] Querying ProxyScrape for fresh Brazil proxies...');
+      const res = await fetch('https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=4000&country=BR&ssl=all&anonymity=all');
+      if (res.ok) {
+        const text = await res.text();
+        const list = text.split('\n').map(p => p.trim()).filter(p => p.length > 0);
+        if (list.length > 0) {
+          cachedProxiesList = list;
+          proxyIndex = 0;
+          lastProxyFetch = now;
+          console.log(`[Proxy Fetch] Loaded ${list.length} proxies from ProxyScrape.`);
+        }
+      }
+    } catch (err) {
+      console.error('[Proxy Fetch Error]:', err.message);
+    }
   }
 
-  try {
-    console.log('[Proxy Fetch] Querying ProxyScrape for active Brazil proxy...');
-    const res = await fetch('https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=5000&country=BR&ssl=all&anonymity=all');
-    if (res.ok) {
-      const text = await res.text();
-      const proxies = text.split('\n').map(p => p.trim()).filter(p => p.length > 0);
-      if (proxies.length > 0) {
-        cachedBrazilProxy = `http://${proxies[0]}`;
-        lastProxyFetch = now;
-        console.log(`[Proxy Fetch] Loaded active Brazil proxy: ${cachedBrazilProxy}`);
-        return cachedBrazilProxy;
-      }
-    }
-  } catch (err) {
-    console.error('[Proxy Fetch Error]:', err.message);
+  if (cachedProxiesList.length > 0) {
+    const selected = cachedProxiesList[proxyIndex];
+    return `http://${selected}`;
   }
   return null;
+}
+
+function rotateBrazilProxy() {
+  if (cachedProxiesList.length > 0) {
+    proxyIndex = (proxyIndex + 1) % cachedProxiesList.length;
+    console.log(`[Proxy Rotate] Rotated to next sibling proxy index ${proxyIndex}/${cachedProxiesList.length}: http://${cachedProxiesList[proxyIndex]}`);
+    if (proxyIndex === 0) {
+      cachedProxiesList = []; // Force reload list next time we hit index 0
+    }
+  }
 }
 
 // Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments using standard DNS and keep-alive
@@ -761,6 +775,9 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
 
   proxyReq.on('error', (err) => {
     console.error('[Stream Proxy Request Error]:', err.message);
+    if (proxyUrl === 'auto-br') {
+      rotateBrazilProxy();
+    }
     if (!res.headersSent) {
       res.status(500).send(err.message);
     }

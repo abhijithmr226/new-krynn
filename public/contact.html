@@ -5,78 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6232926894418612"
      crossorigin="anonymous"></script>
-  <!-- Dynamic Ad Provider Script (Adsterra or Monetag Choice) -->
+  <!-- Integrated Ad Provider Scripts (Adsterra & Monetag) -->
   <script>
     (function() {
-      const provider = localStorage.getItem('krynn_ad_provider') || 'adsterra';
-      if (provider === 'adsterra') {
-        // Load Adsterra Scripts
-        const s1 = document.createElement('script');
-        s1.src = 'https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js';
-        document.head.appendChild(s1);
+      // 1. Load Adsterra Scripts
+      const s1 = document.createElement('script');
+      s1.src = 'https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js';
+      document.head.appendChild(s1);
 
-        const s2 = document.createElement('script');
-        s2.src = 'https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js';
-        document.head.appendChild(s2);
-      } else if (provider === 'monetag') {
-        // Load Monetag Scripts
-        // 1. Popunder
-        (function(s){
-          s.dataset.zone='11138501';
-          s.src='https://al5sm.com/tag.min.js';
-        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+      const s2 = document.createElement('script');
+      s2.src = 'https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js';
+      document.head.appendChild(s2);
 
-        // 2. Vignette Banner
-        (function(s){
-          s.dataset.zone='11142733';
-          s.src='https://n6wxm.com/vignette.min.js';
-        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+      // 2. Load Monetag Scripts
+      // 1. Popunder
+      (function(s){
+        s.dataset.zone='11138501';
+        s.src='https://al5sm.com/tag.min.js';
+      })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
 
-        // 3. Multi Tag (Push, Vignette, In-Page Push, OnClick)
-        const s3 = document.createElement('script');
-        s3.src = 'https://quge5.com/88/tag.min.js';
-        s3.dataset.zone = '249064';
-        s3.async = true;
-        s3.setAttribute('data-cfasync', 'false');
-        document.head.appendChild(s3);
-      }
+      // 2. Vignette Banner
+      (function(s){
+        s.dataset.zone='11142733';
+        s.src='https://n6wxm.com/vignette.min.js';
+      })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+      // 3. Multi Tag (Push, Vignette, In-Page Push, OnClick)
+      const s3 = document.createElement('script');
+      s3.src = 'https://quge5.com/88/tag.min.js';
+      s3.dataset.zone = '249064';
+      s3.async = true;
+      s3.setAttribute('data-cfasync', 'false');
+      document.head.appendChild(s3);
     })();
   </script>
   <title>Contact Us — KRYNN SPORTS</title>
   <meta name="description" content="Get in touch with KRYNN SPORTS. Report stream issues, ask questions, or connect with us on Instagram and our community channels.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://krynn.tv/contact">
+  <link rel="canonical" href="https://krynn-sports.vercel.app/contact">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#060609">
   <link rel="apple-touch-icon" href="krynn_logo.png">
+  <link rel="icon" type="image/png" href="worldcup_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
-      --bg: #060609;
-      --bg-card: #101014;
-      --border: #1c1c24;
+      --bg: #030712;
+      --bg-darker: #020204;
+      --card-bg: rgba(17, 24, 39, 0.45);
+      --card-border: rgba(255, 255, 255, 0.05);
       --orange: #ff6a00;
-      --orange-glow: rgba(255,106,0,0.15);
-      --text: #ffffff;
-      --muted: #71717a;
+      --orange-hover: #ea5800;
+      --orange-glow: rgba(255, 106, 0, 0.25);
+      --text: #f3f4f6;
+      --muted: #94a3b8;
+      --red: #ef4444;
+      --green: #22c55e;
+      --gold: #eab308;
+      --accent-gradient: linear-gradient(135deg, #ff5f00 0%, #ff8c00 50%, #ffbe00 100%);
+      --glass-bg: rgba(17, 24, 39, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --shadow-premium: 0 10px 40px rgba(0, 0, 0, 0.5);
+      --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      
+      /* Subpage legacy compatibility mappings */
+      --bg-card: rgba(17, 24, 39, 0.45);
+      --border: rgba(255, 255, 255, 0.05);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #15100c, #020204);
+      background-color: var(--bg);
+      background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, var(--bg) 100%);
       color: var(--text);
       min-height: 100vh;
     }
 
     header {
-      background: rgba(6,6,9,0.96);
+      background: rgba(6, 6, 9, 0.95);
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between;
-      height: 68px;
+      height: 72px;
       position: sticky; top: 0; z-index: 100;
       backdrop-filter: blur(20px);
     }
@@ -131,10 +144,12 @@
       border-radius: 14px; padding: 24px;
       display: flex; align-items: center; gap: 18px;
       text-decoration: none; transition: all 0.25s; cursor: pointer;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
     .channel-card:hover {
       border-color: var(--orange); transform: translateX(4px);
-      box-shadow: 0 4px 20px rgba(255,106,0,0.1);
+      box-shadow: 0 4px 20px rgba(255, 106, 0, 0.15);
     }
     .channel-icon {
       width: 52px; height: 52px; border-radius: 12px;
@@ -157,8 +172,10 @@
     .info-card {
       background: var(--bg-card); border: 1px solid var(--border);
       border-radius: 14px; padding: 28px 28px; transition: border-color 0.2s;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
-    .info-card:hover { border-color: rgba(255,106,0,0.2); }
+    .info-card:hover { border-color: rgba(255, 106, 0, 0.2); }
     .card-header {
       display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
     }
@@ -312,7 +329,7 @@
   <header>
     <a href="/" class="logo-link">
       <img src="krynn_logo.png" alt="KRYNN" class="logo-img">
-      <h1 class="brand-title">KRYNN <span>SPORTS</span></h1>
+      <span class="brand-title">KRYNN <span>SPORTS</span></span>
     </a>
     <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
   </header>
@@ -394,7 +411,7 @@
             </li>
             <li class="faq-item">
               <div class="faq-q">I have a DMCA or legal request. Who do I contact?</div>
-              <div class="faq-a">Contact us via Instagram DM. DMCA and legal requests are handled within 72 hours of receipt. See our <a href="/privacy-policy">Privacy Policy</a> for more details.</div>
+              <div class="faq-a">Contact us via Instagram DM. DMCA and legal requests are handled within 72 hours of receipt. See our <a href="/privacy-policy.html">Privacy Policy</a> for more details.</div>
             </li>
           </ul>
         </div>
@@ -415,11 +432,11 @@
     <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds</p>
     <div class="footer-links">
       <a href="/">Home</a>
-      <a href="/about">About Us</a>
-      <a href="/contact">Contact Us</a>
-      <a href="/privacy-policy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/disclaimer">Disclaimer</a>
+      <a href="/about.html">About Us</a>
+      <a href="/contact.html">Contact Us</a>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/disclaimer.html">Disclaimer</a>
     </div>
   </footer>
 
@@ -429,7 +446,7 @@
       <div class="cookie-consent-icon"><i class="fa-solid fa-cookie-bite"></i></div>
       <div class="cookie-consent-text">
         <h5>We Value Your Privacy</h5>
-        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy">Privacy Policy</a> to learn more.</p>
+        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy.html">Privacy Policy</a> to learn more.</p>
       </div>
     </div>
     <div class="cookie-consent-buttons">

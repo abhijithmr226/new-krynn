@@ -1,128 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://krynn.tv/</loc>
+    <loc>https://krynn-sports.vercel.app/</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/about</loc>
+    <loc>https://krynn-sports.vercel.app/about.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/contact</loc>
+    <loc>https://krynn-sports.vercel.app/contact.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/privacy-policy</loc>
+    <loc>https://krynn-sports.vercel.app/privacy-policy.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/terms</loc>
+    <loc>https://krynn-sports.vercel.app/terms.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/disclaimer</loc>
+    <loc>https://krynn-sports.vercel.app/disclaimer.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <!-- World Cup Team Schedule Search Landing Pages -->
   <url>
-    <loc>https://krynn.tv/?search=Argentina</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Argentina</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Brazil</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Brazil</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Portugal</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Portugal</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=France</loc>
+    <loc>https://krynn-sports.vercel.app/?search=France</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Spain</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Spain</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Germany</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Germany</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=England</loc>
+    <loc>https://krynn-sports.vercel.app/?search=England</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Italy</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Italy</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Netherlands</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Netherlands</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Croatia</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Croatia</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Mexico</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Mexico</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=USA</loc>
+    <loc>https://krynn-sports.vercel.app/?search=USA</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Canada</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Canada</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Japan</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Japan</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://krynn.tv/?search=Morocco</loc>
+    <loc>https://krynn-sports.vercel.app/?search=Morocco</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>

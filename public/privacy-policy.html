@@ -5,50 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6232926894418612"
      crossorigin="anonymous"></script>
-  <!-- Dynamic Ad Provider Script (Adsterra or Monetag Choice) -->
+  <!-- Integrated Ad Provider Scripts (Adsterra & Monetag) -->
   <script>
     (function() {
-      const provider = localStorage.getItem('krynn_ad_provider') || 'adsterra';
-      if (provider === 'adsterra') {
-        // Load Adsterra Scripts
-        const s1 = document.createElement('script');
-        s1.src = 'https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js';
-        document.head.appendChild(s1);
+      // 1. Load Adsterra Scripts
+      const s1 = document.createElement('script');
+      s1.src = 'https://pl29732133.effectivecpmnetwork.com/d3/17/db/d317db682f2fd2862f476c973935fa59.js';
+      document.head.appendChild(s1);
 
-        const s2 = document.createElement('script');
-        s2.src = 'https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js';
-        document.head.appendChild(s2);
-      } else if (provider === 'monetag') {
-        // Load Monetag Scripts
-        // 1. Popunder
-        (function(s){
-          s.dataset.zone='11138501';
-          s.src='https://al5sm.com/tag.min.js';
-        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+      const s2 = document.createElement('script');
+      s2.src = 'https://pl29732134.effectivecpmnetwork.com/ec/d5/ff/ecd5ff270be03b5d7d162d932395f0b6.js';
+      document.head.appendChild(s2);
 
-        // 2. Vignette Banner
-        (function(s){
-          s.dataset.zone='11142733';
-          s.src='https://n6wxm.com/vignette.min.js';
-        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+      // 2. Load Monetag Scripts
+      // 1. Popunder
+      (function(s){
+        s.dataset.zone='11138501';
+        s.src='https://al5sm.com/tag.min.js';
+      })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
 
-        // 3. Multi Tag (Push, Vignette, In-Page Push, OnClick)
-        const s3 = document.createElement('script');
-        s3.src = 'https://quge5.com/88/tag.min.js';
-        s3.dataset.zone = '249064';
-        s3.async = true;
-        s3.setAttribute('data-cfasync', 'false');
-        document.head.appendChild(s3);
-      }
+      // 2. Vignette Banner
+      (function(s){
+        s.dataset.zone='11142733';
+        s.src='https://n6wxm.com/vignette.min.js';
+      })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+      // 3. Multi Tag (Push, Vignette, In-Page Push, OnClick)
+      const s3 = document.createElement('script');
+      s3.src = 'https://quge5.com/88/tag.min.js';
+      s3.dataset.zone = '249064';
+      s3.async = true;
+      s3.setAttribute('data-cfasync', 'false');
+      document.head.appendChild(s3);
     })();
   </script>
   <title>Privacy Policy — KRYNN SPORTS</title>
   <meta name="description" content="KRYNN SPORTS Privacy Policy: Learn how we handle user data, cookies, and your privacy rights.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://krynn.tv/privacy-policy">
+  <link rel="canonical" href="https://krynn-sports.vercel.app/privacy-policy">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#060609">
   <link rel="apple-touch-icon" href="krynn_logo.png">
+  <link rel="icon" type="image/png" href="worldcup_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -279,7 +277,7 @@
   <header>
     <a href="/" class="logo-link">
       <img src="krynn_logo.png" alt="KRYNN" class="logo-img">
-      <h1 class="brand-title">KRYNN <span>SPORTS</span></h1>
+      <span class="brand-title">KRYNN <span>SPORTS</span></span>
     </a>
     <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
   </header>
@@ -386,7 +384,7 @@
         <div class="card-title">7. Contact</div>
       </div>
       <div class="card-body">
-        <p>For any privacy-related questions or requests, please reach out via our <a href="/contact">Contact page</a> or follow us on Instagram <a href="https://www.instagram.com/krynnlabs" target="_blank" rel="noopener noreferrer">@krynnlabs</a>.</p>
+        <p>For any privacy-related questions or requests, please reach out via our <a href="/contact.html">Contact page</a> or follow us on Instagram <a href="https://www.instagram.com/krynnlabs" target="_blank" rel="noopener noreferrer">@krynnlabs</a>.</p>
         <p>We will respond to all legitimate privacy requests within 30 days.</p>
       </div>
     </div>
@@ -396,11 +394,11 @@
     <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds</p>
     <div class="footer-links">
       <a href="/">Home</a>
-      <a href="/about">About Us</a>
-      <a href="/contact">Contact Us</a>
-      <a href="/privacy-policy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/disclaimer">Disclaimer</a>
+      <a href="/about.html">About Us</a>
+      <a href="/contact.html">Contact Us</a>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/disclaimer.html">Disclaimer</a>
     </div>
   </footer>
 
@@ -410,7 +408,7 @@
       <div class="cookie-consent-icon"><i class="fa-solid fa-cookie-bite"></i></div>
       <div class="cookie-consent-text">
         <h5>We Value Your Privacy</h5>
-        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy">Privacy Policy</a> to learn more.</p>
+        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy.html">Privacy Policy</a> to learn more.</p>
       </div>
     </div>
     <div class="cookie-consent-buttons">

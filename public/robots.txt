@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://krynn.tv/sitemap.xml
+Sitemap: https://krynn-sports.vercel.app/sitemap.xml

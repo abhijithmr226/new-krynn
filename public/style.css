@@ -53,12 +53,12 @@ body {
   pointer-events: none;
 }
 .glow-1 {
-  background: #0077b6;
+  background: #ff6a00;
   top: -10%;
   left: -10%;
 }
 .glow-2 {
-  background: #ff0a54;
+  background: #eab308;
   bottom: -10%;
   right: -10%;
 }
@@ -299,7 +299,7 @@ body {
 }
 .search-box:focus-within {
   border-color: var(--accent-color);
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.2);
+  box-shadow: 0 0 10px rgba(255, 106, 0, 0.2);
 }
 .search-box i {
   color: var(--text-muted);
@@ -452,7 +452,7 @@ body {
   color: var(--text-primary);
 }
 .category-item.active {
-  background: rgba(0, 180, 216, 0.12);
+  background: rgba(255, 106, 0, 0.12);
   color: var(--accent-color);
   font-weight: 600;
   border-left: 3px solid var(--accent-color);
@@ -471,7 +471,7 @@ body {
   color: var(--text-muted);
 }
 .category-item.active .category-count {
-  background: rgba(0, 180, 216, 0.2);
+  background: rgba(255, 106, 0, 0.2);
   color: var(--accent-color);
 }
 
@@ -791,7 +791,7 @@ body {
 }
 .poster-card:hover .poster-img-container {
   border-color: var(--accent-color);
-  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.35);
+  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.35);
 }
 .poster-img-container img {
   width: 100%;
@@ -1031,7 +1031,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   color: var(--accent-color);
-  background: rgba(0, 180, 216, 0.1);
+  background: rgba(255, 106, 0, 0.1);
   padding: 2px 8px;
   border-radius: 4px;
 }
@@ -1148,7 +1148,7 @@ body {
   font-size: 30px;
   color: #fff;
   margin-bottom: 24px;
-  box-shadow: 0 0 30px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 0 30px rgba(255, 106, 0, 0.4);
 }
 .sync-box h2 {
   font-family: var(--font-heading);
@@ -1212,7 +1212,7 @@ body {
 }
 .start-sync-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.5);
+  box-shadow: 0 6px 20px rgba(255, 106, 0, 0.5);
 }
 .start-sync-btn:active {
   transform: translateY(0);
@@ -1367,7 +1367,7 @@ body {
 }
 .modal-play-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 6px 20px rgba(255, 106, 0, 0.4);
 }
 .modal-secondary-btn {
   background: rgba(255, 255, 255, 0.04);
@@ -1499,7 +1499,7 @@ body {
   transition: var(--transition);
 }
 .episode-item:hover {
-  background: rgba(0, 180, 216, 0.06);
+  background: rgba(255, 106, 0, 0.06);
   border-color: var(--accent-color);
 }
 .episode-title-col {
@@ -1603,7 +1603,7 @@ body {
 }
 .poster-card:hover .logo-placeholder {
   border-color: var(--accent-color);
-  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.35);
+  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.35);
   color: var(--accent-color);
 }
 .logo-placeholder i {

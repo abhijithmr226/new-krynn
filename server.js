@@ -608,6 +608,38 @@ app.get('/api/series-info/:id', async (req, res) => {
   }
 });
 
+// Get stream URL by channel name (matching custom player format)
+app.get('/api/stream', (req, res) => {
+  const channelName = (req.query.channel || '').toLowerCase().trim();
+  if (!channelName) {
+    return res.status(400).json({ error: 'Missing channel parameter' });
+  }
+
+  // 1. Search in worldcup_channels.json first
+  try {
+    const worldcupPath = path.join(__dirname, 'worldcup_channels.json');
+    if (fs.existsSync(worldcupPath)) {
+      const worldcupChannels = JSON.parse(fs.readFileSync(worldcupPath, 'utf8'));
+      const channel = worldcupChannels.find(c => c.name.toLowerCase().includes(channelName));
+      if (channel && channel.streamUrl) {
+        console.log(`[Stream API] Found worldcup channel ${channel.name}: Redirecting to ${channel.streamUrl}`);
+        return res.redirect(channel.streamUrl);
+      }
+    }
+  } catch (err) {
+    console.error('Error reading worldcup_channels.json:', err);
+  }
+
+  // 2. Search in live streams cache
+  const liveChannel = cache.liveStreams.find(s => s.name && s.name.toLowerCase().includes(channelName));
+  if (liveChannel && liveChannel.url) {
+    console.log(`[Stream API] Found live stream ${liveChannel.name}: Redirecting to ${liveChannel.url}`);
+    return res.redirect(liveChannel.url);
+  }
+
+  res.status(404).json({ error: 'Channel stream not found' });
+});
+
 // Live / Video play URLs (Secure Redirect proxy)
 app.get('/api/play/:type/:id', (req, res) => {
   const { type, id } = req.params;

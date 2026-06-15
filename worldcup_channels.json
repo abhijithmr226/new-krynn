@@ -1,0 +1,130 @@
+[
+  {
+    "name": "ITV (A2i TV)",
+    "logo": "https://via.placeholder.com/150?text=ITV",
+    "streamUrl": "https://stream.sen-gt.com/A2itv/myStream/playlist.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "FOX (Fox News Channel)",
+    "logo": "https://via.placeholder.com/150?text=FOX",
+    "streamUrl": "http://247preview.foxnews.com/hls/live/2020027/fncv3preview/primary.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "FS1 (FS1 Salzburg)",
+    "logo": "https://via.placeholder.com/150?text=FS1",
+    "streamUrl": "http://stream.fs1.tv:8080/hls/webstream.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "Telemundo (Telemundo Corpus Christi)",
+    "logo": "https://via.placeholder.com/150?text=Telemundo",
+    "streamUrl": "https://content.uplynk.com/channel/b6a96ed39d694ae1b738faa98cf7dd3f.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "SBS (SBS6 Classics)",
+    "logo": "https://via.placeholder.com/150?text=SBS",
+    "streamUrl": "https://sbs6classic.prd1.talpatvcdn.nl/v1/master/8ada1ed2ae3b9c3db6fc5e604cfa78fc7d2d745e/sbs6classic_ssai/fea54560ba684701a2143f33a9cf4489/index.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "DD Sports (DD Sports)",
+    "logo": "https://via.placeholder.com/150?text=DD%20Sports",
+    "streamUrl": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "Globo (Globo TV)",
+    "logo": "https://via.placeholder.com/150?text=Globo",
+    "streamUrl": "https://stream.radiosmundiales.com/hls/globotvhonduras/globotvhonduras.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "SBT (SBT Interior)",
+    "logo": "https://via.placeholder.com/150?text=SBT",
+    "streamUrl": "https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "CazeTV (CazeTV)",
+    "logo": "https://via.placeholder.com/150?text=CazeTV",
+    "streamUrl": "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "DAZN (DAZN Combat)",
+    "logo": "https://via.placeholder.com/150?text=DAZN",
+    "streamUrl": "https://dazn-combat-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-dazn-combat-rakuten/CDN/master.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "beIN Sports (beIN SPORTS XTRA)",
+    "logo": "https://via.placeholder.com/150?text=beIN%20Sports",
+    "streamUrl": "https://amg01334-beinsportsllc-beinxtra-samsungau-eiyvc.amagi.tv/playlist/amg01334-beinsportsllc-beinxtra-samsungau/playlist.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "SABC (SABC Lehae)",
+    "logo": "https://via.placeholder.com/150?text=SABC",
+    "streamUrl": "https://sabctretalh.cdn.mangomolo.com/lehae/smil:lehae.stream.smil/master.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "NHK (NHK World-Japan)",
+    "logo": "https://via.placeholder.com/150?text=NHK",
+    "streamUrl": "https://nhk.lls.pbs.org/index.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "DirecTV Sports (DD Sports)",
+    "logo": "https://via.placeholder.com/150?text=DirecTV%20Sports",
+    "streamUrl": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "RCN (RCN Mas)",
+    "logo": "https://via.placeholder.com/150?text=RCN",
+    "streamUrl": "https://rcntv-rcnmas-1-us.plex.wurl.tv/playlist.m3u8",
+    "type": "hls",
+    "language": "Unknown",
+    "quality": "Auto"
+  },
+  {
+    "name": "Channel 299",
+    "logo": "https://via.placeholder.com/150?text=CH299",
+    "streamUrl": "https://qp-pldt-live-bpk-ucd-prod.akamaized.net/bpk-tv/ch299/default/index.mpd",
+    "type": "dash",
+    "language": "Unknown",
+    "quality": "Auto"
+  }
+]

@@ -793,8 +793,10 @@ function rotateBrazilProxy() {
   }
 }
 
-// Kick off an initial background proxy pool refresh on startup
-setTimeout(() => refreshBrazilProxyPool(), 3000);
+// Kick off an initial background proxy pool refresh on startup (only if not running as serverless function)
+if (!process.env.VERCEL) {
+  setTimeout(() => refreshBrazilProxyPool(), 3000);
+}
 
 // Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments with timeout & auto-failover
 app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
@@ -1133,8 +1135,10 @@ function broadcastViewerCount() {
   }
 }
 
-// Broadcast every 3 seconds for active realtime fluctuation
-setInterval(broadcastViewerCount, 3000);
+// Broadcast every 3 seconds for active realtime fluctuation (disabled on Vercel)
+if (!process.env.VERCEL) {
+  setInterval(broadcastViewerCount, 3000);
+}
 
 // GET /api/viewer-stream — SSE endpoint
 app.get('/api/viewer-stream', (req, res) => {

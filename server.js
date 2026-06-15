@@ -640,6 +640,64 @@ app.get('/api/stream', (req, res) => {
   res.status(404).json({ error: 'Channel stream not found' });
 });
 
+// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments
+app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
+  const { protocol, host } = req.params;
+  const pathPart = req.params[0];
+  const queryParams = new URLSearchParams(req.query).toString();
+
+  if (protocol !== 'http' && protocol !== 'https') {
+    return res.status(400).send('Invalid protocol');
+  }
+
+  const targetUrl = `${protocol}://${host}/${pathPart}${queryParams ? '?' + queryParams : ''}`;
+
+  try {
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Referer': `${protocol}://${host}/`
+    };
+
+    if (req.headers['range']) headers['range'] = req.headers['range'];
+    if (req.headers['accept']) headers['accept'] = req.headers['accept'];
+
+    const response = await fetch(targetUrl, { headers });
+
+    const corsHeaders = [
+      'content-type',
+      'content-length',
+      'content-range',
+      'accept-ranges',
+      'cache-control'
+    ];
+    corsHeaders.forEach(h => {
+      const val = response.headers.get(h);
+      if (val) res.setHeader(h, val);
+    });
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+
+    res.status(response.status);
+
+    const bodyReader = response.body;
+    if (bodyReader) {
+      const nodeStream = require('stream').Readable.fromWeb(bodyReader);
+      nodeStream.pipe(res);
+    } else {
+      res.end();
+    }
+  } catch (err) {
+    console.error('[Stream Proxy Error]:', err.message);
+    res.status(500).send(err.message);
+  }
+});
+
 // Live / Video play URLs (Secure Redirect proxy)
 app.get('/api/play/:type/:id', (req, res) => {
   const { type, id } = req.params;

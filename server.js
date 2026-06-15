@@ -642,15 +642,51 @@ app.get('/api/stream', (req, res) => {
 
 const https = require('https');
 const http = require('http');
+const { HttpsProxyAgent } = require('https-proxy-agent');
 
 const proxyAgentHttps = new https.Agent({ keepAlive: true });
 const proxyAgentHttp = new http.Agent({ keepAlive: true });
+
+// Dynamic Brazil Proxy Caching Resolver
+let cachedBrazilProxy = null;
+let lastProxyFetch = 0;
+
+async function getBrazilProxy() {
+  const now = Date.now();
+  // Cache for 5 minutes to keep it fresh but avoid rate limits
+  if (cachedBrazilProxy && (now - lastProxyFetch < 5 * 60 * 1000)) {
+    return cachedBrazilProxy;
+  }
+
+  try {
+    console.log('[Proxy Fetch] Querying ProxyScrape for active Brazil proxy...');
+    const res = await fetch('https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=5000&country=BR&ssl=all&anonymity=all');
+    if (res.ok) {
+      const text = await res.text();
+      const proxies = text.split('\n').map(p => p.trim()).filter(p => p.length > 0);
+      if (proxies.length > 0) {
+        cachedBrazilProxy = `http://${proxies[0]}`;
+        lastProxyFetch = now;
+        console.log(`[Proxy Fetch] Loaded active Brazil proxy: ${cachedBrazilProxy}`);
+        return cachedBrazilProxy;
+      }
+    }
+  } catch (err) {
+    console.error('[Proxy Fetch Error]:', err.message);
+  }
+  return null;
+}
 
 // Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments using standard DNS and keep-alive
 app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
   const { protocol, host } = req.params;
   const pathPart = req.params[0];
-  const queryParams = new URLSearchParams(req.query).toString();
+  
+  // Extract custom or auto proxy options
+  const proxyUrl = req.query.proxy;
+  const queryObj = { ...req.query };
+  delete queryObj.proxy;
+  const queryParams = new URLSearchParams(queryObj).toString();
 
   if (protocol !== 'http' && protocol !== 'https') {
     return res.status(400).send('Invalid protocol');
@@ -673,10 +709,30 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
   if (req.headers['range']) headers['range'] = req.headers['range'];
   if (req.headers['accept']) headers['accept'] = req.headers['accept'];
 
+  // Load appropriate proxy agent
+  let agent = null;
+  if (proxyUrl) {
+    let resolvedProxy = null;
+    if (proxyUrl === 'auto-br') {
+      resolvedProxy = await getBrazilProxy();
+    } else {
+      resolvedProxy = proxyUrl;
+    }
+
+    if (resolvedProxy) {
+      console.log(`[Stream Proxy] Tunneling via: ${resolvedProxy} for URL: ${targetUrl}`);
+      agent = new HttpsProxyAgent(resolvedProxy);
+    }
+  }
+
+  if (!agent) {
+    agent = protocol === 'https' ? proxyAgentHttps : proxyAgentHttp;
+  }
+
   const options = {
     method: req.method,
     headers: headers,
-    agent: protocol === 'https' ? proxyAgentHttps : proxyAgentHttp
+    agent: agent
   };
 
   const clientModule = protocol === 'https' ? https : http;

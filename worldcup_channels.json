@@ -74,9 +74,9 @@
   {
     "name": "CazeTV (CazeTV)",
     "logo": "https://via.placeholder.com/150?text=CazeTV",
-    "streamUrl": "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8",
+    "streamUrl": "/api/proxy/https/dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8?proxy=auto-br",
     "type": "hls",
-    "language": "Unknown",
+    "language": "Portuguese",
     "quality": "Auto"
   },
   {

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -653,6 +654,13 @@ let lastProxyFetch = 0;
 let proxyIndex = 0;
 
 async function getBrazilProxy(forceNew = false) {
+  // 1. Prioritize premium VPN/Proxy configured in environment
+  const envProxy = process.env.BRAZIL_PROXY_URL || process.env.VPN_PROXY_URL;
+  if (envProxy) {
+    return envProxy;
+  }
+
+  // 2. Otherwise fall back to ProxyScrape auto-rotating pool
   const now = Date.now();
   
   if (forceNew || cachedProxiesList.length === 0 || (now - lastProxyFetch > 5 * 60 * 1000)) {

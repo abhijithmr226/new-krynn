@@ -640,7 +640,29 @@ app.get('/api/stream', (req, res) => {
   res.status(404).json({ error: 'Channel stream not found' });
 });
 
-// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments
+// DNS Resolver using Cloudflare 1.1.1.1 / 1.0.0.1
+const dns = require('dns');
+const https = require('https');
+const http = require('http');
+
+const dnsResolver = new dns.Resolver();
+dnsResolver.setServers(['1.1.1.1', '1.0.0.1']);
+
+const customDnsLookup = (hostname, options, callback) => {
+  dnsResolver.resolve4(hostname, (err, addresses) => {
+    if (err || !addresses || addresses.length === 0) {
+      // Fallback to default OS resolver if custom DNS lookup fails
+      dns.lookup(hostname, options, callback);
+    } else {
+      callback(null, addresses[0], 4);
+    }
+  });
+};
+
+const proxyAgentHttps = new https.Agent({ lookup: customDnsLookup, keepAlive: true });
+const proxyAgentHttp = new http.Agent({ lookup: customDnsLookup, keepAlive: true });
+
+// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments using custom DNS Agent
 app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
   const { protocol, host } = req.params;
   const pathPart = req.params[0];
@@ -652,16 +674,31 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
 
   const targetUrl = `${protocol}://${host}/${pathPart}${queryParams ? '?' + queryParams : ''}`;
 
-  try {
-    const headers = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Referer': `${protocol}://${host}/`
-    };
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    return res.sendStatus(200);
+  }
 
-    if (req.headers['range']) headers['range'] = req.headers['range'];
-    if (req.headers['accept']) headers['accept'] = req.headers['accept'];
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Referer': `${protocol}://${host}/`
+  };
 
-    const response = await fetch(targetUrl, { headers });
+  if (req.headers['range']) headers['range'] = req.headers['range'];
+  if (req.headers['accept']) headers['accept'] = req.headers['accept'];
+
+  const options = {
+    method: req.method,
+    headers: headers,
+    agent: protocol === 'https' ? proxyAgentHttps : proxyAgentHttp
+  };
+
+  const clientModule = protocol === 'https' ? https : http;
+
+  const proxyReq = clientModule.request(targetUrl, options, (proxyRes) => {
+    res.status(proxyRes.statusCode);
 
     const corsHeaders = [
       'content-type',
@@ -671,7 +708,7 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
       'cache-control'
     ];
     corsHeaders.forEach(h => {
-      const val = response.headers.get(h);
+      const val = proxyRes.headers[h];
       if (val) res.setHeader(h, val);
     });
 
@@ -679,23 +716,17 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', '*');
 
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
+    proxyRes.pipe(res);
+  });
 
-    res.status(response.status);
-
-    const bodyReader = response.body;
-    if (bodyReader) {
-      const nodeStream = require('stream').Readable.fromWeb(bodyReader);
-      nodeStream.pipe(res);
-    } else {
-      res.end();
+  proxyReq.on('error', (err) => {
+    console.error('[Stream Proxy Request Error]:', err.message);
+    if (!res.headersSent) {
+      res.status(500).send(err.message);
     }
-  } catch (err) {
-    console.error('[Stream Proxy Error]:', err.message);
-    res.status(500).send(err.message);
-  }
+  });
+
+  req.pipe(proxyReq);
 });
 
 // Live / Video play URLs (Secure Redirect proxy)

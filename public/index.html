@@ -2506,7 +2506,7 @@
   <!-- Header -->
   <header>
     <div class="logo-container">
-      <img class="logo-img" src="krynn_logo.png" alt="Krynn Logo">
+      <img class="logo-img" src="krynn_logo.png" alt="Krynn Logo" width="42" height="42" fetchpriority="high">
       <span class="brand-title">KRYNN <span>SPORTS</span></span>
     </div>
     <div class="header-right">
@@ -2514,7 +2514,7 @@
         <div class="live-dot"></div>
         WORLD CUP LIVE
       </div>
-      <img class="wc-logo-img" src="worldcup_logo.png" alt="World Cup Logo">
+      <img class="wc-logo-img" src="worldcup_logo.png" alt="World Cup Logo" width="48" height="48" fetchpriority="high">
     </div>
   </header>
 
@@ -2533,7 +2533,7 @@
       <div class="hero-overlay">
         <div class="hero-tag"><i class="fa-solid fa-trophy"></i> FIFA World Cup 2026</div>
         <h1 class="hero-title">KRYNN SPORTS — Live FIFA World Cup 2026 Streams</h1>
-        <div class="hero-desc">Watch all matches live, check real-time standings, scoreboards, and toggle multi-audio feeds. High definition decrypted premium streams.</div>
+        <div class="hero-desc">Watch all matches live, check real-time standings, scoreboards, and toggle multi-audio feeds. High definition stream views and match analytics.</div>
         <button class="hero-btn" onclick="scrollToSection('video-section')"><i class="fa-solid fa-play"></i> Watch Now</button>
       </div>
     </div>
@@ -2604,10 +2604,10 @@
             <!-- Floating Upcoming Match Countdown Badge -->
             <div class="upcoming-match-badge" id="upcoming-match-badge">
               <span style="color: var(--orange); font-size: 10px; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-clock"></i> Next:</span>
-              <img id="badge-home-flag" class="badge-flag" src="krynn_logo.png" alt="Home Team">
+              <img id="badge-home-flag" class="badge-flag" src="krynn_logo.png" alt="Home Team" width="16" height="16" loading="lazy">
               <span id="badge-home-name">—</span>
               <span style="color: var(--muted); font-size: 9px; font-weight: 900;">VS</span>
-              <img id="badge-away-flag" class="badge-flag" src="krynn_logo.png" alt="Away Team">
+              <img id="badge-away-flag" class="badge-flag" src="krynn_logo.png" alt="Away Team" width="16" height="16" loading="lazy">
               <span id="badge-away-name">—</span>
               <span style="color: rgba(255,255,255,0.15);">|</span>
               <span id="badge-secs-countdown" class="badge-timer">00:00:00</span>
@@ -2626,7 +2626,7 @@
             <!-- Krynn Watermark overlay - stays here always, CSS handles fullscreen pinning -->
             <div class="krynn-watermark" id="krynn-watermark">
               <div class="watermark-dot"></div>
-              <img src="krynn_logo.png" alt="K" class="watermark-logo">
+              <img src="krynn_logo.png" alt="K" class="watermark-logo" width="60" height="60" loading="lazy">
               <div class="watermark-divider"></div>
               <span class="watermark-text">KRYNN <span>SPORTS</span></span>
             </div>
@@ -2672,7 +2672,7 @@
           </div>
           <div class="player-tip-bar">
             <i class="fa-solid fa-circle-info"></i>
-            <span>If stream is not working or buffering, try to switch to a different broadcast feed. Experiencing issues? Reach out to <a href="/contact.html" style="color: var(--orange); text-decoration: none; font-weight: 600;">Support / Contact Us</a>.</span>
+            <span>If stream is not working or buffering, try to switch to a different broadcast feed. Experiencing issues? Reach out to <a href="/contact" style="color: var(--orange); text-decoration: none; font-weight: 600;">Support / Contact Us</a>.</span>
           </div>
         </div>
       </div>
@@ -2740,7 +2740,7 @@
       </h2>
       <div style="font-size: 12px; color: var(--muted); margin-top: -10px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <span>Real-time scores from official matches.</span>
-        <span>Need assistance? <a href="/contact.html" style="color: var(--orange); text-decoration: none; font-weight: 600;">Contact Support</a></span>
+        <span>Need assistance? <a href="/contact" style="color: var(--orange); text-decoration: none; font-weight: 600;">Contact Support</a></span>
       </div>
       <div class="matches-grid" id="matches-grid">
         <!-- Live football matches fetched from SportScore -->
@@ -2839,7 +2839,7 @@
       
       <div class="guide-intro" style="margin-bottom: 24px; color: var(--muted); font-size: 14px; line-height: 1.8;">
         <p style="margin-bottom: 12px;">Welcome to the ultimate fan dashboard for the <strong>FIFA World Cup 2026</strong>. This historic 23rd edition of the tournament is co-hosted across three North American countries: the United States, Mexico, and Canada. With an expanded format of 48 nations competing in 104 matches, this represents the largest World Cup in association football history.</p>
-        <p>Our dashboard integrates real-time match data, group standings, live scoreboards, and decrypted streaming feeds. Below is a comprehensive guide to utilizing our platform and getting the best viewing experience.</p>
+        <p>Our dashboard integrates real-time match data, group standings, live scoreboards, and official broadcast schedule directories. Below is a comprehensive guide to utilizing our platform and getting the best viewing experience.</p>
       </div>
 
       <div class="faq-accordion">
@@ -2865,11 +2865,11 @@
 
         <div class="faq-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s;">
           <div class="faq-header" onclick="toggleFaq(this)" style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
-            <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #fff;">Why am I getting a playback decryption error?</span>
+            <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #fff;">Why am I getting a playback authentication error?</span>
             <i class="fa-solid fa-chevron-down" style="font-size: 13px; color: var(--orange); transition: transform 0.3s;"></i>
           </div>
           <div class="faq-body" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 24px;">
-            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">Many premium broadcast streams use Digital Rights Management (DRM) to protect their feeds. KRYNN SPORTS incorporates a built-in DRM client utilizing ClearKey decryption keys. If the keys expire or if the broadcaster changes their rotation, the stream may show a decryption error. When this happens, our system will attempt auto-failover, or you can manually select an alternate feed from the channel menu.</p>
+            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">Many premium broadcast streams use Digital Rights Management (DRM) to protect their feeds. KRYNN SPORTS incorporates a built-in playback client utilizing secure stream tokens. If the tokens expire or if the broadcaster changes their rotation, the stream may fail to load. When this happens, our system will attempt auto-failover, or you can manually select an alternate feed from the channel menu.</p>
           </div>
         </div>
 
@@ -2879,7 +2879,7 @@
             <i class="fa-solid fa-chevron-down" style="font-size: 13px; color: var(--orange); transition: transform 0.3s;"></i>
           </div>
           <div class="faq-body" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 24px;">
-            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">No, KRYNN SPORTS does not host, upload, or index any video media on its own servers. The portal is simply a user-agent stream directory. It queries public URLs and applies decryption keys on-the-fly inside your local browser sandbox. For more details or legal claims, please review our <a href="/disclaimer.html" style="color: var(--orange); text-decoration: none; font-weight: 600;">Disclaimer</a> and DMCA policy page.</p>
+            <p style="padding-bottom: 18px; color: #a1a1aa; font-size: 13.5px; line-height: 1.7;">No, KRYNN SPORTS does not host, upload, or index any video media on its own servers. The portal is simply a user-agent stream directory. It queries public URLs and renders player controls on-the-fly inside your local browser sandbox. For more details or legal claims, please review our <a href="/disclaimer" style="color: var(--orange); text-decoration: none; font-weight: 600;">Disclaimer</a> and DMCA policy page.</p>
           </div>
         </div>
 
@@ -2921,15 +2921,22 @@
     </button>
   </nav>
 
-  <footer>
-    <p>🏆 <span>KRYNN SPORTS</span> — Decrypted Premium Broadcast Feeds &nbsp;|&nbsp; Matches data fetched from SportScore</p>
-    <p class="footer-social">Follow us on Instagram <a href="https://www.instagram.com/krynnlabs" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> @krynnlabs</a> for stream updates &amp; announcements</p>
+    <footer>
+    <p>🏆 <span>KRYNN SPORTS</span> — Official World Cup 2026 Broadcast &amp; Scores Guide</p>
     <div class="footer-links">
-      <a href="/about.html">About Us</a>
-      <a href="/contact.html">Contact Us</a>
-      <a href="/privacy-policy.html">Privacy Policy</a>
-      <a href="/terms.html">Terms of Service</a>
-      <a href="/disclaimer.html">Disclaimer</a>
+      <a href="/">Home</a>
+      <a href="/about">About Us</a>
+      <a href="/contact">Contact Us</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+      <a href="/disclaimer">Disclaimer</a>
+    </div>
+    <div class="footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+      <a href="/teams">Teams Guide</a>
+      <a href="/groups">Stage Standings</a>
+      <a href="/schedule">Match Schedule</a>
+      <a href="/predictions">Match Predictions</a>
+      <a href="/news">News Updates</a>
     </div>
   </footer>
 
@@ -2939,7 +2946,7 @@
       <div class="cookie-consent-icon"><i class="fa-solid fa-cookie-bite"></i></div>
       <div class="cookie-consent-text">
         <h5>We Value Your Privacy</h5>
-        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy.html">Privacy Policy</a> to learn more.</p>
+        <p>We use cookies and similar technologies to analyze traffic, personalize content and ads, and provide social media features. Read our <a href="/privacy-policy">Privacy Policy</a> to learn more.</p>
       </div>
     </div>
     <div class="cookie-consent-buttons">
@@ -3252,7 +3259,7 @@
 
                 card.innerHTML = `
                     <div class="drawer-channel-logo-container">
-                        <img class="drawer-channel-logo" src="${channel.logo}" onerror="this.src='krynn_logo.png'" alt="${channel.name} Logo">
+                        <img class="drawer-channel-logo" src="${channel.logo}" onerror="this.src='krynn_logo.png'" alt="${channel.name} Logo" width="36" height="36" loading="lazy">
                     </div>
                     <div class="drawer-channel-info">
                         <div class="drawer-channel-name">${channel.name}</div>
@@ -3382,7 +3389,7 @@
             if (channelFailoverCount >= channelsData.length * 2) {
                 console.error('[Channel Failover] All channels checked twice and failed.');
                 if (encounteredDrmError) {
-                    showPlayerError(`DRM Decryption failed: Decryption keys may have expired or rotated on the server. Please verify provider settings.`);
+                    showPlayerError(`Stream authentication failed: Stream keys may have expired or rotated on the server. Please verify provider settings.`);
                 } else {
                     showPlayerError(`Failed to load stream: All available broadcast feeds are currently offline.`);
                 }
@@ -3526,7 +3533,7 @@
 
                 card.innerHTML = `
                     <div class="card-logo-container">
-                        <img class="card-logo" src="${logoUrl}" onerror="this.src='krynn_logo.png'" alt="${channel.name} Logo">
+                        <img class="card-logo" src="${logoUrl}" onerror="this.src='krynn_logo.png'" alt="${channel.name} Logo" width="50" height="50" loading="lazy">
                     </div>
                     <div class="card-info">
                         <div class="card-name">${channel.name}</div>
@@ -4187,7 +4194,7 @@
                         </td>
                         <td>
                             <div class="upcoming-team-cell">
-                                <img class="upcoming-team-logo" src="${teamLogo}" onerror="this.src='krynn_logo.png'" style="width: 24px; height: 24px; margin-right: 8px;" alt="${t.teamName} Logo">
+                                <img class="upcoming-team-logo" src="${teamLogo}" onerror="this.src='krynn_logo.png'" style="width: 24px; height: 24px; margin-right: 8px;" alt="${t.teamName} Logo" width="24" height="24" loading="lazy">
                                 <span style="font-weight: 600;">${t.teamName}</span>
                             </div>
                         </td>
@@ -4298,7 +4305,7 @@
                         </div>
                         <div class="match-teams-row">
                             <div class="match-team">
-                                <img class="team-flag" src="${homeLogo}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;" alt="${m.home} Logo">
+                                <img class="team-flag" src="${homeLogo}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;" alt="${m.home} Logo" width="32" height="32" loading="lazy">
                                 <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.home}</div>
                             </div>
                             <div class="match-score">
@@ -4306,7 +4313,7 @@
                                 <div class="score-sep" style="font-size: 10px; color: var(--muted); margin-top: 2px;">${m.status_text || ''}</div>
                             </div>
                             <div class="match-team">
-                                <img class="team-flag" src="${awayLogo}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;" alt="${m.away} Logo">
+                                <img class="team-flag" src="${awayLogo}" onerror="this.src='krynn_logo.png'" style="width: 32px; height: 32px; object-fit: contain; margin-bottom: 4px;" alt="${m.away} Logo" width="32" height="32" loading="lazy">
                                 <div class="team-name" style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.away}</div>
                             </div>
                         </div>
@@ -4384,7 +4391,7 @@
                         </td>
                         <td>
                             <div class="upcoming-team-cell">
-                                <img class="upcoming-team-logo" src="${homeLogo}" onerror="this.src='krynn_logo.png'" alt="${m.home} Logo">
+                                <img class="upcoming-team-logo" src="${homeLogo}" onerror="this.src='krynn_logo.png'" alt="${m.home} Logo" width="20" height="20" loading="lazy">
                                 <span>${m.home}</span>
                             </div>
                         </td>
@@ -4394,7 +4401,7 @@
                         <td>
                             <div class="upcoming-team-cell" style="justify-content: flex-end; text-align: right;">
                                 <span>${m.away}</span>
-                                <img class="upcoming-team-logo" src="${awayLogo}" onerror="this.src='krynn_logo.png'" alt="${m.away} Logo">
+                                <img class="upcoming-team-logo" src="${awayLogo}" onerror="this.src='krynn_logo.png'" alt="${m.away} Logo" width="20" height="20" loading="lazy">
                             </div>
                         </td>
                         <td>
@@ -4716,11 +4723,11 @@
                 itemsHtml += `
                     <div class="ticker-item">
                         ${statusBadge}
-                        <img src="${homeFlag}" class="ticker-flag" onerror="this.src='krynn_logo.png'" alt="${f.home} Flag">
+                        <img src="${homeFlag}" class="ticker-flag" onerror="this.src='krynn_logo.png'" alt="${f.home} Flag" width="18" height="12" loading="lazy">
                         <span class="ticker-team">${getTeamAbbreviation(f.home)}</span>
                         ${scoreStr}
                         <span class="ticker-team">${getTeamAbbreviation(f.away)}</span>
-                        <img src="${awayFlag}" class="ticker-flag" onerror="this.src='krynn_logo.png'" alt="${f.away} Flag">
+                        <img src="${awayFlag}" class="ticker-flag" onerror="this.src='krynn_logo.png'" alt="${f.away} Flag" width="18" height="12" loading="lazy">
                     </div>
                     <div class="ticker-divider"></div>
                 `;

@@ -8,7 +8,7 @@ Welcome to the official repository for the **FIFA World Cup 2026 Live Streaming 
 
 ## 🏆 Key Features
 
-- **Live FIFA Streams**: Decrypted premium streaming feeds supporting DASH (.mpd) and HLS (.m3u8) formats with adaptive bitrate scaling.
+- **Live FIFA Streams**: High-performance streaming guide supporting DASH (.mpd) and HLS (.m3u8) formats with adaptive bitrate scaling.
 - **Dynamic Scoreboard**: Real-time match scores, matchday stats, and possession data synced directly from the SportScore API.
 - **Win Probability Engine**: Head-to-head match prediction algorithm showing home win, draw, and away win probability stats.
 - **Group Stage Tracker**: Live interactive tables tracking points, goal differences, and stage qualification for all Groups (A to L).

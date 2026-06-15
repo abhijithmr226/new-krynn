@@ -1185,6 +1185,23 @@ app.get('/disclaimer', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'disclaimer.html'));
 });
 
+// Content Hub Page Routes
+app.get('/teams', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'teams.html'));
+});
+app.get('/groups', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'groups.html'));
+});
+app.get('/schedule', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'schedule.html'));
+});
+app.get('/predictions', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'predictions.html'));
+});
+app.get('/news', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'news.html'));
+});
+
 // Fallback to serve custom 404.html
 app.get('*', (req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));

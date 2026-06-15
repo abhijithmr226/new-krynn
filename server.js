@@ -648,58 +648,155 @@ const { HttpsProxyAgent } = require('https-proxy-agent');
 const proxyAgentHttps = new https.Agent({ keepAlive: true });
 const proxyAgentHttp = new http.Agent({ keepAlive: true });
 
-// Dynamic Brazil Proxy Caching & Rotating Resolver
-let cachedProxiesList = [];
-let lastProxyFetch = 0;
-let proxyIndex = 0;
+// ─── Multi-Source Brazil Proxy Manager ────────────────────────────────────────
+// Pulls from multiple GitHub proxy repos, filters for Brazil, tests each proxy
+// before caching. Rotates through validated proxies automatically.
+
+const BRAZIL_PROXY_SOURCES = [
+  // proxifly - country-specific BR file (most reliable)
+  'https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/countries/BR/data.txt',
+  // ProxyScrape API - Brazil filter
+  'https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=5000&country=BR&ssl=all&anonymity=all',
+  // ProxyScrape SOCKS4+5 as fallback
+  'https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5&timeout=5000&country=BR&ssl=all&anonymity=all',
+];
+
+let brazilProxyPool     = [];  // validated working proxies
+let allFetchedProxies   = [];  // raw fetched (not yet validated)
+let proxyPoolIndex      = 0;
+let lastProxyFetch      = 0;
+let isRefreshing        = false;
+
+// Parse lines that may be "ip:port" or "http://ip:port" or "socks5://ip:port"
+function normalizeProxyLine(line) {
+  line = line.trim();
+  if (!line || line.startsWith('#')) return null;
+  if (line.startsWith('http://') || line.startsWith('https://') || line.startsWith('socks')) {
+    return line;
+  }
+  if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$/.test(line)) {
+    return `http://${line}`;
+  }
+  return null;
+}
+
+// Quick TCP-level test: try connecting through the proxy to a known BR endpoint
+async function testProxy(proxyUrl, timeoutMs = 6000) {
+  return new Promise((resolve) => {
+    try {
+      const agent = new HttpsProxyAgent(proxyUrl);
+      const req = https.request({
+        hostname: 'dfr80qz435crc.cloudfront.net',
+        port: 443,
+        path: '/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8',
+        method: 'HEAD',
+        agent,
+        timeout: timeoutMs,
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      }, (res) => {
+        const ok = res.statusCode < 500;
+        res.destroy();
+        resolve(ok);
+      });
+      req.on('error', () => resolve(false));
+      req.on('timeout', () => { req.destroy(); resolve(false); });
+      req.end();
+    } catch {
+      resolve(false);
+    }
+  });
+}
+
+async function refreshBrazilProxyPool() {
+  if (isRefreshing) return;
+  isRefreshing = true;
+  console.log('[Proxy Manager] Fetching fresh Brazil proxy lists from GitHub sources...');
+
+  const rawProxies = new Set();
+
+  // Fetch all sources in parallel
+  await Promise.allSettled(
+    BRAZIL_PROXY_SOURCES.map(async (url) => {
+      try {
+        const r = await fetch(url, { signal: AbortSignal.timeout(10000) });
+        if (!r.ok) return;
+        const text = await r.text();
+        text.split('\n').forEach(line => {
+          const p = normalizeProxyLine(line);
+          if (p) rawProxies.add(p);
+        });
+        console.log(`[Proxy Manager] Loaded from: ${url.substring(0, 60)}...`);
+      } catch (e) {
+        console.warn(`[Proxy Manager] Source failed (${url.substring(0,40)}): ${e.message}`);
+      }
+    })
+  );
+
+  allFetchedProxies = [...rawProxies];
+  console.log(`[Proxy Manager] Total raw proxies fetched: ${allFetchedProxies.length}. Testing up to 20 in parallel...`);
+
+  // Test proxies in batches of 20, keep first 5 that respond
+  const validated = [];
+  const batchSize = 20;
+  for (let i = 0; i < allFetchedProxies.length && validated.length < 5; i += batchSize) {
+    const batch = allFetchedProxies.slice(i, i + batchSize);
+    const results = await Promise.all(batch.map(async (proxy) => {
+      const ok = await testProxy(proxy, 6000);
+      return ok ? proxy : null;
+    }));
+    results.forEach(p => { if (p && validated.length < 5) validated.push(p); });
+    if (validated.length > 0) break; // got some working ones, stop
+  }
+
+  if (validated.length > 0) {
+    brazilProxyPool = validated;
+    proxyPoolIndex  = 0;
+    lastProxyFetch  = Date.now();
+    console.log(`[Proxy Manager] ✅ ${validated.length} validated working Brazil proxies cached: ${validated.join(', ')}`);
+  } else {
+    // Fall back to unvalidated list for last-resort attempt
+    brazilProxyPool = allFetchedProxies.slice(0, 30);
+    proxyPoolIndex  = 0;
+    lastProxyFetch  = Date.now();
+    console.warn(`[Proxy Manager] ⚠️  No proxies passed validation test. Falling back to raw list (${brazilProxyPool.length} proxies).`);
+  }
+
+  isRefreshing = false;
+}
 
 async function getBrazilProxy(forceNew = false) {
-  // 1. Prioritize premium VPN/Proxy configured in environment
+  // 1. Prioritize static proxy from .env if set
   const envProxy = process.env.BRAZIL_PROXY_URL || process.env.VPN_PROXY_URL;
-  if (envProxy) {
-    return envProxy;
-  }
+  if (envProxy) return envProxy;
 
-  // 2. Otherwise fall back to ProxyScrape auto-rotating pool
   const now = Date.now();
-  
-  if (forceNew || cachedProxiesList.length === 0 || (now - lastProxyFetch > 5 * 60 * 1000)) {
-    try {
-      console.log('[Proxy Fetch] Querying ProxyScrape for fresh Brazil proxies...');
-      const res = await fetch('https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=4000&country=BR&ssl=all&anonymity=all');
-      if (res.ok) {
-        const text = await res.text();
-        const list = text.split('\n').map(p => p.trim()).filter(p => p.length > 0);
-        if (list.length > 0) {
-          cachedProxiesList = list;
-          proxyIndex = 0;
-          lastProxyFetch = now;
-          console.log(`[Proxy Fetch] Loaded ${list.length} proxies from ProxyScrape.`);
-        }
-      }
-    } catch (err) {
-      console.error('[Proxy Fetch Error]:', err.message);
-    }
+  const stale = now - lastProxyFetch > 8 * 60 * 1000; // refresh every 8 min
+
+  if (forceNew || brazilProxyPool.length === 0 || stale) {
+    await refreshBrazilProxyPool();
   }
 
-  if (cachedProxiesList.length > 0) {
-    const selected = cachedProxiesList[proxyIndex];
-    return `http://${selected}`;
+  if (brazilProxyPool.length > 0) {
+    return brazilProxyPool[proxyPoolIndex];
   }
   return null;
 }
 
 function rotateBrazilProxy() {
-  if (cachedProxiesList.length > 0) {
-    proxyIndex = (proxyIndex + 1) % cachedProxiesList.length;
-    console.log(`[Proxy Rotate] Rotated to next sibling proxy index ${proxyIndex}/${cachedProxiesList.length}: http://${cachedProxiesList[proxyIndex]}`);
-    if (proxyIndex === 0) {
-      cachedProxiesList = []; // Force reload list next time we hit index 0
+  if (brazilProxyPool.length > 0) {
+    proxyPoolIndex = (proxyPoolIndex + 1) % brazilProxyPool.length;
+    console.log(`[Proxy Rotate] → index ${proxyPoolIndex}/${brazilProxyPool.length}: ${brazilProxyPool[proxyPoolIndex]}`);
+    if (proxyPoolIndex === 0) {
+      // Exhausted pool — force a full refresh next call
+      lastProxyFetch = 0;
     }
   }
 }
 
-// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments using standard DNS and keep-alive
+// Kick off an initial background proxy pool refresh on startup
+setTimeout(() => refreshBrazilProxyPool(), 3000);
+
+// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments with timeout & auto-failover
 app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
   const { protocol, host } = req.params;
   const pathPart = req.params[0];
@@ -731,35 +828,101 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
   if (req.headers['range']) headers['range'] = req.headers['range'];
   if (req.headers['accept']) headers['accept'] = req.headers['accept'];
 
-  // Load appropriate proxy agent
-  let agent = null;
+  // Choose proxy resolver
+  let resolvedProxy = null;
+  let isPremiumProxy = false;
+
   if (proxyUrl) {
-    let resolvedProxy = null;
     if (proxyUrl === 'auto-br') {
-      resolvedProxy = await getBrazilProxy();
+      const envProxy = process.env.BRAZIL_PROXY_URL || process.env.VPN_PROXY_URL;
+      if (envProxy) {
+        resolvedProxy = envProxy;
+        isPremiumProxy = true;
+      } else {
+        resolvedProxy = await getBrazilProxy();
+      }
     } else {
       resolvedProxy = proxyUrl;
     }
-
-    if (resolvedProxy) {
-      console.log(`[Stream Proxy] Tunneling via: ${resolvedProxy} for URL: ${targetUrl}`);
-      agent = new HttpsProxyAgent(resolvedProxy);
-    }
   }
 
-  if (!agent) {
-    agent = protocol === 'https' ? proxyAgentHttps : proxyAgentHttp;
-  }
+  const makeProxyRequest = (proxyToUse) => {
+    return new Promise((resolve, reject) => {
+      let agent = null;
+      if (proxyToUse) {
+        agent = new HttpsProxyAgent(proxyToUse);
+      } else {
+        agent = protocol === 'https' ? proxyAgentHttps : proxyAgentHttp;
+      }
 
-  const options = {
-    method: req.method,
-    headers: headers,
-    agent: agent
+      const options = {
+        method: req.method,
+        headers: headers,
+        agent: agent,
+        timeout: 6000 // 6 second connection/socket timeout
+      };
+
+      const clientModule = protocol === 'https' ? https : http;
+      let finished = false;
+
+      const proxyReq = clientModule.request(targetUrl, options, (proxyRes) => {
+        finished = true;
+        resolve({ proxyRes, proxyReq });
+      });
+
+      proxyReq.on('error', (err) => {
+        if (!finished) {
+          finished = true;
+          reject(err);
+        }
+      });
+
+      proxyReq.on('timeout', () => {
+        if (!finished) {
+          finished = true;
+          proxyReq.destroy();
+          reject(new Error('Request timed out'));
+        }
+      });
+
+      req.pipe(proxyReq);
+    });
   };
 
-  const clientModule = protocol === 'https' ? https : http;
+  try {
+    let result = null;
+    try {
+      if (resolvedProxy) {
+        console.log(`[Proxy Attempt] Tunneling via: ${resolvedProxy} for URL: ${targetUrl}`);
+      }
+      result = await makeProxyRequest(resolvedProxy);
+    } catch (err) {
+      console.warn(`[Proxy Warning] Proxy ${resolvedProxy || 'direct'} failed: ${err.message}`);
+      
+      if (isPremiumProxy && proxyUrl === 'auto-br') {
+        console.log('[Proxy Resolver] Premium proxy failed. Falling back to dynamic Brazil proxy list...');
+        resolvedProxy = await getBrazilProxy(true); // force fresh fetch
+        if (resolvedProxy) {
+          console.log(`[Proxy Attempt 2] Tunneling via fallback: ${resolvedProxy} for URL: ${targetUrl}`);
+          result = await makeProxyRequest(resolvedProxy);
+        } else {
+          throw err;
+        }
+      } else if (proxyUrl === 'auto-br') {
+        rotateBrazilProxy();
+        resolvedProxy = await getBrazilProxy();
+        if (resolvedProxy) {
+          console.log(`[Proxy Attempt 2] Tunneling via rotated: ${resolvedProxy} for URL: ${targetUrl}`);
+          result = await makeProxyRequest(resolvedProxy);
+        } else {
+          throw err;
+        }
+      } else {
+        throw err;
+      }
+    }
 
-  const proxyReq = clientModule.request(targetUrl, options, (proxyRes) => {
+    const { proxyRes } = result;
     res.status(proxyRes.statusCode);
 
     const corsHeaders = [
@@ -779,19 +942,13 @@ app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', '*');
 
     proxyRes.pipe(res);
-  });
 
-  proxyReq.on('error', (err) => {
-    console.error('[Stream Proxy Request Error]:', err.message);
-    if (proxyUrl === 'auto-br') {
-      rotateBrazilProxy();
-    }
+  } catch (err) {
+    console.error('[Stream Proxy Final Error]:', err.message);
     if (!res.headersSent) {
       res.status(500).send(err.message);
     }
-  });
-
-  req.pipe(proxyReq);
+  }
 });
 
 // Live / Video play URLs (Secure Redirect proxy)
@@ -1361,6 +1518,13 @@ app.get('*', (req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`KRYNN TV Server running at http://localhost:${PORT}`);
-});
+// Export app for serverless deployment (Vercel)
+module.exports = app;
+
+// Only listen when run directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`KRYNN TV Server running at http://localhost:${PORT}`);
+  });
+}
+

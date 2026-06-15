@@ -640,29 +640,13 @@ app.get('/api/stream', (req, res) => {
   res.status(404).json({ error: 'Channel stream not found' });
 });
 
-// DNS Resolver using Cloudflare 1.1.1.1 / 1.0.0.1
-const dns = require('dns');
 const https = require('https');
 const http = require('http');
 
-const dnsResolver = new dns.Resolver();
-dnsResolver.setServers(['1.1.1.1', '1.0.0.1']);
+const proxyAgentHttps = new https.Agent({ keepAlive: true });
+const proxyAgentHttp = new http.Agent({ keepAlive: true });
 
-const customDnsLookup = (hostname, options, callback) => {
-  dnsResolver.resolve4(hostname, (err, addresses) => {
-    if (err || !addresses || addresses.length === 0) {
-      // Fallback to default OS resolver if custom DNS lookup fails
-      dns.lookup(hostname, options, callback);
-    } else {
-      callback(null, addresses[0], 4);
-    }
-  });
-};
-
-const proxyAgentHttps = new https.Agent({ lookup: customDnsLookup, keepAlive: true });
-const proxyAgentHttp = new http.Agent({ lookup: customDnsLookup, keepAlive: true });
-
-// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments using custom DNS Agent
+// Wildcard stream proxy to bypass CORS/geo-blocks on manifest/segments using standard DNS and keep-alive
 app.all('/api/proxy/:protocol/:host/*', async (req, res) => {
   const { protocol, host } = req.params;
   const pathPart = req.params[0];

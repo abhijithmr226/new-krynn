@@ -1,12 +1,4 @@
 [
-  {
-    "name": "CazéTV (Live)",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Logo_Caze_TV.png/250px-Logo_Caze_TV.png",
-    "streamUrl": "https://www.youtube.com/embed/ttJtzfuNXkQ?autoplay=1&mute=0",
-    "type": "iframe",
-    "language": "Portuguese",
-    "quality": "Live HD"
-  },
 
   {
     "name": "FS1 (FS1 Salzburg)",
@@ -54,14 +46,6 @@
     "streamUrl": "https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8",
     "type": "hls",
     "language": "Unknown",
-    "quality": "Auto"
-  },
-  {
-    "name": "CazeTV (CazeTV)",
-    "logo": "https://via.placeholder.com/150?text=CazeTV",
-    "streamUrl": "/api/proxy/https/dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8?proxy=auto-br",
-    "type": "hls",
-    "language": "Portuguese",
     "quality": "Auto"
   },
   {

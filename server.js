@@ -12,9 +12,27 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Load portals configuration
-const CONFIG_DIR = path.join(__dirname, 'data');
-if (!fs.existsSync(CONFIG_DIR)) {
-  fs.mkdirSync(CONFIG_DIR, { recursive: true });
+const IS_VERCEL = !!process.env.VERCEL;
+let CONFIG_DIR = path.join(__dirname, 'data');
+
+if (IS_VERCEL) {
+  const tmpDataDir = path.join('/tmp', 'data');
+  try {
+    if (!fs.existsSync(tmpDataDir)) {
+      fs.mkdirSync(tmpDataDir, { recursive: true });
+    }
+    if (fs.existsSync(CONFIG_DIR)) {
+      fs.cpSync(CONFIG_DIR, tmpDataDir, { recursive: true });
+      console.log('[Vercel Setup] Successfully copied data directory to /tmp/data');
+    }
+    CONFIG_DIR = tmpDataDir;
+  } catch (err) {
+    console.error('[Vercel Setup] Failed to copy data directory:', err);
+  }
+} else {
+  if (!fs.existsSync(CONFIG_DIR)) {
+    fs.mkdirSync(CONFIG_DIR, { recursive: true });
+  }
 }
 
 const PORTALS_PATH = path.join(CONFIG_DIR, 'portals.json');
@@ -1209,6 +1227,9 @@ app.get('/news', (req, res) => {
 
 // Fallback to serve custom 404.html
 app.get('*', (req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API route not found' });
+  }
   res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 

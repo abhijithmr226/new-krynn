@@ -636,7 +636,7 @@ app.get('/api/stream', (req, res) => {
 
   // 1. Search in worldcup_channels.json first
   try {
-    const worldcupPath = path.join(__dirname, 'worldcup_channels.json');
+    const worldcupPath = path.join(CONFIG_DIR, 'worldcup_channels.json');
     if (fs.existsSync(worldcupPath)) {
       const worldcupChannels = JSON.parse(fs.readFileSync(worldcupPath, 'utf8'));
       const channel = worldcupChannels.find(c => c.name.toLowerCase().includes(channelName));

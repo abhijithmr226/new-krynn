@@ -11,116 +11,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root {
-      --bg: #030712;
-      --bg-darker: #020204;
-      --card-bg: rgba(17, 24, 39, 0.45);
-      --card-border: rgba(255, 255, 255, 0.05);
-      --orange: #ff6a00;
-      --orange-hover: #ea5800;
-      --orange-glow: rgba(255, 106, 0, 0.25);
-      --text: #f3f4f6;
-      --muted: #94a3b8;
-      --green: #22c55e;
-      --red: #ef4444;
-      --gold: #eab308;
-      --accent-gradient: linear-gradient(135deg, #ff5f00 0%, #ff8c00 50%, #ffbe00 100%);
-      --glass-bg: rgba(17, 24, 39, 0.65);
-      --glass-border: rgba(255, 255, 255, 0.06);
-      --shadow-premium: 0 10px 40px rgba(0, 0, 0, 0.5);
-      --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      --border: rgba(255, 255, 255, 0.05);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, var(--bg) 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .ambient-glow {
-      position: fixed;
-      width: 40vw;
-      height: 40vh;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.12;
-      z-index: -1;
-      pointer-events: none;
-    }
-    .glow-1 { background: #ff5f00; top: -10%; left: -10%; }
-    .glow-2 { background: #eab308; bottom: -10%; right: -10%; }
-
-    header {
-      background: rgba(6, 6, 9, 0.95);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
-      backdrop-filter: blur(20px);
-      position: sticky; top: 0; z-index: 100;
-    }
-    .logo-link { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-img { height: 42px; width: auto; object-fit: contain; }
-    .brand-title {
-      font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800;
-      color: #fff; display: flex; align-items: center; gap: 6px;
-    }
-    .brand-title span { color: var(--orange); }
-    .back-btn {
-      color: #fff; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
-      padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03); transition: var(--transition-premium);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .back-btn:hover { background: var(--orange); border-color: var(--orange); transform: translateY(-2px); box-shadow: 0 4px 12px var(--orange-glow); }
-
-    .main { max-width: 1000px; width: 100%; margin: 0 auto; padding: 40px 24px; flex-grow: 1; }
-    .hero { text-align: center; margin-bottom: 40px; }
-    .page-tag {
-      display: inline-flex; align-items: center; gap: 6px; font-family: 'Outfit', sans-serif;
-      font-size: 11px; font-weight: 700; color: var(--orange); background: rgba(255, 106, 0, 0.1);
-      border: 1px solid rgba(255, 106, 0, 0.25); padding: 6px 14px; border-radius: 20px; text-transform: uppercase; margin-bottom: 16px;
-    }
-    .page-title { font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 900; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
-    .page-subtitle { font-size: 15px; color: var(--muted); max-width: 600px; margin: 0 auto; line-height: 1.6; }
-
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; backdrop-filter: blur(15px); }
-    .card-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-    .card-title i { color: var(--orange); }
-    .card-text { font-size: 14px; color: var(--muted); line-height: 1.8; }
-    
-    footer { background: rgba(4, 4, 6, 0.4); border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); margin-top: auto; }
-    footer span { color: var(--orange); }
-    .footer-links { display: flex; justify-content: center; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
-    .footer-links a { color: var(--muted); text-decoration: none; font-weight: 500; transition: var(--transition-premium); }
-    .footer-links a:hover { color: var(--orange); }
-  </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
-  <header>
+  <header class="secondary-header">
     <a href="/" class="logo-link">
       <img class="logo-img" src="krynn_logo.png" alt="Krynn Logo" width="42" height="42">
       <span class="brand-title">KRYNN <span>SPORTS</span></span>
     </a>
     <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
   </header>
-  <main class="main">
+  <main class="secondary-page-container">
     <div class="hero">
       <div class="page-tag"><i class="fa-solid fa-newspaper"></i> Latest Updates</div>
       <h1 class="page-title">World Cup 2026 News &amp; Stadium Coverage</h1>
       <p class="page-subtitle">Stay updated on tournament preparations, team arrivals, and matchday announcements across North America.</p>
     </div>
 
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-bullhorn"></i> Major Highlights</div>
-      <div class="card-text" style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="info-card">
+      <div class="info-card-title"><i class="fa-solid fa-bullhorn"></i> Major Highlights</div>
+      <div class="info-card-text" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 16px;">
           <h3 style="color: #fff; margin-bottom: 8px;">Expanded Format Confirms 104 Total Matches</h3>
           <p style="font-size: 13.5px; margin-bottom: 6px;">The FIFA council approved a 4-team group structure resulting in 104 matches, extending the tournament length to 39 days. Fans will enjoy up to 6 matches daily during peak group stage action.</p>
@@ -139,9 +51,9 @@
       </div>
     </div>
   </main>
-    <footer>
+    <footer class="secondary-footer">
     <p>🏆 <span>KRYNN SPORTS</span> — Official World Cup 2026 Broadcast &amp; Scores Guide</p>
-    <div class="footer-links">
+    <div class="secondary-footer-links">
       <a href="/">Home</a>
       <a href="/about">About Us</a>
       <a href="/contact">Contact Us</a>
@@ -149,7 +61,7 @@
       <a href="/terms">Terms of Service</a>
       <a href="/disclaimer">Disclaimer</a>
     </div>
-    <div class="footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+    <div class="secondary-footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
       <a href="/teams">Teams Guide</a>
       <a href="/groups">Stage Standings</a>
       <a href="/schedule">Match Schedule</a>

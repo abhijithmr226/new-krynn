@@ -51,318 +51,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root {
-      --bg: #030712;
-      --bg-darker: #020204;
-      --card-bg: rgba(17, 24, 39, 0.45);
-      --card-border: rgba(255, 255, 255, 0.05);
-      --orange: #ff6a00;
-      --orange-hover: #ea5800;
-      --orange-glow: rgba(255, 106, 0, 0.25);
-      --text: #f3f4f6;
-      --muted: #94a3b8;
-      --red: #ef4444;
-      --green: #22c55e;
-      --gold: #eab308;
-      --accent-gradient: linear-gradient(135deg, #ff5f00 0%, #ff8c00 50%, #ffbe00 100%);
-      --glass-bg: rgba(17, 24, 39, 0.65);
-      --glass-border: rgba(255, 255, 255, 0.06);
-      --shadow-premium: 0 10px 40px rgba(0, 0, 0, 0.5);
-      --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      
-      /* Subpage legacy compatibility mappings */
-      --bg-card: rgba(17, 24, 39, 0.45);
-      --border: rgba(255, 255, 255, 0.05);
-      --gold-glow: rgba(234, 179, 8, 0.15);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, var(--bg) 100%);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    header {
-      background: rgba(6, 6, 9, 0.95);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
-      position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(20px);
-    }
-    .logo-link { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-img { height: 40px; width: auto; object-fit: contain; }
-    .brand-title {
-      font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 800;
-      color: #fff; display: flex; align-items: center; gap: 5px;
-    }
-    .brand-title span { color: var(--orange); }
-    .back-btn {
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
-      color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 13px;
-      font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer;
-      text-decoration: none; display: flex; align-items: center; gap: 8px;
-      transition: all 0.2s;
-    }
-    .back-btn:hover { background: var(--orange); border-color: var(--orange); }
-
-    .main { max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; }
-
-    /* Hero */
-    .about-hero {
-      text-align: center; padding: 60px 20px; margin-bottom: 56px;
-      background: linear-gradient(180deg, rgba(255,106,0,0.06) 0%, transparent 100%);
-      border-radius: 20px; border: 1px solid rgba(255,106,0,0.1);
-      position: relative; overflow: hidden;
-    }
-    .about-hero::before {
-      content: '';
-      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
-      width: 300px; height: 300px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,106,0,0.12), transparent 70%);
-      pointer-events: none;
-    }
-    .hero-logo {
-      width: 90px; height: 90px; border-radius: 20px;
-      border: 2px solid rgba(255,106,0,0.3);
-      box-shadow: 0 0 30px rgba(255,106,0,0.2);
-      object-fit: contain; margin-bottom: 24px;
-      background: #000; padding: 6px;
-    }
-    .page-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,106,0,0.12); border: 1px solid rgba(255,106,0,0.35);
-      color: var(--orange); font-family: 'Outfit', sans-serif; font-size: 10px;
-      font-weight: 800; letter-spacing: 1.5px; padding: 5px 12px; border-radius: 4px;
-      text-transform: uppercase; margin-bottom: 16px;
-    }
-    .page-title {
-      font-family: 'Outfit', sans-serif; font-size: 42px; font-weight: 900;
-      letter-spacing: -0.5px; margin-bottom: 14px;
-      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .page-subtitle {
-      color: var(--muted); font-size: 15px; line-height: 1.7;
-      max-width: 560px; margin: 0 auto;
-    }
-
-    /* Stats bar */
-    .stats-bar {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
-      margin-bottom: 48px;
-    }
-    .stat-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 28px 20px; text-align: center;
-      transition: all 0.25s;
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-    }
-    .stat-card:hover { border-color: rgba(255, 106, 0, 0.3); transform: translateY(-4px); }
-    .stat-number {
-      font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: 900;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-    }
-    .stat-label { font-size: 13px; color: var(--muted); font-weight: 500; }
-
-    /* Section cards */
-    .about-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 36px; margin-bottom: 20px;
-      transition: border-color 0.2s;
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-    }
-    .about-card:hover { border-color: rgba(255, 106, 0, 0.2); }
-    .card-header {
-      display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
-    }
-    .card-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: var(--orange-glow); border: 1px solid rgba(255,106,0,0.25);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--orange); font-size: 20px; flex-shrink: 0;
-    }
-    .card-title {
-      font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700;
-    }
-    .card-body { color: #a1a1aa; font-size: 14px; line-height: 1.85; }
-    .card-body p { margin-bottom: 14px; }
-    .card-body p:last-child { margin-bottom: 0; }
-
-    /* Feature grid */
-    .feature-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px; margin-top: 20px;
-    }
-    .feature-item {
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column;
-      align-items: flex-start; gap: 10px; transition: all 0.2s;
-    }
-    .feature-item:hover { border-color: rgba(255,106,0,0.25); background: rgba(255,106,0,0.04); }
-    .feature-icon { color: var(--orange); font-size: 20px; }
-    .feature-name { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: #fff; }
-    .feature-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
-    /* Gold card for World Cup */
-    .gold-card {
-      background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(20,15,5,0.8) 100%);
-      border: 1px solid rgba(212,175,55,0.25);
-    }
-    .gold-card .card-icon {
-      background: var(--gold-glow); border-color: rgba(212,175,55,0.3);
-      color: var(--gold);
-    }
-
-    /* CTA Section */
-    .cta-section {
-      text-align: center; padding: 48px 24px;
-      background: linear-gradient(135deg, rgba(255,106,0,0.08) 0%, rgba(255,140,0,0.04) 100%);
-      border: 1px solid rgba(255,106,0,0.2); border-radius: 16px;
-      margin-top: 16px;
-    }
-    .cta-title { font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 10px; }
-    .cta-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
-    .cta-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--orange); color: #fff; border: none;
-      font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800;
-      padding: 14px 32px; border-radius: 8px; cursor: pointer;
-      text-decoration: none; transition: all 0.2s; letter-spacing: 0.5px;
-      box-shadow: 0 4px 20px rgba(255,106,0,0.3);
-    }
-    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,106,0,0.45); }
-
-    footer {
-      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
-      font-size: 12px; color: var(--muted); margin-top: 20px;
-    }
-    .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 10px; }
-    .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--orange); }
-    footer span { color: var(--orange); }
-
-    /* Cookie Consent Banner Styling */
-    .cookie-consent-banner {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      max-width: 380px;
-      background: rgba(16, 16, 20, 0.88);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      pointer-events: none;
-    }
-    .cookie-consent-banner.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .cookie-consent-content {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .cookie-consent-icon {
-      font-size: 22px;
-      color: var(--orange);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .cookie-consent-text h5 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
-      text-align: left;
-    }
-    .cookie-consent-text p {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-      text-align: left;
-    }
-    .cookie-consent-text a {
-      color: var(--orange);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .cookie-consent-text a:hover {
-      text-decoration: underline;
-    }
-    .cookie-consent-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-    .cookie-btn {
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .cookie-btn.accept {
-      background: var(--orange);
-      color: #fff;
-      border: none;
-      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
-    }
-    .cookie-btn.accept:hover {
-      background: var(--orange);
-      transform: translateY(-1px);
-      opacity: 0.9;
-    }
-    .cookie-btn.decline {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-    .cookie-btn.decline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    @media (max-width: 640px) {
-      .main { padding: 28px 14px 60px; }
-      .page-title { font-size: 30px; }
-      .about-hero { padding: 40px 16px; }
-      .stats-bar { grid-template-columns: 1fr; }
-      .about-card { padding: 22px 18px; }
-      .feature-grid { grid-template-columns: 1fr 1fr; }
-      .cookie-consent-banner {
-        bottom: 80px;
-        left: 16px;
-        right: 16px;
-        max-width: none;
-      }
-    }
-  </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+  <header class="secondary-header">
     <a href="/" class="logo-link">
       <img src="krynn_logo.png" alt="KRYNN" class="logo-img" width="40" height="40" fetchpriority="high">
       <span class="brand-title">KRYNN <span>SPORTS</span></span>
@@ -399,7 +91,7 @@
     <div class="about-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
-        <div class="card-title">Our Story</div>
+        <div class="info-card-title">Our Story</div>
       </div>
       <div class="card-body">
         <p>KRYNN SPORTS was created by a small team of passionate football fans who were tired of unreliable, ad-cluttered streaming sites that couldn't keep up with the pace of live sports. We wanted something faster, cleaner, and smarter.</p>
@@ -412,7 +104,7 @@
     <div class="about-card gold-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-earth-americas"></i></div>
-        <div class="card-title">FIFA World Cup 2026 — Our Focus</div>
+        <div class="info-card-title">FIFA World Cup 2026 — Our Focus</div>
       </div>
       <div class="card-body">
         <p>The 23rd FIFA World Cup is the biggest sporting event in history — 104 matches, 32 nations, and venues spanning the United States, Canada, and Mexico. KRYNN SPORTS is fully optimized for the tournament:</p>
@@ -424,7 +116,7 @@
     <div class="about-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
-        <div class="card-title">What We Offer</div>
+        <div class="info-card-title">What We Offer</div>
       </div>
       <div class="card-body">
         <p>Every feature on KRYNN SPORTS is designed with the live sports fan in mind:</p>
@@ -467,7 +159,7 @@
     <div class="about-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-crosshairs"></i></div>
-        <div class="card-title">Our Mission</div>
+        <div class="info-card-title">Our Mission</div>
       </div>
       <div class="card-body">
         <p>Sport is for everyone. Our mission is simple: remove every barrier between the game and the fan. No subscriptions, no geo-blocks, no buffering nightmares. Just pure, fast, reliable live sports — in HD.</p>
@@ -483,9 +175,9 @@
     </div>
   </div>
 
-    <footer>
+    <footer class="secondary-footer">
     <p>🏆 <span>KRYNN SPORTS</span> — Official World Cup 2026 Broadcast &amp; Scores Guide</p>
-    <div class="footer-links">
+    <div class="secondary-footer-links">
       <a href="/">Home</a>
       <a href="/about">About Us</a>
       <a href="/contact">Contact Us</a>
@@ -493,7 +185,7 @@
       <a href="/terms">Terms of Service</a>
       <a href="/disclaimer">Disclaimer</a>
     </div>
-    <div class="footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+    <div class="secondary-footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
       <a href="/teams">Teams Guide</a>
       <a href="/groups">Stage Standings</a>
       <a href="/schedule">Match Schedule</a>

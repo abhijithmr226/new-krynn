@@ -1,40 +1,39 @@
 [
-
+  {
+    "name": "M6",
+    "logo": "logos/m6.svg",
+    "streamUrl": "https://origin-m6web.live.6cloud.fr/out/v1/6play/6play-m6/cmaf_q2hyb21h/index-hd720.m3u8",
+    "type": "hls",
+    "language": "French",
+    "quality": "720p"
+  },
   {
     "name": "FS1 (FS1 Salzburg)",
-    "logo": "https://via.placeholder.com/150?text=FS1",
+    "logo": "logos/fs1.svg",
     "streamUrl": "http://stream.fs1.tv:8080/hls/webstream.m3u8",
     "type": "hls",
     "language": "Unknown",
     "quality": "Auto"
   },
   {
-    "name": "Telemundo (Telemundo Corpus Christi)",
-    "logo": "https://via.placeholder.com/150?text=Telemundo",
-    "streamUrl": "https://content.uplynk.com/channel/b6a96ed39d694ae1b738faa98cf7dd3f.m3u8",
-    "type": "hls",
-    "language": "Unknown",
-    "quality": "Auto"
-  },
-  {
     "name": "SBS (SBS6 Classics)",
-    "logo": "https://via.placeholder.com/150?text=SBS",
+    "logo": "logos/sbs6.svg",
     "streamUrl": "https://sbs6classic.prd1.talpatvcdn.nl/v1/master/8ada1ed2ae3b9c3db6fc5e604cfa78fc7d2d745e/sbs6classic_ssai/fea54560ba684701a2143f33a9cf4489/index.m3u8",
     "type": "hls",
     "language": "Unknown",
     "quality": "Auto"
   },
   {
-    "name": "DD Sports (DD Sports)",
-    "logo": "https://via.placeholder.com/150?text=DD%20Sports",
+    "name": "DD Sports",
+    "logo": "logos/dd_sports.svg",
     "streamUrl": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
     "type": "hls",
-    "language": "Unknown",
-    "quality": "Auto"
+    "language": "Hindi",
+    "quality": "HD"
   },
   {
     "name": "Globo (Globo TV)",
-    "logo": "https://via.placeholder.com/150?text=Globo",
+    "logo": "logos/globo.svg",
     "streamUrl": "https://stream.radiosmundiales.com/hls/globotvhonduras/globotvhonduras.m3u8",
     "type": "hls",
     "language": "Unknown",
@@ -42,7 +41,7 @@
   },
   {
     "name": "SBT (SBT Interior)",
-    "logo": "https://via.placeholder.com/150?text=SBT",
+    "logo": "logos/sbt.svg",
     "streamUrl": "https://cdn.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8",
     "type": "hls",
     "language": "Unknown",
@@ -50,7 +49,7 @@
   },
   {
     "name": "DAZN (DAZN Combat)",
-    "logo": "https://via.placeholder.com/150?text=DAZN",
+    "logo": "logos/dazn.svg",
     "streamUrl": "https://dazn-combat-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-dazn-combat-rakuten/CDN/master.m3u8",
     "type": "hls",
     "language": "Unknown",
@@ -58,7 +57,7 @@
   },
   {
     "name": "beIN Sports (beIN SPORTS XTRA)",
-    "logo": "https://via.placeholder.com/150?text=beIN%20Sports",
+    "logo": "logos/bein_sports.svg",
     "streamUrl": "https://amg01334-beinsportsllc-beinxtra-samsungau-eiyvc.amagi.tv/playlist/amg01334-beinsportsllc-beinxtra-samsungau/playlist.m3u8",
     "type": "hls",
     "language": "Unknown",
@@ -66,7 +65,7 @@
   },
   {
     "name": "SABC (SABC Lehae)",
-    "logo": "https://via.placeholder.com/150?text=SABC",
+    "logo": "logos/sabc.svg",
     "streamUrl": "https://sabctretalh.cdn.mangomolo.com/lehae/smil:lehae.stream.smil/master.m3u8",
     "type": "hls",
     "language": "Unknown",
@@ -74,34 +73,130 @@
   },
   {
     "name": "NHK (NHK World-Japan)",
-    "logo": "https://via.placeholder.com/150?text=NHK",
+    "logo": "logos/nhk_world.svg",
     "streamUrl": "https://nhk.lls.pbs.org/index.m3u8",
     "type": "hls",
     "language": "Unknown",
     "quality": "Auto"
   },
   {
-    "name": "DirecTV Sports (DD Sports)",
-    "logo": "https://via.placeholder.com/150?text=DirecTV%20Sports",
-    "streamUrl": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
-    "type": "hls",
-    "language": "Unknown",
-    "quality": "Auto"
-  },
-  {
     "name": "RCN (RCN Mas)",
-    "logo": "https://via.placeholder.com/150?text=RCN",
+    "logo": "logos/rcn.svg",
     "streamUrl": "https://rcntv-rcnmas-1-us.plex.wurl.tv/playlist.m3u8",
     "type": "hls",
     "language": "Unknown",
     "quality": "Auto"
   },
   {
-    "name": "Channel 299",
-    "logo": "https://via.placeholder.com/150?text=CH299",
-    "streamUrl": "https://qp-pldt-live-bpk-ucd-prod.akamaized.net/bpk-tv/ch299/default/index.mpd",
-    "type": "dash",
-    "language": "Unknown",
+    "name": "beIN Sports (USA)",
+    "logo": "logos/bein_sports.svg",
+    "streamUrl": "http://23.237.104.106:8080/USA_BEIN/index.m3u8",
+    "type": "hls",
+    "language": "English",
+    "quality": "HD"
+  },
+  {
+    "name": "RAI 1",
+    "logo": "logos/rai_1.svg",
+    "streamUrl": "https://dash2.antik.sk/live/test_rai_uno_tizen/playlist.m3u8",
+    "type": "hls",
+    "language": "Italian",
     "quality": "Auto"
+  },
+  {
+    "name": "RTP",
+    "logo": "logos/rtp.svg",
+    "streamUrl": "https://flash2.xdevel.com/rtptv/rtptv/playlist.m3u8",
+    "type": "hls",
+    "language": "Portuguese",
+    "quality": "Auto"
+  },
+  {
+    "name": "MTV3",
+    "logo": "logos/mtv3.svg",
+    "streamUrl": "https://live-fi.tvkaista.net/mtv3/live.m3u8",
+    "type": "hls",
+    "language": "Finnish",
+    "quality": "Auto"
+  },
+  {
+    "name": "Suspilne",
+    "logo": "logos/suspilne.svg",
+    "streamUrl": "https://iptv.prosto.tv/ch112/tracks-v2a1/mono.m3u8?21yo=0&e=1783247457&id=921233&ip=178.136.40.86&live=1&secret=9szoe89y&st=jPS6nYqNZLDECF8uSDa74g",
+    "type": "hls",
+    "language": "Ukrainian",
+    "quality": "Auto"
+  },
+  {
+    "name": "MBC",
+    "logo": "logos/mbc.svg",
+    "streamUrl": "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1/15cf99af5de54063fdabfefe66adc075/index.m3u8",
+    "type": "hls",
+    "language": "Arabic",
+    "quality": "HD"
+  },
+  {
+    "name": "PTV",
+    "logo": "logos/ptv.jpg",
+    "streamUrl": "https://cdn15.live-tv.cloud/ua_infinitas_tv/hrpl-abr/playlist.m3u8",
+    "type": "hls",
+    "language": "Urdu",
+    "quality": "Auto"
+  },
+  {
+    "name": "Fox Sports",
+    "logo": "logos/fox_sports.svg",
+    "streamUrl": "https://d1jzu95oc8fgt3.cloudfront.net/FOX_Sports.m3u8",
+    "type": "hls",
+    "language": "English",
+    "quality": "HD"
+  },
+  {
+    "name": "FIFA+",
+    "logo": "logos/fifa_plus.svg",
+    "streamUrl": "https://jmp2.uk/plu-660c29b5aec9680008f5b4a4.m3u8",
+    "type": "hls",
+    "language": "English",
+    "quality": "Auto"
+  },
+  {
+    "name": "Azteca Uno",
+    "logo": "logos/azteca_uno.webp",
+    "streamUrl": "https://mdstrm.com/live-stream-playlist/60b578b060947317de7b57ac.m3u8",
+    "type": "hls",
+    "language": "Spanish",
+    "quality": "720p"
+  },
+  {
+    "name": "TV5Monde",
+    "logo": "logos/tv5monde.svg",
+    "streamUrl": "https://ott.tv5monde.com/Content/HLS/Live/channel(info)/index.m3u8",
+    "type": "hls",
+    "language": "French",
+    "quality": "HD"
+  },
+  {
+    "name": "DW Sports",
+    "logo": "logos/dw_sports.svg",
+    "streamUrl": "https://dwamdstream104.akamaized.net/hls/live/2015530/dwstream104/index.m3u8",
+    "type": "hls",
+    "language": "English",
+    "quality": "720p"
+  },
+  {
+    "name": "CGTN",
+    "logo": "logos/cgtn.svg",
+    "streamUrl": "https://news.cgtn.com/resource/live/english/cgtn-news.m3u8",
+    "type": "hls",
+    "language": "English",
+    "quality": "HD"
+  },
+  {
+    "name": "SporTV",
+    "logo": "logos/sportv.svg",
+    "streamUrl": "https://mdstrm.com/live-stream-playlist/60b578b060947317de7b57ac.m3u8",
+    "type": "hls",
+    "language": "Portuguese",
+    "quality": "HD"
   }
 ]

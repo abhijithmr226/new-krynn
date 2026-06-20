@@ -1188,6 +1188,205 @@ app.post('/api/health-check-urls', async (req, res) => {
 
   res.json({ health: results });
 });
+
+let okStreamCache = {
+  url: null,
+  type: null,
+  fetchedAt: 0
+};
+
+// GET /api/ok-stream — Scrapes direct streaming playlist from ok.ru embed metadata
+app.get('/api/ok-stream', async (req, res) => {
+  const now = Date.now();
+  // Return cached stream URL if it's less than 15 minutes old
+  if (okStreamCache.url && (now - okStreamCache.fetchedAt < 15 * 60 * 1000)) {
+    console.log('[OK Stream] Serving cached stream URL');
+    const host = req.headers.host || 'localhost:3000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const proxiedUrl = `${protocol}://${host}/api/ok-proxy?url=${encodeURIComponent(okStreamCache.url)}`;
+    return res.json({ streamUrl: proxiedUrl, type: okStreamCache.type });
+  }
+
+  const https = require('https');
+  const embedUrl = 'https://ok.ru/videoembed/15500349283864';
+  
+  let lastError = null;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const html = await new Promise((resolve, reject) => {
+        const request = https.get(embedUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
+        }, (resOk) => {
+          if (resOk.statusCode !== 200) {
+            reject(new Error(`HTTP status ${resOk.statusCode}`));
+            return;
+          }
+          let data = '';
+          resOk.on('data', (chunk) => { data += chunk; });
+          resOk.on('end', () => resolve(data));
+        });
+        request.on('error', (err) => reject(err));
+        request.end();
+      });
+
+      const optRegex = /data-options="([^"]+)"/;
+      const matchOpt = html.match(optRegex);
+      if (matchOpt) {
+        const decodeHtml = (str) => str.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'");
+        const decoded = decodeHtml(matchOpt[1]);
+        const parsed = JSON.parse(decoded);
+        if (parsed.flashvars && parsed.flashvars.metadata) {
+          const meta = JSON.parse(parsed.flashvars.metadata);
+          
+          const streamUrl = meta.hlsMasterPlaylistUrl || meta.hlsPlaybackMasterPlaylistUrl;
+          if (streamUrl) {
+            okStreamCache = { url: streamUrl, type: 'hls', fetchedAt: Date.now() };
+            const host = req.headers.host || 'localhost:3000';
+            const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+            const proxiedUrl = `${protocol}://${host}/api/ok-proxy?url=${encodeURIComponent(streamUrl)}`;
+            return res.json({ streamUrl: proxiedUrl, type: 'hls' });
+          }
+          
+          const dashUrl = meta.liveDashManifestUrl || meta.livePlaybackDashManifestUrl;
+          if (dashUrl) {
+            okStreamCache = { url: dashUrl, type: 'dash', fetchedAt: Date.now() };
+            const host = req.headers.host || 'localhost:3000';
+            const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+            const proxiedUrl = `${protocol}://${host}/api/ok-proxy?url=${encodeURIComponent(dashUrl)}`;
+            return res.json({ streamUrl: proxiedUrl, type: 'dash' });
+          }
+        }
+      }
+      throw new Error('Direct stream URL not found in metadata');
+    } catch (err) {
+      lastError = err;
+      console.warn(`[OK Stream Scraper] Attempt ${attempt} failed:`, err.message);
+      await new Promise(r => setTimeout(r, 1000));
+    }
+  }
+
+  console.error('[OK Stream Scraper Error]: All attempts failed. Last error:', lastError.message);
+  
+  if (okStreamCache.url) {
+    console.warn('[OK Stream] Returning stale cache fallback');
+    const host = req.headers.host || 'localhost:3000';
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const proxiedUrl = `${protocol}://${host}/api/ok-proxy?url=${encodeURIComponent(okStreamCache.url)}`;
+    return res.json({ streamUrl: proxiedUrl, type: okStreamCache.type });
+  }
+  
+  res.status(500).json({ error: lastError.message });
+});
+
+// GET /api/ok-proxy — CORS stream proxy for OK.ru HLS/DASH media streams
+app.get('/api/ok-proxy', (req, res) => {
+  const targetUrl = req.query.url;
+  if (!targetUrl) {
+    return res.status(400).send('Missing url parameter');
+  }
+
+  function handleProxy(currentUrl, redirectCount = 0) {
+    if (redirectCount > 5) {
+      return res.status(502).send('Too many redirects');
+    }
+
+    try {
+      const parsedUrl = new URL(currentUrl);
+      const options = {
+        hostname: parsedUrl.hostname,
+        port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+      };
+
+      if (req.headers.range) {
+        options.headers['Range'] = req.headers.range;
+      }
+
+      const https = require('https');
+      const http = require('http');
+      const lib = currentUrl.startsWith('https:') ? https : http;
+
+      const clientReq = lib.get(options, (clientRes) => {
+        if ([301, 302, 303, 307, 308].includes(clientRes.statusCode)) {
+          const redirectLocation = clientRes.headers.location;
+          if (redirectLocation) {
+            const absoluteRedirect = new URL(redirectLocation, currentUrl).toString();
+            return handleProxy(absoluteRedirect, redirectCount + 1);
+          }
+        }
+
+        // Set permissive CORS headers
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', '*');
+
+        const contentType = clientRes.headers['content-type'] || '';
+        const isM3u8 = currentUrl.toLowerCase().includes('.m3u8') || 
+                       contentType.toLowerCase().includes('mpegurl');
+
+        if (isM3u8) {
+          let data = '';
+          clientRes.setEncoding('utf8');
+          clientRes.on('data', (chunk) => { data += chunk; });
+          clientRes.on('end', () => {
+            const lines = data.split(/\r?\n/);
+            const host = req.headers.host || 'localhost:3000';
+            const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+            const baseProxyUrl = `${protocol}://${host}/api/ok-proxy`;
+
+            const rewrittenLines = lines.map(line => {
+              const trimmed = line.trim();
+              if (trimmed === '' || trimmed.startsWith('#')) {
+                return line;
+              }
+              try {
+                const resolved = new URL(trimmed, currentUrl).toString();
+                return `${baseProxyUrl}?url=${encodeURIComponent(resolved)}`;
+              } catch {
+                return line;
+              }
+            });
+            const body = rewrittenLines.join('\n');
+            res.writeHead(clientRes.statusCode, {
+              'Content-Type': 'application/vnd.apple.mpegurl',
+              'Content-Length': Buffer.byteLength(body)
+            });
+            res.end(body);
+          });
+        } else {
+          if (clientRes.headers['content-range']) {
+            res.setHeader('Content-Range', clientRes.headers['content-range']);
+          }
+          if (clientRes.headers['content-length']) {
+            res.setHeader('Content-Length', clientRes.headers['content-length']);
+          }
+          res.writeHead(clientRes.statusCode, {
+            'Content-Type': contentType || 'video/MP2T'
+          });
+          clientRes.pipe(res);
+        }
+      });
+
+      clientReq.on('error', (err) => {
+        console.error(`[Proxy Error] Request to ${currentUrl} failed:`, err.message);
+        res.status(502).send(`Proxy error: ${err.message}`);
+      });
+
+      clientReq.end();
+    } catch (err) {
+      console.error(`[Proxy URL Error]:`, err.message);
+      res.status(400).send(`Invalid target URL: ${err.message}`);
+    }
+  }
+
+  handleProxy(targetUrl);
+});
 // ─────────────────────────────────────────────────────────────────────────────
 
 

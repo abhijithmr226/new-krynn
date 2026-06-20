@@ -51,230 +51,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root {
-      --bg: #060609;
-      --bg-card: #101014;
-      --border: #1c1c24;
-      --orange: #ff6a00;
-      --orange-glow: rgba(255,106,0,0.15);
-      --text: #ffffff;
-      --muted: #71717a;
-      --accent-gradient: linear-gradient(135deg,#ff5500,#ff8c00);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #15100c, #020204);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* Header */
-    header {
-      background: rgba(6,6,9,0.96);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 68px;
-      position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(20px);
-    }
-    .logo-link {
-      display: flex; align-items: center; gap: 12px; text-decoration: none;
-    }
-    .logo-img { height: 40px; width: auto; object-fit: contain; }
-    .brand-title {
-      font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 800;
-      color: #fff; display: flex; align-items: center; gap: 5px;
-    }
-    .brand-title span { color: var(--orange); }
-    .back-btn {
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
-      color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 13px;
-      font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer;
-      text-decoration: none; display: flex; align-items: center; gap: 8px;
-      transition: all 0.2s;
-    }
-    .back-btn:hover { background: var(--orange); border-color: var(--orange); }
-
-    /* Main */
-    .main {
-      max-width: 820px; margin: 0 auto; padding: 48px 20px 80px;
-    }
-    .page-hero {
-      text-align: center; margin-bottom: 48px;
-    }
-    .page-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,106,0,0.12); border: 1px solid rgba(255,106,0,0.35);
-      color: var(--orange); font-family: 'Outfit', sans-serif; font-size: 10px;
-      font-weight: 800; letter-spacing: 1.5px; padding: 5px 12px; border-radius: 4px;
-      text-transform: uppercase; margin-bottom: 16px;
-    }
-    .page-title {
-      font-family: 'Outfit', sans-serif; font-size: 38px; font-weight: 900;
-      letter-spacing: -0.5px; margin-bottom: 12px;
-    }
-    .page-subtitle {
-      color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 520px; margin: 0 auto;
-    }
-    .last-updated {
-      margin-top: 10px; font-size: 12px; color: var(--muted);
-    }
-
-    /* Card sections */
-    .policy-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 32px 36px; margin-bottom: 20px;
-      transition: border-color 0.2s;
-    }
-    .policy-card:hover { border-color: rgba(255,106,0,0.2); }
-    .card-header {
-      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
-    }
-    .card-icon {
-      width: 44px; height: 44px; border-radius: 10px;
-      background: var(--orange-glow); border: 1px solid rgba(255,106,0,0.25);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--orange); font-size: 18px; flex-shrink: 0;
-    }
-    .card-title {
-      font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; color: #fff;
-    }
-    .card-body { color: #a1a1aa; font-size: 14px; line-height: 1.8; }
-    .card-body p { margin-bottom: 12px; }
-    .card-body p:last-child { margin-bottom: 0; }
-    .card-body ul { padding-left: 20px; margin: 10px 0; }
-    .card-body ul li { margin-bottom: 8px; }
-    .card-body a { color: var(--orange); text-decoration: none; }
-    .card-body a:hover { text-decoration: underline; }
-    .highlight-box {
-      background: rgba(255,106,0,0.06); border: 1px solid rgba(255,106,0,0.2);
-      border-radius: 8px; padding: 16px 20px; margin-top: 16px;
-    }
-    .highlight-box p { color: #d4d4d8; margin: 0; }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
-      font-size: 12px; color: var(--muted); margin-top: 20px;
-    }
-    footer .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 10px; }
-    footer .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    footer .footer-links a:hover { color: var(--orange); }
-    footer span { color: var(--orange); }
-
-    /* Cookie Consent Banner Styling */
-    .cookie-consent-banner {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      max-width: 380px;
-      background: rgba(16, 16, 20, 0.88);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      pointer-events: none;
-    }
-    .cookie-consent-banner.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .cookie-consent-content {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .cookie-consent-icon {
-      font-size: 22px;
-      color: var(--orange);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .cookie-consent-text h5 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
-      text-align: left;
-    }
-    .cookie-consent-text p {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-      text-align: left;
-    }
-    .cookie-consent-text a {
-      color: var(--orange);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .cookie-consent-text a:hover {
-      text-decoration: underline;
-    }
-    .cookie-consent-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-    .cookie-btn {
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .cookie-btn.accept {
-      background: var(--orange);
-      color: #fff;
-      border: none;
-      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
-    }
-    .cookie-btn.accept:hover {
-      background: var(--orange);
-      transform: translateY(-1px);
-      opacity: 0.9;
-    }
-    .cookie-btn.decline {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-    .cookie-btn.decline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    @media (max-width: 600px) {
-      .main { padding: 32px 16px 60px; }
-      .page-title { font-size: 28px; }
-      .policy-card { padding: 22px 20px; }
-      .cookie-consent-banner {
-        bottom: 80px;
-        left: 16px;
-        right: 16px;
-        max-width: none;
-      }
-    }
-  </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+  <header class="secondary-header">
     <a href="/" class="logo-link">
       <img src="krynn_logo.png" alt="KRYNN" class="logo-img" width="40" height="40" fetchpriority="high">
       <span class="brand-title">KRYNN <span>SPORTS</span></span>
@@ -293,7 +73,7 @@
     <div class="policy-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-eye-slash"></i></div>
-        <div class="card-title">1. Content Aggregation &amp; Non-Hosting Statement</div>
+        <div class="info-card-title">1. Content Aggregation &amp; Non-Hosting Statement</div>
       </div>
       <div class="card-body">
         <p>KRYNN SPORTS does not publish, host, upload, or transmit any video streams, media clips, or broadcast feeds on its servers. The website functions exclusively as a web client interface and search index for external M3U playlists and DRM keys that are already publicly available on third-party domains across the internet.</p>
@@ -304,7 +84,7 @@
     <div class="policy-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
-        <div class="card-title">2. DMCA Takedown Guidelines</div>
+        <div class="info-card-title">2. DMCA Takedown Guidelines</div>
       </div>
       <div class="card-body">
         <p>KRYNN SPORTS respects the intellectual property rights of others. Since we do not host any media files or streams, we cannot directly "remove" content from the internet. However, we will gladly remove any link, playlist entry, or channel configuration from our directory upon receive of a valid DMCA notice.</p>
@@ -325,7 +105,7 @@
     <div class="policy-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-link"></i></div>
-        <div class="card-title">3. External Links &amp; Third-Party Services</div>
+        <div class="info-card-title">3. External Links &amp; Third-Party Services</div>
       </div>
       <div class="card-body">
         <p>Our website contains links to other websites, static feeds, and APIs. If you click on a third-party link or connect to a third-party feed, you will be directed to or loading data from that third party's server. We strongly advise you to review the Privacy Policy and Terms of Service of every external site or feed provider you visit.</p>
@@ -336,7 +116,7 @@
     <div class="policy-card">
       <div class="card-header">
         <div class="card-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-        <div class="card-title">4. Accuracy of Information</div>
+        <div class="info-card-title">4. Accuracy of Information</div>
       </div>
       <div class="card-body">
         <p>Although we make every effort to display real-time FIFA World Cup 2026 scoreboards, standings, and schedules accurately, the sports data is fetched dynamically from public sources (such as SportScore and OpenFootball APIs) which may experience delays or errors. KRYNN SPORTS does not guarantee the complete accuracy, reliability, or timeliness of tournament scores or fixtures.</p>
@@ -345,9 +125,9 @@
   </div>
 
   <!-- Footer -->
-    <footer>
+    <footer class="secondary-footer">
     <p>🏆 <span>KRYNN SPORTS</span> — Official World Cup 2026 Broadcast &amp; Scores Guide</p>
-    <div class="footer-links">
+    <div class="secondary-footer-links">
       <a href="/">Home</a>
       <a href="/about">About Us</a>
       <a href="/contact">Contact Us</a>
@@ -355,7 +135,7 @@
       <a href="/terms">Terms of Service</a>
       <a href="/disclaimer">Disclaimer</a>
     </div>
-    <div class="footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+    <div class="secondary-footer-links" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
       <a href="/teams">Teams Guide</a>
       <a href="/groups">Stage Standings</a>
       <a href="/schedule">Match Schedule</a>

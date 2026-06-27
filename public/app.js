@@ -2,112 +2,13 @@
     // Live Sports Streaming Feeds
     const channelsData = [
         {
-            "name": "DSport",
-            "logo": "https://logo.clearbit.com/dsports.in",
-            "streamUrl": "http://190.108.83.69:8000/play/a05w/index.m3u8",
+            "name": "Fox",
+            "logo": "https://logo.clearbit.com/fox.com",
+            "streamUrl": "https://602.elugohome.com/fox.m3u8",
             "type": "hls",
             "language": "English",
             "quality": "Auto",
-            "countryCode": "in"
-        },
-        {
-            "name": "Caze TV",
-            "logo": "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/logo.png",
-            "streamUrl": "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8",
-            "type": "hls",
-            "language": "Portuguese",
-            "quality": "Auto",
-            "countryCode": "br"
-        },
-        {
-            "name": "beIN Sports USA",
-            "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/BeIN_Sports_logo_%28vertical_version%29.svg/500px-BeIN_Sports_logo_%28vertical_version%29.svg.png",
-            "streamUrl": "http://23.237.104.106:8080/USA_BEIN/index.m3u8",
-            "type": "hls",
-            "language": "English",
-            "quality": "720p",
             "countryCode": "us"
-        },
-        {
-            "name": "beIN Sports XTRA",
-            "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
-            "streamUrl": "https://bein-xtra-bein.amagi.tv/playlist.m3u8",
-            "type": "hls",
-            "language": "English",
-            "quality": "1080p",
-            "countryCode": "us"
-        },
-        {
-            "name": "CBS Sports Golazo",
-            "logo": "https://i.imgur.com/eMjutHS.png",
-            "streamUrl": "https://proped3fhg87.airspace-cdn.cbsivideo.com/golazo-live-dai/master/golazo-live-dai.m3u8",
-            "type": "hls",
-            "language": "English",
-            "quality": "720p",
-            "countryCode": "us"
-        },
-        {
-            "name": "DD Sports",
-            "logo": "https://dtil.tmsimg.com/assets/s158255_ld_h15_aa.png?lock=720x540",
-            "streamUrl": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
-            "type": "hls",
-            "language": "Hindi",
-            "quality": "1080p",
-            "countryCode": "in"
-        },
-        {
-            "name": "ESPN8 The Ocho",
-            "logo": "https://images.fubo.tv/channel-config-ui/station-logos/on-dark/espn_8_the_ocho_bw.png",
-            "streamUrl": "https://d3b6q2ou5kp8ke.cloudfront.net/ESPNTheOcho.m3u8",
-            "type": "hls",
-            "language": "English",
-            "quality": "1080p",
-            "countryCode": "us"
-        },
-        {
-            "name": "ESPN Deportes",
-            "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/ESPN_Deportes.svg/960px-ESPN_Deportes.svg.png",
-            "streamUrl": "http://origin.thetvapp.to/hls/espn-deportes/mono.m3u8",
-            "type": "hls",
-            "language": "Spanish",
-            "quality": "360p",
-            "countryCode": "us"
-        },
-        {
-            "name": "NBC Sports NOW",
-            "logo": "https://i.imgur.com/EzNf2Yx.png",
-            "streamUrl": "https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008",
-            "type": "hls",
-            "language": "English",
-            "quality": "1080p",
-            "countryCode": "us"
-        },
-        {
-            "name": "KSA Sports 1",
-            "logo": "https://i.imgur.com/ONKNOAp.png",
-            "streamUrl": "https://aloula-redirect.vercel.app/9/playlist.m3u8",
-            "type": "hls",
-            "language": "Arabic",
-            "quality": "1080p",
-            "countryCode": "sa"
-        },
-        {
-            "name": "KSA Sports 2",
-            "logo": "https://i.imgur.com/v8ULLqg.png",
-            "streamUrl": "https://aloula-redirect.vercel.app/10/playlist.m3u8",
-            "type": "hls",
-            "language": "Arabic",
-            "quality": "1080p",
-            "countryCode": "sa"
-        },
-        {
-            "name": "Malayalam Feed",
-            "logo": "https://assets.football-logos.cc/logos/tournaments/1500x1500/fifa-world-cup-2026--white.10e0b37b.png",
-            "streamUrl": "https://ok.ru/videoembed/15500349283864?nochat=1&autoplay=1",
-            "type": "iframe",
-            "language": "Malayalam",
-            "quality": "Auto",
-            "countryCode": "in"
         }
     ];
 
@@ -137,17 +38,21 @@
             }
         });
 
-        // Speed configurations and failover limits
+        // Speed configurations and failover limits optimized for zero buffering
         shakaPlayerInstance.configure({
             streaming: {
-                bufferingGoal: 15,
+                bufferingGoal: 10,
                 rebufferingGoal: 2,
-                bufferBehind: 10,
+                bufferBehind: 5,
+                jumpLargeGaps: true,
+                stallEnabled: true,
+                stallThreshold: 1.5,
+                stallSkip: 0.1,
                 retryParameters: {
-                    maxAttempts: 4,
-                    baseDelay: 500,
-                    backoffFactor: 1.5,
-                    timeout: 10000
+                    maxAttempts: 5,
+                    baseDelay: 1000,
+                    backoffFactor: 2,
+                    timeout: 20000
                 },
                 preferNativeHls: false
             }
@@ -266,6 +171,34 @@
             }
 
             try {
+                // Reset ClearKey DRM config
+                shakaPlayerInstance.configure({
+                    drm: {
+                        clearKeys: {}
+                    }
+                });
+
+                // Extract ClearKey DRM credentials from URL parameters if present
+                try {
+                    const urlObj = new URL(targetUrl);
+                    const ckParam = urlObj.searchParams.get('ck');
+                    if (ckParam) {
+                        const parts = ckParam.split(':');
+                        if (parts.length === 2) {
+                            shakaPlayerInstance.configure({
+                                drm: {
+                                    clearKeys: {
+                                        [parts[0]]: parts[1]
+                                    }
+                                }
+                            });
+                            console.log('Configured ClearKey DRM keys: ID=' + parts[0] + ', KEY=' + parts[1]);
+                        }
+                    }
+                } catch (drmErr) {
+                    console.warn('No inline DRM configuration parsed:', drmErr.message);
+                }
+
                 await shakaPlayerInstance.load(targetUrl);
                 video.muted = false;
                 await video.play().catch(e => console.log('Autoplay deferred:', e));

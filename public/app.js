@@ -9,6 +9,15 @@
             "language": "English",
             "quality": "Auto",
             "countryCode": "us"
+        },
+        {
+            "name": "Fusbol",
+            "logo": "https://assets.football-logos.cc/logos/tournaments/1500x1500/fifa-world-cup-2026--white.10e0b37b.png",
+            "streamUrl": "https://nhjjhhjhjjhfjj.pages.dev/1782576637/b91204afacb846aeb11b511647df0c78/Z-m8Hqlt8EL_det-7rk6bIdfLCibArNsJdTOdwAjcjo/mpd/https%3A%2F%2Fde.infalliblevmerkle.workers.dev%2Fbpk-tv%2FKID01037_FUSSBALLTV1_uhd%2FDASH%2Findex.mpd?ck=1f09d5788fbbb03a053d03cc731f31a9%3Ad493d5a70c793362324638f61d1726ac&dvrWindow=16&type=variant&repId=audio_145313_ger%3D144800",
+            "type": "dash",
+            "language": "German",
+            "quality": "UHD",
+            "countryCode": "de"
         }
     ];
 
@@ -199,7 +208,18 @@
                     console.warn('No inline DRM configuration parsed:', drmErr.message);
                 }
 
-                await shakaPlayerInstance.load(targetUrl);
+                let mimeType = null;
+                if (playType === 'hls' || targetUrl.includes('.m3u8')) {
+                    mimeType = 'application/x-mpegurl';
+                } else if (playType === 'dash' || targetUrl.includes('.mpd')) {
+                    if (targetUrl.includes('pages.dev') || targetUrl.includes('infalliblevmerkle')) {
+                        mimeType = 'application/x-mpegurl';
+                    } else {
+                        mimeType = 'application/dash+xml';
+                    }
+                }
+
+                await shakaPlayerInstance.load(targetUrl, null, mimeType);
                 video.muted = false;
                 await video.play().catch(e => console.log('Autoplay deferred:', e));
                 isSwitchingChannel = false;

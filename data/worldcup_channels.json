@@ -6,5 +6,13 @@
     "type": "hls",
     "language": "English",
     "quality": "Auto"
+  },
+  {
+    "name": "Fusbol",
+    "logo": "logos/fifa_plus.svg",
+    "streamUrl": "https://nhjjhhjhjjhfjj.pages.dev/1782576637/b91204afacb846aeb11b511647df0c78/Z-m8Hqlt8EL_det-7rk6bIdfLCibArNsJdTOdwAjcjo/mpd/https%3A%2F%2Fde.infalliblevmerkle.workers.dev%2Fbpk-tv%2FKID01037_FUSSBALLTV1_uhd%2FDASH%2Findex.mpd?ck=1f09d5788fbbb03a053d03cc731f31a9%3Ad493d5a70c793362324638f61d1726ac&dvrWindow=16&type=variant&repId=audio_145313_ger%3D144800",
+    "type": "dash",
+    "language": "German",
+    "quality": "UHD"
   }
 ]

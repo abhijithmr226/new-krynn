@@ -268,7 +268,33 @@ body {
 }
 .ticker-time {
   font-size: 11px;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ticker-vs {
+  font-size: 11px;
   color: var(--text-muted);
+  font-weight: 600;
+}
+.ticker-group {
+  font-size: 8px;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.live-min-blink {
+  animation: blink-dot 1.2s step-start infinite;
+  color: #f87171;
+}
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 .ticker-chevron-next {
   position: absolute;

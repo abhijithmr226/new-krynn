@@ -18,6 +18,24 @@
             "language": "German",
             "quality": "UHD",
             "countryCode": "de"
+        },
+        {
+            "name": "World Cup TV",
+            "logo": "https://assets.football-logos.cc/logos/tournaments/1500x1500/fifa-world-cup-2026--white.10e0b37b.png",
+            "streamUrl": "https://qp-pldt-live-bpk-ucd-prod.akamaized.net/bpk-tv/fifa_ppv1/default/index.mpd",
+            "type": "dash",
+            "language": "English",
+            "quality": "Auto",
+            "countryCode": "us"
+        },
+        {
+            "name": "Fox Alt",
+            "logo": "https://logo.clearbit.com/fox.com",
+            "streamUrl": "https://602.formaturamaxi.com.br/foxalt.m3u8",
+            "type": "hls",
+            "language": "English",
+            "quality": "Auto",
+            "countryCode": "us"
         }
     ];
 
@@ -373,31 +391,72 @@
         const wrapper = document.getElementById('ticker-wrapper');
         if (!wrapper) return;
 
+        const now = Date.now();
+
+        // Show live first, then upcoming, then recently finished — max 20 items
+        const sorted = [...fixtures].sort((a, b) => {
+            const priority = { live: 0, upcoming: 1, finished: 2 };
+            const ap = priority[a.status] ?? 3;
+            const bp = priority[b.status] ?? 3;
+            if (ap !== bp) return ap - bp;
+            const aMs = new Date(a.kickoffUtc || 0).getTime();
+            const bMs = new Date(b.kickoffUtc || 0).getTime();
+            if (a.status === 'finished') return bMs - aMs;
+            return aMs - bMs;
+        });
+
         let itemsHtml = '';
-        fixtures.slice(0, 10).forEach(f => {
-            const isLive = f.score && !f.score.finished; // basic mock live logic
-            const isFinished = f.score && f.score.finished;
-            
+        sorted.slice(0, 20).forEach(f => {
+            // Determine match state from server-provided status or score
+            const status = f.status || (f.score ? (f.score.finished ? 'finished' : 'live') : 'upcoming');
+            const isLive = status === 'live';
+            const isFinished = status === 'finished';
+
             let statusBadge = '';
-            let scoreStr = 'vs';
-            
+            let scoreStr = '';
+
             if (isLive) {
-                statusBadge = '<span class="ticker-badge live">LIVE</span>';
-                scoreStr = `<span class="ticker-score">${f.score.homeScore} - ${f.score.awayScore}</span>`;
+                const minStr = (f.elapsedMin != null) ? `${f.elapsedMin}'` : 'LIVE';
+                statusBadge = `<span class="ticker-badge live"><span class="live-min-blink">●</span> ${minStr}</span>`;
+                const hs = (f.score && f.score.homeScore != null) ? f.score.homeScore : 0;
+                const as_ = (f.score && f.score.awayScore != null) ? f.score.awayScore : 0;
+                scoreStr = `<span class="ticker-score">${hs} - ${as_}</span>`;
             } else if (isFinished) {
                 statusBadge = '<span class="ticker-badge finished">FT</span>';
-                scoreStr = `<span class="ticker-score">${f.score.homeScore} - ${f.score.awayScore}</span>`;
+                if (f.score && f.score.homeScore != null) {
+                    scoreStr = `<span class="ticker-score">${f.score.homeScore} - ${f.score.awayScore}</span>`;
+                } else {
+                    scoreStr = '<span class="ticker-vs">vs</span>';
+                }
             } else {
+                // Upcoming — show kickoff time in user's local timezone + date if not today
                 statusBadge = '<span class="ticker-badge upcoming">K.O</span>';
-                const time = new Date(f.kickoffUtc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                scoreStr = `<span class="ticker-time">${time}</span>`;
+                if (f.kickoffUtc) {
+                    const kickoffDate = new Date(f.kickoffUtc);
+                    const todayMidnight = new Date();
+                    todayMidnight.setHours(0, 0, 0, 0);
+                    const tomorrowMidnight = new Date(todayMidnight.getTime() + 86400000);
+
+                    const timeStr = kickoffDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    let prefix = '';
+                    if (kickoffDate >= tomorrowMidnight) {
+                        // Show day abbreviation for future matches
+                        prefix = kickoffDate.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ';
+                    }
+                    scoreStr = `<span class="ticker-time">${prefix}${timeStr}</span>`;
+                } else {
+                    scoreStr = '<span class="ticker-vs">TBD</span>';
+                }
             }
 
             const homeFlag = getTeamFlagUrl(f.homeTeam);
             const awayFlag = getTeamFlagUrl(f.awayTeam);
+            const groupTag = f.group ? `<span class="ticker-group">${f.group}</span>` : '';
 
             itemsHtml += `
                 <div class="ticker-item">
+                    ${groupTag}
                     ${statusBadge}
                     <img src="${homeFlag}" class="ticker-flag" alt="" onerror="this.src='krynn_logo.png'">
                     <span class="ticker-team">${getTeamAbbreviation(f.homeTeam)}</span>
@@ -567,7 +626,7 @@
 
         // Initialize features
         fetchFixtures();
-        setInterval(fetchFixtures, 45000);
+        setInterval(fetchFixtures, 20000); // refresh every 20s for near-realtime scores
 
         checkChannelsHealth();
         setInterval(checkChannelsHealth, 60000);

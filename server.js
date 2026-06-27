@@ -1107,9 +1107,18 @@ app.get('/api/worldcup/fixtures', async (req, res) => {
     
     const openFootballData = await response.json();
     
+    const nowMs = Date.now();
+
     // Map openfootball matches array to standardized fixture list
     const fixtures = openFootballData.matches.map((m, idx) => {
       const kickoffUtc = parseOpenFootballDateTime(m.date, m.time);
+      const kickoffMs = kickoffUtc ? new Date(kickoffUtc).getTime() : 0;
+      const elapsedMin = kickoffMs ? Math.floor((nowMs - kickoffMs) / 60000) : -1;
+      // A match is "live" if kickoff was 0–115 min ago and no final score yet
+      const isLive = !m.score && elapsedMin >= 0 && elapsedMin <= 115;
+      // A match is finished if: it has a score, OR kickoff was > 115 min ago
+      const isFinished = !!m.score || (elapsedMin > 115 && !isLive);
+
       return {
         matchNumber: idx + 1,
         date: m.date,
@@ -1120,15 +1129,32 @@ app.get('/api/worldcup/fixtures', async (req, res) => {
         awayTeam: m.team2,
         stadium: m.ground || '',
         hostCity: (m.ground || '').toLowerCase().replace(/\s+/g, '-'),
+        elapsedMin: isLive ? elapsedMin : null,
         score: m.score ? {
           homeScore: m.score.ft[0],
-          awayScore: m.score.ft[1]
-        } : null
+          awayScore: m.score.ft[1],
+          finished: true
+        } : (isFinished && !isLive ? { homeScore: null, awayScore: null, finished: true } : null),
+        status: isLive ? 'live' : (isFinished ? 'finished' : 'upcoming')
       };
     });
 
     // Overlay verified real-world results on top of openfootball data
     patchVerifiedResults(fixtures);
+
+    // Smart sort: live first, then today's upcoming, then recent finished, then future
+    const todayStr = new Date().toISOString().slice(0, 10);
+    fixtures.sort((a, b) => {
+      const order = { live: 0, upcoming: 1, finished: 2 };
+      const ao = order[a.status] ?? 3;
+      const bo = order[b.status] ?? 3;
+      if (ao !== bo) return ao - bo;
+      // within same status: sort by kickoff (ascending for upcoming, descending for finished)
+      const aMs = new Date(a.kickoffUtc || 0).getTime();
+      const bMs = new Date(b.kickoffUtc || 0).getTime();
+      if (a.status === 'finished') return bMs - aMs; // most recent first
+      return aMs - bMs; // soonest first
+    });
 
     res.json({
       tournament: {

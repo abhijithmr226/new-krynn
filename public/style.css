@@ -883,3 +883,65 @@ body {
   min-height: 90px;
   width: 100% !important;
 }
+
+/* --------------------------------------------------------------------------
+   STICKY MOBILE BOTTOM AD
+   -------------------------------------------------------------------------- */
+.ad-sticky-mobile {
+  display: none; /* hidden on desktop */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  background: rgba(4, 4, 8, 0.97);
+  border-top: 2px solid rgba(255, 106, 0, 0.4);
+  padding: 8px 12px 10px;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+.ad-sticky-close {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.ad-sticky-close:hover {
+  color: var(--accent-orange);
+}
+
+.ad-sticky-mobile ins.adsbygoogle {
+  display: block !important;
+  min-height: 50px;
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .ad-sticky-mobile {
+    display: block;
+  }
+
+  /* Push page content up so sticky ad doesn't overlap footer */
+  body {
+    padding-bottom: 80px;
+  }
+
+  /* Ensure all ad containers are visible and sized properly on mobile */
+  .ad-native-container {
+    padding: 8px 10px 12px;
+    min-height: 70px;
+  }
+
+  .ad-native-container ins.adsbygoogle {
+    min-height: 60px;
+  }
+}

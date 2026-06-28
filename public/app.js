@@ -2,40 +2,67 @@
     // Live Sports Streaming Feeds
     const channelsData = [
         {
-            "name": "Fox",
-            "logo": "https://logo.clearbit.com/fox.com",
-            "streamUrl": "https://602.elugohome.com/fox.m3u8",
+            "name": "Russian",
+            "logo": "https://flagcdn.com/w80/ru.png",
+            "streamUrl": "https://live.666666.zip/migu/1.m3u8",
             "type": "hls",
-            "language": "English",
+            "language": "Russian",
             "quality": "Auto",
-            "countryCode": "us"
+            "countryCode": "ru"
         },
         {
-            "name": "Fusbol",
-            "logo": "https://assets.football-logos.cc/logos/tournaments/1500x1500/fifa-world-cup-2026--white.10e0b37b.png",
-            "streamUrl": "https://nhjjhhjhjjhfjj.pages.dev/1782576637/b91204afacb846aeb11b511647df0c78/Z-m8Hqlt8EL_det-7rk6bIdfLCibArNsJdTOdwAjcjo/mpd/https%3A%2F%2Fde.infalliblevmerkle.workers.dev%2Fbpk-tv%2FKID01037_FUSSBALLTV1_uhd%2FDASH%2Findex.mpd?ck=1f09d5788fbbb03a053d03cc731f31a9%3Ad493d5a70c793362324638f61d1726ac&dvrWindow=16&type=variant&repId=audio_145313_ger%3D144800",
-            "type": "dash",
-            "language": "German",
-            "quality": "UHD",
-            "countryCode": "de"
-        },
-        {
-            "name": "World Cup TV",
-            "logo": "https://assets.football-logos.cc/logos/tournaments/1500x1500/fifa-world-cup-2026--white.10e0b37b.png",
-            "streamUrl": "https://qp-pldt-live-bpk-ucd-prod.akamaized.net/bpk-tv/fifa_ppv1/default/index.mpd",
-            "type": "dash",
-            "language": "English",
-            "quality": "Auto",
-            "countryCode": "us"
-        },
-        {
-            "name": "Fox Alt",
-            "logo": "https://logo.clearbit.com/fox.com",
-            "streamUrl": "https://602.formaturamaxi.com.br/foxalt.m3u8",
+            "name": "Malayalam",
+            "logo": "https://flagcdn.com/w80/in.png",
+            "streamUrl": "https://lb.xyzcloud3.xyz/tsn1/index.m3u8",
             "type": "hls",
-            "language": "English",
+            "language": "Malayalam",
             "quality": "Auto",
+            "countryCode": "in"
+        },
+        {
+            "name": "beIN Sports",
+            "logo": "https://logo.clearbit.com/beinsports.com",
+            "streamUrl": "https://live2.eu-north-1b.cf.dmcdn.net/sec2(yhdBauxk4ZgvIOc3RwTKw9FLFziILjWhHBy3UIny2TdNFym_FkHPeyqa-TzcX2t4CI8z8fHT9mY0PgvhowuKwi1qP_MBkzygUyy-2jbQwzXM4qeDfzGT0_3qwzAslno7)/cloud/3/x9ko9z8/s/live-720.m3u8",
+            "type": "hls",
+            "language": "Arabic",
+            "quality": "720p",
+            "countryCode": "qa"
+        },
+        {
+            "name": "Live Feed",
+            "logo": "https://assets.football-logos.cc/logos/tournaments/1500x1500/fifa-world-cup-2026--white.10e0b37b.png",
+            "streamUrl": "https://live05.meung.app/live/08552895.m3u8",
+            "type": "hls",
+            "language": "Multi",
+            "quality": "HD",
             "countryCode": "us"
+        },
+        {
+            "name": "Trece",
+            "logo": "https://flagcdn.com/w80/ar.png",
+            "streamUrl": "https://live2.eu-north-1a.cf.dmcdn.net/sec2(7iXlyRc12FpME8jBI2tZ5mujzJRuwHeHgcb1s50tkW19x6aJttJMVyAP30qwflUl0e2rPppO02xyL6ZFAU7vSr2AdyrtGcbmocXxeQxGjZt6GP1O6NxtMFYlFmmRve7P)/cloud/3/x9ksaba/s/live-720.m3u8",
+            "type": "hls",
+            "language": "Spanish",
+            "quality": "720p",
+            "countryCode": "ar"
+        },
+        {
+            "name": "Koora",
+            "logo": "https://flagcdn.com/w80/eg.png",
+            "streamUrl": "https://ex.moorarts.xyz/diluoe1_720/index.m3u8",
+            "type": "hls",
+            "language": "Arabic",
+            "quality": "720p",
+            "countryCode": "eg"
+        },
+        {
+            "name": "Zee Malayalam Alt",
+            "logo": "https://flagcdn.com/w80/in.png",
+            "streamUrl": "https://ts2.sptrack.cfd/hls/tist2.m3u8",
+            "type": "hls",
+            "language": "Malayalam",
+            "quality": "Auto",
+            "countryCode": "in"
         }
     ];
 
